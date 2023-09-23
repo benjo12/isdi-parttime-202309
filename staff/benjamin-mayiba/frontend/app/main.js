@@ -71,7 +71,6 @@ loginRegisterLink.onclick = function(event){
     registerView.style.display = 'block'
 }
 
-// TODO implement login functionality
 // start home
 var homeView = document.getElementById('home')
 
@@ -79,6 +78,8 @@ var h1View = homeView.querySelector('h1')
 
  homeView.style.display = 'none'
 // end home
+
+// TODO implement login functionality
 
 var registerLoginForm = loginView.querySelector('form')
 
@@ -92,12 +93,12 @@ registerLoginForm.onsubmit = function(event){
   var passwordLogin = passwordLoginInput.value
    
   var userLogged = users.find(function(user){
-    return (user.email === emailLogin && user.password === passwordLogin);
+    return (user.email === emailLogin && user.password === passwordLogin)
 })
    
    if(userLogged){
     nameToDisplay = userLogged.name
-     console.log('Hello '+ nameToDisplay)
+     //console.log(`Hello,  ${nameToDisplay}`)
      h1View.textContent = 'Hello, ' + nameToDisplay; // Update the h1View content
 
     homeView.style.display = 'block';
