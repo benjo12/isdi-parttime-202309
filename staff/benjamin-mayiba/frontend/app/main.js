@@ -5,6 +5,7 @@ var users = []
 // Register
 
 var registerView = document.getElementById('register')
+var exitView = document.getElementById('exit')
 
 registerView.style.display = 'none'
 
@@ -47,7 +48,7 @@ registerForm.onsubmit = function(event){
      )
    })
      if(userFound){
-       console.log('This user already exists')
+       alert('Error,this user already exists')
      }else{
        users.push(user)
      }
@@ -99,11 +100,13 @@ registerLoginForm.onsubmit = function(event){
    if(userLogged){
     nameToDisplay = userLogged.name
      //console.log(`Hello,  ${nameToDisplay}`)
-     h1View.textContent = 'Hello, ' + nameToDisplay; // Update the h1View content
+     //h1View.textContent = 'Hello, ' + nameToDisplay // Update the h1View content
+     exitView.textContent = 'Hello, ' + nameToDisplay
+     
 
-    homeView.style.display = 'block';
+    //homeView.style.display = 'block';
    }else{
-     console.log('User is not registered. Please register the user first.')
+     alert('User is not registered. Please register the user first.')
    }
  
    emailLoginInput.value = ''
