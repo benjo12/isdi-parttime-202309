@@ -1,20 +1,3 @@
-// storage
-
-var users = [
-  {
-      name: 'Wendy Darling',
-      email: 'wendy@darling.com',
-      password: '123123123'
-  },
-  {
-      name: 'Peter Pan',
-      email: 'peter@pan.com',
-      password: '123123123'
-  }
-]
-
-// register
-
 var registerView = document.getElementById('register')
 
 registerView.style.display = 'none'
@@ -22,55 +5,39 @@ registerView.style.display = 'none'
 var registerLoginLink = registerView.querySelector('a')
 
 registerLoginLink.onclick = function (event) {
-  event.preventDefault()
+    event.preventDefault()
 
-  registerView.style.display = 'none'
-  loginView.style.display = 'block'
+    registerView.style.display = 'none'
+    loginView.style.display = 'block'
 }
 
 var registerForm = registerView.querySelector('form')
 
 registerForm.onsubmit = function (event) {
-  event.preventDefault()
+    event.preventDefault()
 
-  var emailInput = registerForm.querySelector('#email')
-  var email = emailInput.value
+    var nameInput = registerForm.querySelector('#name')
+    var emailInput = registerForm.querySelector('#email')
+    var passwordInput = registerForm.querySelector('#password')
 
-  var userFound = false
+    var name = nameInput.value
+    var email = emailInput.value
+    var password = passwordInput.value
 
-  for (var i = 0; i < users.length && !userFound; i++) {
-      var user = users[i]
+    var userRegistered = registerUser(name, email, password)
 
-      if (user.email === email)
-          userFound = true
-  }
+    if (!userRegistered) {
+        alert('User already exists')
 
-  if (userFound) {
-      alert('User already exists')
+        return
+    }
 
-      return
-  }
+    nameInput.value = ''
+    emailInput.value = ''
+    passwordInput.value = ''
 
-  var nameInput = registerForm.querySelector('#name')
-  var passwordInput = registerForm.querySelector('#password')
-
-  var name = nameInput.value
-  var password = passwordInput.value
-
-  var user = {}
-
-  user.name = name
-  user.email = email
-  user.password = password
-
-  users.push(user)
-
-  nameInput.value = ''
-  emailInput.value = ''
-  passwordInput.value = ''
-
-  registerView.style.display = 'none'
-  loginView.style.display = 'block'
+    registerView.style.display = 'none'
+    loginView.style.display = 'block'
 }
 
 // login
@@ -79,55 +46,55 @@ var loginView = document.getElementById('login')
 var loginRegisterLink = loginView.querySelector('a')
 
 loginRegisterLink.onclick = function (event) {
-  event.preventDefault()
+    event.preventDefault()
 
-  loginView.style.display = 'none'
-  registerView.style.display = 'block'
+    loginView.style.display = 'none'
+    registerView.style.display = 'block'
 }
 
 var loginForm = loginView.querySelector('form')
 
 loginForm.onsubmit = function (event) {
-  event.preventDefault()
+    event.preventDefault()
 
-  var emailInput = loginForm.querySelector('#email')
+    var emailInput = loginForm.querySelector('#email')
 
-  var email = emailInput.value
+    var email = emailInput.value
 
-  var foundUser = null
+    var foundUser = null
 
-  for (var i = 0; i < users.length && !foundUser; i++) {
-      var user = users[i]
+    for (var i = 0; i < users.length && !foundUser; i++) {
+        var user = users[i]
 
-      if (user.email === email)
-          foundUser = user
-  }
+        if (user.email === email)
+            foundUser = user
+    }
 
-  if (!foundUser) {
-      alert('User not found')
+    if (!foundUser) {
+        alert('User not found')
 
-      return
-  }
+        return
+    }
 
-  var passwordInput = loginForm.querySelector('#password')
+    var passwordInput = loginForm.querySelector('#password')
 
-  var password = passwordInput.value
+    var password = passwordInput.value
 
-  if (foundUser.password !== password) {
-      alert('Wrong credentials')
+    if (foundUser.password !== password) {
+        alert('Wrong credentials')
 
-      return
-  }
+        return
+    }
 
-  emailInput.value = ''
-  passwordInput.value = ''
+    emailInput.value = ''
+    passwordInput.value = ''
 
-  var homeTitle = homeView.querySelector('h1')
+    var homeTitle = homeView.querySelector('h1')
 
-  homeTitle.innerText = 'Hello, ' + foundUser.name + '!'
+    homeTitle.innerText = 'Hello, ' + foundUser.name + '!'
 
-  loginView.style.display = 'none'
-  homeView.style.display = 'block'
+    loginView.style.display = 'none'
+    homeView.style.display = 'block'
 }
 
 // home
