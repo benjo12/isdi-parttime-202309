@@ -24,18 +24,20 @@ registerForm.onsubmit = function (event) {
     var email = emailInput.value
     var password = passwordInput.value
 
-    try {
-        registerUser(name, email, password)
+    var userRegistered = registerUser(name, email, password)
 
-        nameInput.value = ''
-        emailInput.value = ''
-        passwordInput.value = ''
+    if (!userRegistered) {
+        alert('User already exists')
 
-        registerView.style.display = 'none'
-        loginView.style.display = 'block'
-    } catch (error) {
-        alert(error.message)
+        return
     }
+
+    nameInput.value = ''
+    emailInput.value = ''
+    passwordInput.value = ''
+
+    registerView.style.display = 'none'
+    loginView.style.display = 'block'
 }
 
 // login
@@ -56,28 +58,43 @@ loginForm.onsubmit = function (event) {
     event.preventDefault()
 
     var emailInput = loginForm.querySelector('#email')
-    var passwordInput = loginForm.querySelector('#password')
 
     var email = emailInput.value
+
+    var foundUser = null
+
+    for (var i = 0; i < users.length && !foundUser; i++) {
+        var user = users[i]
+
+        if (user.email === email)
+            foundUser = user
+    }
+
+    if (!foundUser) {
+        alert('User not found')
+
+        return
+    }
+
+    var passwordInput = loginForm.querySelector('#password')
+
     var password = passwordInput.value
 
-    try {
-        authenticateUser(email, password)
+    if (foundUser.password !== password) {
+        alert('Wrong credentials')
 
-        emailInput.value = ''
-        passwordInput.value = ''
-
-        var homeTitle = homeView.querySelector('h1')
-
-        var user = retrieveUser(email)
-
-        homeTitle.innerText = 'Hello, ' + user.name + '!'
-
-        loginView.style.display = 'none'
-        homeView.style.display = 'block'
-    } catch (error) {
-        alert(error.message)
+        return
     }
+
+    emailInput.value = ''
+    passwordInput.value = ''
+
+    var homeTitle = homeView.querySelector('h1')
+
+    homeTitle.innerText = 'Hello, ' + foundUser.name + '!'
+
+    loginView.style.display = 'none'
+    homeView.style.display = 'block'
 }
 
 // home
