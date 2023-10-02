@@ -52,6 +52,8 @@ loginRegisterLink.onclick = function (event) {
 
 var loginForm = loginView.querySelector('form')
 
+var emailLoggedIn = null
+
 loginForm.onsubmit = function (event) {
     event.preventDefault()
 
@@ -73,6 +75,8 @@ loginForm.onsubmit = function (event) {
 
         homeTitle.innerText = 'Hello, ' + user.name + '!'
 
+        emailLoggedIn = email
+
         loginView.style.display = 'none'
         homeView.style.display = 'block'
     } catch (error) {
@@ -86,4 +90,35 @@ var homeView = document.getElementById('home')
 
 homeView.style.display = 'none'
 
-// TODO show user name logged in when entering in Home (Hello, >name<!)
+var logoutButton = homeView.querySelector('#logout-button')
+
+logoutButton.onclick = function () {
+    homeView.style.display = 'none'
+    loginView.style.display = 'block'
+}
+
+var changeEmailForm = homeView.querySelector('#change-email-form')
+
+changeEmailForm.onsubmit = function (event) {
+    event.preventDefault()
+
+    var newEmailInput = changeEmailForm.querySelector('#new-email')
+    var newEmailConfirmInput = changeEmailForm.querySelector('#new-email-confirm')
+    var passwordInput = changeEmailForm.querySelector('#password')
+
+    var newEmail = newEmailInput.value
+    var newEmailConfirm = newEmailConfirmInput.value
+    var password = passwordInput.value
+
+    try {
+        changeUserEmail(emailLoggedIn, newEmail, newEmailConfirm, password)
+
+        alert('E-mail changed')
+
+        newEmailInput.value = ''
+        newEmailConfirmInput.value = ''
+        passwordInput.value = ''
+    } catch (error) {
+        alert(error.message)
+    }
+}
