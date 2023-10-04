@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -44,37 +46,48 @@
     </div>
 
     <div id="home-view">
-        <h1>Hello, Home!</h1>
+        <header class="home-header">
+            <h1><a href="" id="home-link">Home</a></h1>
 
-        <button id="logout-button">Logout</button>
+            <div>
+                <a href="" class="profile-link" id="profile-link">Profile</a>
 
-        <form id="change-email-form">
-            <label for="new-email-input">New e-mail</label>
-            <input id="new-email-input" type="email">
+                <button id="logout-button">Logout</button>
+            </div>
+        </header>
 
-            <label for="new-email-confirm-input">Confirm new e-mail</label>
-            <input id="new-email-confirm-input" type="email">
+        <div id="profile-view">
+            <h2>Update e-mail</h2>
 
-            <label for="password-input">Password</label>
-            <input type="password" id="password-input">
+            <form id="change-email-form">
+                <label for="new-email-input">New e-mail</label>
+                <input id="new-email-input" type="email">
 
-            <button>Update e-mail</button>
-        </form>
+                <label for="new-email-confirm-input">Confirm new e-mail</label>
+                <input id="new-email-confirm-input" type="email">
 
-        <form id="change-password-form">
-            <label for="password-input">Current password</label>
-            <input type="password" id="password-input">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input">
 
-            <label for="new-password-input">New password</label>
-            <input id="new-password-input" type="password">
+                <button>Update e-mail</button>
+            </form>
 
-            <label for="new-password-confirm-input">Confirm new password</label>
-            <input id="new-password-confirm-input" type="password">
+            <h2>Update password</h2>
 
-            <button>Update password</button>
-        </form>
+            <form id="change-password-form">
+                <label for="password-input">Current password</label>
+                <input type="password" id="password-input">
+
+                <label for="new-password-input">New password</label>
+                <input id="new-password-input" type="password">
+
+                <label for="new-password-confirm-input">Confirm new password</label>
+                <input id="new-password-confirm-input" type="password">
+
+                <button>Update password</button>
+            </form>
+        </div>
     </div>
-
 
     <script src="data.js"></script>
 
