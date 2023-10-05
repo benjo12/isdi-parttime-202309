@@ -1,6 +1,6 @@
-function indexOf(string, searchString) {
+function lastIndexOf(string, searchString) {
     // TODO
-    for(var i = 0; i<string.length; i++){
+    for(var i = string.length - 1; i>= 0; i--){
         if(string[i]=== searchString)
             return i
     }
