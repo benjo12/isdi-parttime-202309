@@ -1,4 +1,4 @@
-function miConcat(...arrays) {
+function concat(...arrays) {
   var result = [];
   var Index = 0;
   for (var arr of arrays) {
