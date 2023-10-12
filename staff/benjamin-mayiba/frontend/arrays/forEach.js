@@ -5,3 +5,5 @@ function forEach(array, callback) {
         callback(v)
     }
 }
+
+ 

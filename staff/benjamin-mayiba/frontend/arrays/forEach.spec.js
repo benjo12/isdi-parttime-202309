@@ -15,3 +15,4 @@ var a = [10, 20, 30]
 forEach(a, function (v) {
     console.log(v * 10)
 })
+
