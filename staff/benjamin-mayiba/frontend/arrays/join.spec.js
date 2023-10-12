@@ -15,3 +15,7 @@ console.log(join(['Fire', 'Air', 'Water'],''))
 console.log("CASE for ['Fire', 'Air', 'Water'] join ' '  results in Fire Air Water ")
 console.log(join(['Fire', 'Air', 'Water'],' '))
 // Fire Air Water
+
+console.log("CASE for ['Fire', 'Air', 'Water'] join   results in Fire Air Water ")
+console.log(join(['Fire', 'Air', 'Water']))
+// Fire,Air,Water

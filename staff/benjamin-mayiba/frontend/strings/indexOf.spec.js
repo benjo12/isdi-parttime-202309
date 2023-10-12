@@ -10,4 +10,4 @@ console.log(indexOf('hola mundo', 'w'))
 
 console.log('CASE for string "hola mundo" indexOf "h" results in 0')
 console.log(indexOf('hola mundo', 'h'))
-// 0
+// 0staff/benjamin-mayiba/frontend/strings/indexOf.spec.js
