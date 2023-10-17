@@ -55,7 +55,7 @@ var fish = ['angel', 'clown', 'drum', 'mandarin', 'sturgeon', 'sword']
 var removed = splice(fish, 3, 2)
 
 console.log(fish)
-// ['angel', 'clown', 'drum', 'sturgeon']
+// ['angel', 'clown', 'drum', 'sword']
 
 console.log(removed)
-// ['mandarin']
+// ['mandarin', 'sturgeon']

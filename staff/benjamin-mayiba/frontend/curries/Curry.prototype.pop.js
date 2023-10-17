@@ -1,11 +1,9 @@
 Curry.prototype.pop = function () {
-    if (this.length === 0) {
-        return;
-    }
+    if (!this.length) return
 
-    var poppedElement = this[this.length - 1];
-    this.length = this.length - 1;
-    this[this.length] = undefined;  // Reemplaza la última propiedad con undefined
+    var last = this[this.length - 1]
 
-    return { element: poppedElement };
-};
+    delete this[--this.length]
+
+    return last
+}

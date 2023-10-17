@@ -1,14 +1,25 @@
-console.log('TEST Curry pop');
+console.log('TEST Curry pop')
 
-var c = new Curry('pigs', 'goats', 'sheep', 'cows');
-console.log("CASE for c.pop results in 'cows'");
-var v = c.pop();
-console.log(v.element);  // Imprime 'cows'
-console.log(c);  // Imprime {0:'pigs', 1:'goats', 2:'sheep', 3:undefined, length: 3}
+console.log('CASE extract last element from curry { 10, 20, 30 }')
 
-var c2 = new Curry('swimming', 'soccer', 'baseball', 'football'); 
-console.log("CASE for c2.pop results in 'football'");
-var v2 = c2.pop();
-console.log(v2.element);  // Imprime 'football'
-  // Imprime {0:'swimming', 1:'soccer', 2:'baseball', 3:undefined, length: 3}
+var nums = new Curry(10, 20, 30)
 
+var extracted = nums.pop()
+
+console.log(extracted)
+// 30
+
+console.log(nums)
+// Curry { 0: 10, 1: 20, length: 2 }
+
+console.log('CASE extract no element (undefined) from curry {}')
+
+var empty = new Curry
+
+var extracted = empty.pop()
+
+console.log(extracted)
+// undefined
+
+console.log(empty)
+// Curry { length: 0 }
