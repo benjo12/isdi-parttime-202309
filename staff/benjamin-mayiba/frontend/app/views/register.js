@@ -1,17 +1,19 @@
-var registerView = document.getElementById('register-view')
+registerView = document.getElementById('register-view')
 
 registerView.style.display = 'none'
 
-var registerLoginLink = registerView.querySelector('a')
+registerLoginLink = registerView.querySelector('a')
 
 registerLoginLink.onclick = function (event) {
     event.preventDefault()
 
     registerView.style.display = 'none'
-    loginView.style.display = 'block'
+    registerForm.reset()
+
+    loginView.container.style.display = ''
 }
 
-var registerForm = registerView.querySelector('form')
+registerForm = registerView.querySelector('form')
 
 registerForm.onsubmit = function (event) {
     event.preventDefault()
@@ -25,14 +27,12 @@ registerForm.onsubmit = function (event) {
     var password = passwordInput.value
 
     try {
-        registerUser(name, email, password)
+        logic.registerUser(name, email, password)
 
-        nameInput.value = ''
-        emailInput.value = ''
-        passwordInput.value = ''
+        registerForm.reset()
 
         registerView.style.display = 'none'
-        loginView.style.display = 'block'
+        loginView.container.style.display = ''
     } catch (error) {
         alert(error.message)
     }
