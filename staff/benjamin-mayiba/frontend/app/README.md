@@ -9,3 +9,4 @@ Social app for ... ?
 User
 - register
 - login
+- home
