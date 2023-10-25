@@ -44,18 +44,18 @@ class Curry {
 
     splice(start, removeCount, item) {
         if (removeCount === 0) {
-            var displacement = arguments.length - 2
+            const displacement = arguments.length - 2
 
-            for (var i = this.length - 1; i >= start; i--) {
-                var element = this[i]
+            for (let i = this.length - 1; i >= start; i--) {
+                const element = this[i]
 
                 this[i + displacement] = element
             }
 
             this[start] = item
 
-            for (var i = 3; i < arguments.length; i++) {
-                var element = arguments[i]
+            for (let i = 3; i < arguments.length; i++) {
+                const element = arguments[i]
 
                 this[start + i - 2] = element
             }
@@ -64,31 +64,31 @@ class Curry {
 
             return new Curry
         } else if (removeCount === 1 && arguments.length === 3) {
-            var elementToRemove = this[start]
+            const elementToRemove = this[start]
 
             this[start] = item
 
-            var removed = new Curry
+            const removed = new Curry
 
             removed[0] = elementToRemove
             removed.length++
 
             return removed
         } else if (removeCount >= 1) {
-            var removed = new Curry
+            const removed = new Curry
 
-            for (var i = start; i < this.length - 1; i++) {
-                var elementToRemove = this[i]
+            for (let i = start; i < this.length - 1; i++) {
+                const elementToRemove = this[i]
 
                 removed[removed.length] = elementToRemove
                 removed.length++
 
-                var next = this[i + removeCount]
+                const next = this[i + removeCount]
 
                 this[i] = next
             }
 
-            for (var i = this.length - removeCount; i < this.length; i++)
+            for (let i = this.length - removeCount; i < this.length; i++)
                 delete this[i]
 
             this.length -= removeCount

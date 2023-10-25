@@ -1,18 +1,18 @@
-class RegisterView {
+class RegisterView extends Component {
     constructor() {
-        this.container = document.getElementById('register-view')
+        super(document.getElementById('register-view'))
 
-        this.container.style.display = 'none'
+        this.hide()
 
         this.registerLoginLink = this.container.querySelector('a')
 
         this.registerLoginLink.onclick = function (event) {
             event.preventDefault()
 
-            this.container.style.display = 'none'
+            this.hide()
             this.registerForm.reset()
 
-            loginView.container.style.display = ''
+            loginView.show()
         }.bind(this)
 
         this.registerForm = this.container.querySelector('form')
@@ -33,8 +33,8 @@ class RegisterView {
 
                 this.registerForm.reset()
 
-                this.container.style.display = 'none'
-                loginView.container.style.display = ''
+                this.hide()
+                loginView.show()
             } catch (error) {
                 alert(error.message)
             }

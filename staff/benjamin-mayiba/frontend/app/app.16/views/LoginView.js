@@ -1,16 +1,16 @@
-class LoginView {
+class LoginView extends Component {
     constructor() {
-        this.container = document.getElementById('login-view')
+        super(document.getElementById('login-view'))
 
         this.loginRegisterLink = this.container.querySelector('a')
 
         this.loginRegisterLink.onclick = function (event) {
             event.preventDefault()
 
-            this.container.style.display = 'none'
+            this.hide()
             this.loginForm.reset()
 
-            registerView.container.style.display = ''
+            registerView.show()
         }.bind(this)
 
         this.loginForm = this.container.querySelector('form')
@@ -33,7 +33,7 @@ class LoginView {
 
                 homeView.profileLink.innerText = user.name
 
-                this.container.style.display = 'none'
+                this.hide()
 
                 // render posts in home
 
@@ -41,7 +41,7 @@ class LoginView {
 
                 // show home
 
-                homeView.container.style.display = ''
+                homeView.show()
             } catch (error) {
                 alert(error.message)
             }
