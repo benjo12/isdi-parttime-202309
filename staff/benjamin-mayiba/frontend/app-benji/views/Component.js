@@ -1,14 +1,13 @@
 class Component {
-    constructor(container) {
+  constructor(container) {
+    this.container = container;
+  }
 
-        this.container = container
-    }
+  show() {
+    this.container.style.display = "";
+  }
 
-    show() {
-        this.container.style.display = ''
-    }
-
-    hide() {
-        this.container.style.display = 'none'
-    }
+  hide() {
+    this.container.style.display = "none";
+  }
 }

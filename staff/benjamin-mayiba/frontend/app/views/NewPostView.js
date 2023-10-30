@@ -1,42 +1,47 @@
-class NewPostView extends Component {
+class PostsView extends Component {
     constructor() {
-        super(document.getElementById('new-post-view'))
+        super(document.getElementById('posts-view'))
+    }
 
-        this.hide()
+    renderPosts() {
+        this.container.innerHTML = ''
 
-        this.newPostForm = this.container.querySelector('#new-post-form')
+        try {
+            const posts = logic.retrievePosts()
 
-        this.cancelNewPostButton = this.newPostForm.querySelector('#cancel-new-post-button')
+            posts.forEachReverse(function (post, index) {
+                const article = document.createElement('article')
+                article.setAttribute('class', 'post')
 
-        this.cancelNewPostButton.onclick = function (event) {
-            event.preventDefault()
+                const title = document.createElement('h2')
+                title.innerText = post.author
 
-            this.hide()
-            this.newPostForm.reset()
-        }.bind(this)
+                const image = document.createElement('img')
+                image.setAttribute('class', 'post-image')
+                image.src = post.image
 
-        this.newPostForm.onsubmit = function (event) {
-            event.preventDefault()
+                const text = document.createElement('p')
+                text.innerText = post.text
 
-            const imageInput = this.newPostForm.querySelector('#image-input')
-            const textInput = this.newPostForm.querySelector('#text-input')
+                const likeButton = document.createElement('button')
+                likeButton.innerText = `${post.isFav ? '❤️' : '🤍'} ${post.likes.length} likes`
 
-            const image = imageInput.value
-            const text = textInput.value
+                likeButton.onclick = function () {
+                    try {
+                        logic.toggleLikePost(index)
 
-            try {
-                logic.publishPost(image, text)
+                        this.renderPosts()
+                    } catch (error) {
+                        alert(error.message)
+                    }
+                }.bind(this)
 
-                this.newPostForm.reset()
+                article.append(title, image, text, likeButton)
 
-                this.hide()
-
-                // re-render posts
-
-                homeView.postsView.renderPosts()
-            } catch (error) {
-                alert(error.message)
-            }
-        }.bind(this)
+                this.container.append(article)
+            }.bind(this))
+        } catch (error) {
+            alert(error.message)
+        }
     }
 }

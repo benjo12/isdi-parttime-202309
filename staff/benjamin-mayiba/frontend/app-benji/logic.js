@@ -1,75 +1,104 @@
-function registerUser(name, email, password) {
-  validateText(name, "name");
-  validateText(email, "email");
-  validateText(password, "password");
+class Logic {
+  constructor() {
+    this.loggedInEmail = null;
+  }
 
-  var user = findUserByEmail(email);
+  registerUser(name, email, password) {
+    validateText(name, "name");
+    validateText(email, "email");
+    validateText(password, "password");
 
-  if (user) throw new Error("user already exists");
+    var user = findUserByEmail(email);
 
-  createUser(name, email, password);
-}
+    if (user) throw new Error("user already exists");
 
-function authenticateUser(email, password) {
-  validateText(email, "email");
-  validateText(password, "password");
+    createUser(name, email, password);
+  }
 
-  var user = findUserByEmail(email);
+  loginUser(email, password) {
+    validateText(email, "email");
+    validateText(password, "password");
 
-  if (!user || user.password !== password) throw new Error("wrong credentials");
-}
+    const user = findUserByEmail(email);
 
-function retrieveUser(email) {
-  validateText(email, "email");
+    if (!user || user.password !== password)
+      throw new Error("wrong credentials");
 
-  var user = findUserByEmail(email);
+    this.loggedInEmail = email;
+  }
 
-  if (!user) throw new Error("user not found");
+  logoutUser() {
+    this.loggedInEmail = null;
+  }
 
-  return user;
-}
+  retrieveUser(email) {
+    var user = findUserByEmail(this.loggedInEmail);
 
-function changeUserEmail(email, newEmail, newEmailConfirm, password) {
-  validateText(email, "email");
-  validateText(newEmail, "new email");
-  validateText(newEmailConfirm, "new email confirm");
-  validateText(password, "password");
+    if (!user) throw new Error("user not found");
 
-  var user = findUserByEmail(email);
+    return user;
+  }
 
-  if (!user || user.password !== password) throw new Error("wrong credentials");
+  changeUserEmail(email, newEmail, newEmailConfirm, password) {
+    validateText(email, "email");
+    validateText(newEmail, "new email");
+    validateText(newEmailConfirm, "new email confirm");
+    validateText(password, "password");
 
-  if (newEmail !== newEmailConfirm)
-    throw new Error("new email and its confirmation do not match");
+    var user = findUserByEmail(this.loggedInEmail);
 
-  //user.email = newEmail
-  modifyUserEmail(email, newEmail);
-}
+    if (!user || user.password !== password)
+      throw new Error("wrong credentials");
 
-function changeUserPassword(email, newPassword, newPasswordConfirm, password) {
-  validateText(email, "email");
-  validateText(newPassword, "new password");
-  validateText(newPasswordConfirm, "new password confirm");
-  validateText(password, "password");
+    if (newEmail !== newEmailConfirm)
+      throw new Error("new email and its confirmation do not match");
 
-  var user = findUserByEmail(email);
+    modifyUserEmail(this.loggedInEmail, newEmail);
 
-  if (!user || user.password !== password) throw new Error("wrong credentials");
+    this.loggedInEmail = newEmail;
+  }
 
-  if (newPassword !== newPasswordConfirm)
-    throw new Error("new password and its confirmation do not match");
+  changeUserPassword(email, newPassword, newPasswordConfirm, password) {
+    validateText(email, "email");
+    validateText(newPassword, "new password");
+    validateText(newPasswordConfirm, "new password confirm");
+    validateText(password, "password");
 
-  modifyUserPassword(email, newPassword);
-}
+    var user = findUserByEmail(this.loggedInEmaill);
 
-function retrievePosts() {
-  return getPosts();
-}
+    if (!user || user.password !== password)
+      throw new Error("wrong credentials");
 
-function publishPost(email, image, text) {
-  validateText(email, "email");
-  validateText(image, "image");
-  validateText(text, "text");
+    if (newPassword !== newPasswordConfirm)
+      throw new Error("new password and its confirmation do not match");
 
-  createPost(email, image, text);
+    modifyUserPassword(this.loggedInEmail, newPassword);
+  }
+
+  retrievePosts() {
+    const user = findUserByEmail(this.loggedInEmail);
+
+    if (!user) throw new Error("User not found");
+    return getPosts();
+  }
+
+  publishPost(image, text) {
+    validateText(image, "image");
+    validateText(text, "text");
+
+    createPost(this.loggedInEmail, image, text);
+  }
+
+  toggleLikePost(postIndex) {
+    validateNumber(postIndex);
+
+    const post = findPostByIndex(postIndex);
+
+    const likesIndex = post.likes.indexOf(this.loggedInEmail);
+
+    if (likesIndex < 0) post.likes.push(this.loggedInEmail);
+    else post.likes.slice(likesIndex, 1);
+
+    updatePost(postIndex, post);
+  }
 }

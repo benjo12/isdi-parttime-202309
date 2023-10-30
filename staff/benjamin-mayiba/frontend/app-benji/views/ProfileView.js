@@ -3,7 +3,7 @@ class ProfileView extends Component {
         super(document.getElementById('profile-view'))
         this.hide()
 
-        this.changeEmailForm = this.container.queryselector('#change-email-form')
+        this.changeEmailForm = this.container.querySelector('#change-email-form')
 
         this.changeEmailForm.onsubmit = function (event) {
             event.preventDefault()
