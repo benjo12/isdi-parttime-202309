@@ -1,43 +1,43 @@
 function Login(props) {
     function handleSubmit(event) {
-        event.preventDefault()
+      event.preventDefault()
 
-        const emailInput = event.target.querySelector('#email-input')
-        const passwordInput = event.target.querySelector('#password-input')
+      const emailInput = event.target.querySelector('#email-input')
+      const passwordInput = event.target.querySelector('#password-input')
 
-        const email = emailInput.value
-        const password = passwordInput.value
+      const email = emailInput.value
+      const password = passwordInput.value
 
-        // console.log(email, password)
-        try {
-            logic.loginUser(email, password)
+      // console.log(email, password)
+      try {
+          logic.loginUser(email, password)
 
-            props.onSuccess()
-        } catch (error) {
-            alert(error.message)
-        }
-    }
+          props.onSuccess()
+      } catch (error) {
+          alert(error.message)
+      }
+  }
 
-    function handleRegisterClick(event) {
-        event.preventDefault()
+  function handleRegisterClick(event) {
+      event.preventDefault()
 
-        // console.log('register click')
-        props.onRegisterClick()
-    }
+      // console.log('register click')
+      props.onRegisterClick()
+  }
 
-    return <div className="view">
-        <h1>Login</h1>
+  return <div className="view">
+      <h1>Login</h1>
 
-        <form className="form" onSubmit={handleSubmit}>
-            <label htmlFor="email-input">E-mail</label>
-            <input id="email-input" type="email" />
+      <form className="form" onSubmit={handleSubmit}>
+          <label htmlFor="email-input">E-mail</label>
+          <input id="email-input" type="email" />
 
-            <label htmlFor="password-input">Password</label>
-            <input type="password" id="password-input" />
+          <label htmlFor="password-input">Password</label>
+          <input type="password" id="password-input" />
 
-            <button type="submit">Login</button>
-        </form>
+          <button type="submit">Login</button>
+      </form>
 
-        <a href="" onClick={handleRegisterClick}>Register</a>
-    </div>
+      <a href="" onClick={handleRegisterClick}>Register</a>
+  </div>
 }
