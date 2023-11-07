@@ -122,4 +122,18 @@ class Logic {
 
         updatePost(post)
     }
+
+    // TO DO
+    deletePost(postId) {
+        validateText(postId, 'post id')
+
+        const post = findPostById(postId)
+
+        if (!post)
+            throw new Error('post not found')
+
+        deletePostById(post.id)
+    }
+
+    
 }

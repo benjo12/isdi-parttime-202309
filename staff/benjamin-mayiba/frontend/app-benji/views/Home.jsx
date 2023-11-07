@@ -86,6 +86,67 @@ function Home(props) {
       }
   }
 
+   // Start TO DO
+   function handleUpdateEmailSubmit(event){
+    event.preventDefault()
+
+    const newEmailInput = event.target.querySelector('#new-email-input')
+    const newEmailConfirmInput = event.target.querySelector('#new-email-confirm-input')
+    const passwordInput = event.target.querySelector('#password-input')
+
+    const newEmail = newEmailInput.value 
+    const newEmailConfirm = newEmailConfirmInput.value 
+    const password = passwordInput.value
+
+    try {
+      logic.changeUserEmail(newEmail,newEmailConfirm,password)
+
+      setView(null);
+    } catch (error) {
+      alert(error.message)
+    }
+
+  }
+
+  function handleUpdatePasswordSubmit(event){
+    event.preventDefault()
+
+    const passwordInput = event.target.querySelector('#password-input')
+    const newPasswordInput = event.target.querySelector('#new-password-input')
+    const newPasswordConfirmInput = event.target.querySelector('#new-password-confirm-input')
+
+    const password = passwordInput.value 
+    const newPassword = newPasswordInput.value 
+    const newPasswordConfirm = newPasswordConfirmInput.value 
+
+    try {
+         logic.changeUserPassword(newPassword, newPasswordConfirm,password)
+
+      setView(null);
+    } catch (error) {
+      alert(error.message)
+    }
+
+  }
+    
+  function handleDeletePostClick(postId) {
+    if (confirm('Are you sure you want to delete this post?')) {
+
+        try {
+
+            logic.deletePost(postId)
+
+            setTimestamp(Date.now())
+
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+}
+  
+  // End TODO
+
+
   return <div>
       <header className="home-header">
           <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
@@ -98,7 +159,7 @@ function Home(props) {
       {view === 'profile' && <div className="view">
           <h2>Update e-mail</h2>
 
-          <form className="form">
+          <form className="form" onSubmit={handleUpdateEmailSubmit}>
               <label htmlFor="new-email-input">New e-mail</label>
               <input id="new-email-input" type="email" />
 
@@ -113,7 +174,7 @@ function Home(props) {
 
           <h2>Update password</h2>
 
-          <form className="form">
+          <form className="form" onSubmit={handleUpdatePasswordSubmit}>
               <label htmlFor="password-input">Current password</label>
               <input type="password" id="password-input" />
 
@@ -148,12 +209,18 @@ function Home(props) {
                   handleToggleLikePostClick(post.id)
               }
 
-              return <article key={post.id} className="post">
-                  <h2>{post.author}</h2>
-                  <img className="post-image" src={post.image} />
-                  <p>{post.text}</p>
-                  <button onClick={handleToggleLikeButtonClick}>{post.isFav ? '❤️' : '🤍'} {post.likes.length} likes</button>
-              </article>
+              function handleDeletePostButtonClick() {
+                console.log('Delete button clicked');
+                handleDeletePostClick(post.id)
+            }
+
+            return <article key={post.id} className="post">
+            <h2>{post.author.name}</h2>
+            <img className="post-image" src={post.image} />
+            <p>{post.text}</p>
+            <button onClick={handleToggleLikeButtonClick}>{post.isFav ? '❤️' : '🤍'} {post.likes.length} likes</button>
+            {<button onClick={handleDeletePostButtonClick}>Delete post</button>}
+        </article>
           })}
       </div>}
   </div>
