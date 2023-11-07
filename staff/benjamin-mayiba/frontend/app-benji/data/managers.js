@@ -1,5 +1,5 @@
 function createUser(name, email, password) {
-    const user = new User(name, email, password)
+    const user = new User(generateId(), name, email, password)
 
     db.users.push(user)
 }
@@ -7,20 +7,29 @@ function createUser(name, email, password) {
 function cloneUser(user) {
     if (!(user instanceof User)) throw new TypeError('user is not a User')
 
-    return new User(user.name, user.email, user.password)
+    return new User(user.id, user.name, user.email, user.password)
 }
 
-function findUserIndexByEmail(email) {
-    var index = db.users.findIndex(function (user) { return user.email === email })
+function findUserIndexById(id) {
+    validateText(id, 'user id')
+
+    const index = db.users.findIndex(function (user) { return user.id === id })
 
     return index
 }
 
-function findUserByIndex(index) {
-    if (typeof index !== 'number') throw new TypeError('index is not a number')
-    if (index < 0) throw new RangeError('index lower than 0')
+function findUserByEmail(email) {
+    validateText(email, 'user email')
 
-    const user = db.users[index]
+    const user = db.users.find(function (user) { return user.email === email })
+
+    return user
+}
+
+function findUserById(id) {
+    validateText(id, 'user id')
+
+    const user = db.users.find(user => user.id === id)
 
     if (user)
         return cloneUser(user)
@@ -28,10 +37,10 @@ function findUserByIndex(index) {
     return null
 }
 
-function updateUser(index, user) {
-    if (typeof index !== 'number') throw new TypeError('index is not a number')
-    if (index < 0) throw new RangeError('index lower than 0')
+function updateUser(user) {
     if (!(user instanceof User)) throw new TypeError('user is not a User')
+
+    const index = findUserIndexById(user.id)
 
     db.users[index] = cloneUser(user)
 }
@@ -39,24 +48,23 @@ function updateUser(index, user) {
 function clonePost(post) {
     if (!(post instanceof Post)) throw new TypeError('post is not a Post')
 
-    return new Post(post.author, post.image, post.text, post.likes.map(email => email))
+    return new Post(post.id, post.author, post.image, post.text, post.likes.map(email => email))
 }
 
 function getPosts() {
     return db.posts.map(clonePost)
 }
 
-function createPost(email, image, text) {
-    const post = new Post(email, image, text, [])
+function createPost(userId, image, text) {
+    const post = new Post(generateId(), userId, image, text, [])
 
     db.posts.push(post)
 }
 
-function findPostByIndex(index) {
-    if (typeof index !== 'number') throw new TypeError('index is not a number')
-    if (index < 0) throw new RangeError('index lower than 0')
+function findPostById(id) {
+    validateText(id, 'post id')
 
-    const post = db.posts[index]
+    const post = db.posts.find(post => post.id === id)
 
     if (post)
         return clonePost(post)
@@ -64,11 +72,36 @@ function findPostByIndex(index) {
     return null
 }
 
-function updatePost(index, post) {
-    if (typeof index !== 'number') throw new TypeError('index is not a number')
-    if (index < 0) throw new RangeError('index lower than 0')
+function findPostIndexById(id) {
+    validateText(id, 'post id')
+
+    const index = db.posts.findIndex(post => post.id === id)
+
+    return index
+}
+
+function updatePost(post) {
     if (!(post instanceof Post)) throw new TypeError('post is not a Post')
 
+    const index = findPostIndexById(post.id)
 
     db.posts[index] = clonePost(post)
 }
+
+/*
+TODO collection abstraction
+class Collection {
+    constructor() {}
+    create() {}
+    clone() {}
+    findIndexById() {}
+    findById() {}
+    update() {}
+}
+class UserCollection extends Collection {
+    findByEmail() {}
+}
+class PostCollection extends Collection {
+    getAll() {}
+}
+*/

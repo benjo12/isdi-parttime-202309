@@ -1,139 +1,125 @@
 class Logic {
-  constructor() {
-      this.loggedInEmail = null
-  }
+    constructor() {
+        this.userId = null
+    }
 
-  registerUser(name, email, password) {
-      validateText(name, 'name')
-      validateText(email, 'email')
-      validateText(password, 'password')
+    registerUser(name, email, password) {
+        validateText(name, 'name')
+        validateText(email, 'email')
+        validateText(password, 'password')
 
-      const index = findUserIndexByEmail(email)
+        const user = findUserByEmail(email)
 
-      if (index > -1)
-          throw new Error('user already exists')
+        if (user)
+            throw new Error('user already exists')
 
-      createUser(name, email, password)
-  }
+        createUser(name, email, password)
+    }
 
-  loginUser(email, password) {
-      validateText(email, 'email')
-      validateText(password, 'password')
+    loginUser(email, password) {
+        validateText(email, 'email')
+        validateText(password, 'password')
 
-      const index = findUserIndexByEmail(email)
+        const user = findUserByEmail(email)
 
-      if (index < 0)
-          throw new Error('wrong credentials')
+        if (!user || user.password !== password)
+            throw new Error('wrong credentials')
 
-      const user = findUserByIndex(index)
+        this.userId = user.id
+    }
 
-      if (!user || user.password !== password)
-          throw new Error('wrong credentials')
+    logoutUser() {
+        this.userId = null
+    }
 
-      this.loggedInEmail = email
-  }
+    retrieveUser() {
+        const user = findUserById(this.userId)
 
-  logoutUser() {
-      this.loggedInEmail = null
-  }
+        if (!user)
+            throw new Error('user not found')
 
-  retrieveUser() {
-      const index = findUserIndexByEmail(this.loggedInEmail)
+        delete user.password
 
-      if (index < 0)
-          throw new Error('user not found')
+        return user
+    }
 
-      const user = findUserByIndex(index)
+    changeUserEmail(newEmail, newEmailConfirm, password) {
+        validateText(newEmail, 'new email')
+        validateText(newEmailConfirm, 'new email confirm')
+        validateText(password, 'password')
 
-      return user
-  }
+        const user = findUserById(this.userId)
 
-  changeUserEmail(newEmail, newEmailConfirm, password) {
-      validateText(newEmail, 'new email')
-      validateText(newEmailConfirm, 'new email confirm')
-      validateText(password, 'password')
+        if (!user || user.password !== password)
+            throw new Error('wrong credentials')
 
-      const index = findUserIndexByEmail(this.loggedInEmail)
+        if (newEmail !== newEmailConfirm)
+            throw new Error('new email and its confirmation do not match')
 
-      const user = findUserByIndex(index)
+        user.email = newEmail
 
-      if (!user || user.password !== password)
-          throw new Error('wrong credentials')
+        updateUser(user)
+    }
 
-      if (newEmail !== newEmailConfirm)
-          throw new Error('new email and its confirmation do not match')
+    changeUserPassword(newPassword, newPasswordConfirm, password) {
+        validateText(newPassword, 'new password')
+        validateText(newPasswordConfirm, 'new password confirm')
+        validateText(password, 'password')
 
-      user.email = newEmail
+        const user = findUserById(this.userId)
 
-      updateUser(index, user)
+        if (!user || user.password !== password)
+            throw new Error('wrong credentials')
 
-      const posts = getPosts()
+        if (newPassword !== newPasswordConfirm)
+            throw new Error('new password and its confirmation do not match')
 
-      posts.forEach((post, index) => {
-          if (post.author === this.loggedInEmail) {
-              post.author = newEmail
+        user.password = newPassword
 
-              updatePost(index, post)
-          }
-      })
+        updateUser(user)
+    }
 
-      this.loggedInEmail = newEmail
-  }
+    retrievePosts() {
+        const user = findUserById(this.userId)
 
-  changeUserPassword(newPassword, newPasswordConfirm, password) {
-      validateText(newPassword, 'new password')
-      validateText(newPasswordConfirm, 'new password confirm')
-      validateText(password, 'password')
+        if (!user)
+            throw new Error('user not found')
 
-      const index = findUserIndexByEmail(this.loggedInEmail)
+        const posts = getPosts()
 
-      const user = findUserByIndex(index)
+        posts.forEach(post => {
+            post.isFav = post.likes.includes(this.userId)
 
-      if (!user || user.password !== password)
-          throw new Error('wrong credentials')
+            const user = findUserById(post.author)
 
-      if (newPassword !== newPasswordConfirm)
-          throw new Error('new password and its confirmation do not match')
+            post.author = user.name
+        })
 
-      user.password = newPassword
+        return posts
+    }
 
-      updateUser(index, user)
-  }
+    publishPost(image, text) {
+        validateText(image, 'image')
+        validateText(text, 'text')
 
-  retrievePosts() {
-      const index = findUserIndexByEmail(this.loggedInEmail)
+        createPost(this.userId, image, text)
+    }
 
-      if (index < 0)
-          throw new Error('wrong credentials')
+    toggleLikePost(postId) {
+        validateText(postId, 'post id')
 
-      const user = findUserByIndex(index)
+        const post = findPostById(postId)
 
-      const posts = getPosts()
+        if (!post)
+            throw new Error('post not found')
 
-      posts.forEach(post => post.isFav = post.likes.includes(this.loggedInEmail))
+        const likeIndex = post.likes.indexOf(this.userId)
 
-      return posts
-  }
+        if (likeIndex < 0)
+            post.likes.push(this.userId)
+        else
+            post.likes.splice(likeIndex, 1)
 
-  publishPost(image, text) {
-      validateText(image, 'image')
-      validateText(text, 'text')
-
-      createPost(this.loggedInEmail, image, text)
-  }
-
-  toggleLikePost(postIndex) {
-      validateNumber(postIndex)
-
-      const post = findPostByIndex(postIndex)
-
-      const likeIndex = post.likes.indexOf(this.loggedInEmail)
-
-      if (likeIndex < 0)
-          post.likes.push(this.loggedInEmail)
-      else
-          post.likes.splice(likeIndex, 1)
-
-      updatePost(postIndex, post)
-  }
+        updatePost(post)
+    }
 }

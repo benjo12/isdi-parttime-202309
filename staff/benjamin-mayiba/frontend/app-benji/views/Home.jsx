@@ -1,201 +1,160 @@
 function Home(props) {
-  console.log("Home");
+  console.log('Home')
 
-  const viewState = React.useState(null);
+  const viewState = React.useState(null)
 
-  const view = viewState[0];
-  const setView = viewState[1];
+  const view = viewState[0]
+  const setView = viewState[1]
+
+  const timestampState = React.useState(null)
+  //const timestamp = timestampState[0]
+  const setTimestamp = timestampState[1]
 
   function handleLogoutClick() {
-    logic.logoutUser();
+      logic.logoutUser()
 
-    props.onLogoutClick();
+      props.onLogoutClick()
   }
 
-  let name = null;
+  let name = null
 
   try {
-    const user = logic.retrieveUser();
+      const user = logic.retrieveUser()
+
+      name = user.name
   } catch (error) {
-    alert(error.message);
+      alert(error.message)
   }
 
   function handleProfileClick(event) {
-    event.preventDefault();
+      event.preventDefault()
 
-    setView("profile");
+      setView('profile')
   }
 
   function handleHomeClick(event) {
-    event.preventDefault();
-    setView(null);
+      event.preventDefault()
+
+      setView(null)
   }
 
   function handleNewPostClick() {
-    setView("new-post");
+      setView('new-post')
   }
 
   function handleCancelNewPostClick(event) {
-    event.preventDefault();
+      event.preventDefault()
 
-    setView(null);
+      setView(null)
   }
 
-  let posts = null;
+  let posts = null
 
   try {
-    posts = logic.retrievePosts();
+      posts = logic.retrievePosts()
 
-    posts.reverse();
+      posts.reverse()
   } catch (error) {
-    alert(error.message);
+      alert(error.message)
   }
 
   function handleNewPostSubmit(event) {
-    event.preventDefault();
+      event.preventDefault()
 
-    const imageInput = event.target.querySelector("#image-input");
-    const textInput = event.target.querySelector("#text-input");
+      const imageInput = event.target.querySelector('#image-input')
+      const textInput = event.target.querySelector('#text-input')
 
-    const image = imageInput.value;
-    const text = textInput.value;
+      const image = imageInput.value
+      const text = textInput.value
 
-    try {
-      logic.publishPost(image, text);
-      setView(null);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
-      // Start TO DO
-  function handleUpdateEmailSubmit(event){
-    event.preventDefault()
+      try {
+          logic.publishPost(image, text)
 
-    const newEmailInput = event.target.querySelector('#new-email-input')
-    const newEmailConfirmInput = event.target.querySelector('#new-email-confirm-input')
-    const passwordInput = event.target.querySelector('#password-input')
-
-    const newEmail = newEmailInput.value 
-    const newEmailConfirm = newEmailConfirmInput.value 
-    const password = passwordInput.value
-
-    try {
-      logic.changeUserEmail(newEmail,newEmailConfirm,password)
-
-      setView(null);
-    } catch (error) {
-      alert(error.message)
-    }
-
+          setView(null)
+      } catch (error) {
+          alert(error.message)
+      }
   }
 
-  function handleUpdatePasswordSubmit(event){
-    event.preventDefault()
+  function handleToggleLikePostClick(postId) {
+      try {
+          logic.toggleLikePost(postId)
 
-    const passwordInput = event.target.querySelector('#password-input')
-    const newPasswordInput = event.target.querySelector('#new-password-input')
-    const newPasswordConfirmInput = event.target.querySelector('#new-password-confirm-input')
-
-    const password = passwordInput.value 
-    const newPassword = newPasswordInput.value 
-    const newPasswordConfirm = newPasswordConfirmInput.value 
-
-    try {
-         logic.changeUserPassword(newPassword, newPasswordConfirm,password)
-
-      setView(null);
-    } catch (error) {
-      alert(error.message)
-    }
-
+          setTimestamp(Date.now())
+      } catch (error) {
+          alert(error.message)
+      }
   }
 
-  
-  // End TODO
-
-  return (
-    <div>
+  return <div>
       <header className="home-header">
-        <h1>
-          <a href="" onClick={handleHomeClick}>
-            Home
-          </a>
-        </h1>
+          <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
-        <div>
-          <button onClick={handleNewPostClick}>+</button>
-
-          <a href="" onClick={handleProfileClick}>
-            Profile
-          </a>
-
-          <button onClick={handleLogoutClick}>Logout</button>
-        </div>
+          <div>
+              <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <button onClick={handleLogoutClick}>Logout</button>
+          </div>
       </header>
 
-      {view == "profile" && <div className="view">
+      {view === 'profile' && <div className="view">
           <h2>Update e-mail</h2>
 
-          <form className="form" onSubmit={handleUpdateEmailSubmit}>
-            <label htmlFor="new-email-input">New e-mail</label>
-            <input id="new-email-input" type="email" />
+          <form className="form">
+              <label htmlFor="new-email-input">New e-mail</label>
+              <input id="new-email-input" type="email" />
 
-            <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
-            <input id="new-email-confirm-input" type="email" />
+              <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
+              <input id="new-email-confirm-input" type="email" />
 
-            <label htmlFor="password-input">Password</label>
-            <input type="password" id="password-input" />
+              <label htmlFor="password-input">Password</label>
+              <input type="password" id="password-input" />
 
-            <button type="submit">Update e-mail</button>
+              <button type="submit">Update e-mail</button>
           </form>
 
           <h2>Update password</h2>
 
-          <form className="form" onSubmit={handleUpdatePasswordSubmit}>
-            <label htmlFor="password-input">Current password</label>
-            <input type="password" id="password-input" />
+          <form className="form">
+              <label htmlFor="password-input">Current password</label>
+              <input type="password" id="password-input" />
 
-            <label htmlFor="new-password-input">New password</label>
-            <input id="new-password-input" type="password" />
+              <label htmlFor="new-password-input">New password</label>
+              <input id="new-password-input" type="password" />
 
-            <label htmlFor="new-password-confirm-input">Confirm new password</label>
-            <input id="new-password-confirm-input" type="password" />
+              <label htmlFor="new-password-confirm-input">Confirm new password</label>
+              <input id="new-password-confirm-input" type="password" />
 
-            <button type="submit">Update password</button>
+              <button type="submit">Update password</button>
           </form>
-        </div>
-      }
+      </div>}
 
-      {view === "new-post" && <div className="view">
+      {view === 'new-post' && <div className="view">
           <h2>New post</h2>
 
           <form className="form" onSubmit={handleNewPostSubmit}>
-            <label htmlFor="image-input">Image</label>
-            <input type="url" id="image-input" />
+              <label htmlFor="image-input">Image</label>
+              <input type="url" id="image-input" />
 
-            <label htmlFor="text-input">Text</label>
-            <input type="text" id="text-input" />
+              <label htmlFor="text-input">Text</label>
+              <input type="text" id="text-input" />
 
-            <button type="submit">Post</button>
-            <button onClick={handleCancelNewPostClick}>Cancel</button>
+              <button type="submit">Post</button>
+              <button onClick={handleCancelNewPostClick}>Cancel</button>
           </form>
-        </div>
-      }
+      </div>}
 
-      {view !== "profile" && posts !== null && (
-        <div>
-          {posts.map((post, index) => (
-            <article key={index} className="post">
-              <h2>{post.author}</h2>
-              <img className="post-image" src={post.image} />
-              <p>{post.text}</p>
-              <button>
-                {post.isFav ? "❤️" : "🤍"} {post.likes.length} likes
-              </button>
-            </article>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+      {view !== 'profile' && posts !== null && <div>
+          {posts.map((post) => {
+              function handleToggleLikeButtonClick() {
+                  handleToggleLikePostClick(post.id)
+              }
+
+              return <article key={post.id} className="post">
+                  <h2>{post.author}</h2>
+                  <img className="post-image" src={post.image} />
+                  <p>{post.text}</p>
+                  <button onClick={handleToggleLikeButtonClick}>{post.isFav ? '❤️' : '🤍'} {post.likes.length} likes</button>
+              </article>
+          })}
+      </div>}
+  </div>
 }
