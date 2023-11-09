@@ -16,13 +16,3 @@ class Post {
         this.likes = likes
     }
 }
-
-class CreditCard{
-    constructor(id, user, fullName, number, expirationDate){
-        this.id = id
-        this.user = user
-        this.fullName = fullName
-        this.number = number
-        this.expirationDate = expirationDate
-    }
-}

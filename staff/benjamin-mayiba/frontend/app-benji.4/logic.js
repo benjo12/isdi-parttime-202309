@@ -1,6 +1,6 @@
 class Logic {
     constructor() {
-        this.sessionUserId = null
+        this.userId = null
     }
 
     registerUser(name, email, password) {
@@ -8,32 +8,32 @@ class Logic {
         validateText(email, 'email')
         validateText(password, 'password')
 
-        const user = db.users.findByEmail(email)
+        const user = findUserByEmail(email)
 
         if (user)
             throw new Error('user already exists')
 
-       db.users.insert(new User(name, email, password)) 
+        createUser(name, email, password)
     }
 
     loginUser(email, password) {
         validateText(email, 'email')
         validateText(password, 'password')
 
-        const user = db.users.findByEmail(email)
+        const user = findUserByEmail(email)
 
         if (!user || user.password !== password)
             throw new Error('wrong credentials')
 
-        this.sessionUserId = user.id
+        this.userId = user.id
     }
 
     logoutUser() {
-        this.sessionUserId = null
+        this.userId = null
     }
 
     retrieveUser() {
-        const user = db.users.findById(this.sessionUserId)
+        const user = findUserById(this.userId)
 
         if (!user)
             throw new Error('user not found')
@@ -48,7 +48,7 @@ class Logic {
         validateText(newEmailConfirm, 'new email confirm')
         validateText(password, 'password')
 
-        const user = db.users.findById(this.sessionUserId)
+        const user = findUserById(this.userId)
 
         if (!user || user.password !== password)
             throw new Error('wrong credentials')
@@ -58,7 +58,7 @@ class Logic {
 
         user.email = newEmail
 
-        db.users.update(user)
+        updateUser(user)
     }
 
     changeUserPassword(newPassword, newPasswordConfirm, password) {
@@ -66,7 +66,7 @@ class Logic {
         validateText(newPasswordConfirm, 'new password confirm')
         validateText(password, 'password')
 
-        const user = db.users.findById(this.sessionUserId)
+        const user = findUserById(this.userId)
 
         if (!user || user.password !== password)
             throw new Error('wrong credentials')
@@ -76,21 +76,21 @@ class Logic {
 
         user.password = newPassword
 
-        db.users.updater(user)
+        updateUser(user)
     }
 
     retrievePosts() {
-        const user = db.users.findById(this.sessionUserId)
+        const user = findUserById(this.userId)
 
         if (!user)
             throw new Error('user not found')
 
-        const posts = db.posts.getAll()
+        const posts = getPosts()
 
         posts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId)
+            post.isFav = post.likes.includes(this.userId)
 
-            const user = db.users.findById(post.author)
+            const user = findUserById(post.author)
 
             post.author = user.name
         })
@@ -102,37 +102,37 @@ class Logic {
         validateText(image, 'image')
         validateText(text, 'text')
 
-        db.posts.insert(new Posts(null,this.sessionUserId, image, text))
+        createPost(this.userId, image, text)
     }
 
     toggleLikePost(postId) {
         validateText(postId, 'post id')
 
-        const post = db.posts.findById(postId)
+        const post = findPostById(postId)
 
         if (!post)
             throw new Error('post not found')
 
-        const likeIndex = post.likes.indexOf(this.sessionUserId)
+        const likeIndex = post.likes.indexOf(this.userId)
 
         if (likeIndex < 0)
-            post.likes.push(this.sessionUserId)
+            post.likes.push(this.userId)
         else
             post.likes.splice(likeIndex, 1)
 
-            db.posts.update(post)
+        updatePost(post)
     }
 
     // TO DO
     deletePost(postId) {
         validateText(postId, 'post id')
 
-        const post = db.posts.findById(postId)
+        const post = findPostById(postId)
 
         if (!post)
             throw new Error('post not found')
 
-        db.posts.delete(post.id)
+        deletePostById(post.id)
     }
 
     

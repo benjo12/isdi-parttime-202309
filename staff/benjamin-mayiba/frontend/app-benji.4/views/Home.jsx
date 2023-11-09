@@ -218,7 +218,7 @@ function Home(props) {
             <h2>{post.author.name}</h2>
             <img className="post-image" src={post.image} />
             <p>{post.text}</p>
-            <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+            <button onClick={handleToggleLikeButtonClick}>{post.isFav ? '❤️' : '🤍'} {post.likes.length} likes</button>
             {<button onClick={handleDeletePostButtonClick}>Delete post</button>}
         </article>
           })}
