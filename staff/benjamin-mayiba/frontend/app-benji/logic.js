@@ -76,27 +76,39 @@ class Logic {
 
         user.password = newPassword
 
-        db.users.updater(user)
+        db.users.update(user)
     }
 
     retrievePosts() {
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user)
-            throw new Error('user not found')
-
-        const posts = db.posts.getAll()
-
+        const user = db.users.findById(this.sessionUserId);
+    
+        if (!user) {
+            throw new Error('User not found');
+        }
+    
+        const posts = db.posts.getAll();
+    
         posts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId)
-
-            const user = db.users.findById(post.author)
-
-            post.author = user.name
-        })
-
-        return posts
+            post.liked = post.likes.includes(this.sessionUserId);
+    
+            const authorUser = db.users.findById(post.author);
+    
+            if (!authorUser) {
+                console.error('Author user not found for post:', post);
+                return;
+            }
+    
+            // Modificamos la estructura de post.author para incluir el ID
+            post.author = {
+                id: authorUser.id,
+                name: authorUser.name,
+                // Otros datos del autor si es necesario
+            };
+        });
+    
+        return posts;
     }
+    
 
     publishPost(image, text) {
         validateText(image, 'image')
@@ -132,7 +144,7 @@ class Logic {
         if (!post)
             throw new Error('post not found')
 
-        db.posts.delete(post.id)
+        db.posts.deleteById(post.id)
     }
 
     

@@ -26,7 +26,7 @@ class Collection{
     }
 
     insert(document){
-        documentCopy = this.clone(document)
+       const documentCopy = this.clone(document)
         
         documentCopy.id = this.generateId()
 
@@ -48,7 +48,7 @@ class Collection{
     update(document){
         if(!(document instanceof this.clazz)) throw new TypeError(`document is not a ${this.clazz.name}`)
 
-        const index = findIndexById(document.id)
+        const index =  this.findIndexById(document.id)
              if(index < 0)
                   throw new Error(`${this.clazz.name} not found`)
 
@@ -57,10 +57,9 @@ class Collection{
 
     // new method
 
-    delete(document) {
-        if(!(document instanceof this.clazz)) throw new TypeError(`document is not a ${this.clazz.name}`)
-
-        const index = findIndexById(document.id)
+    deleteById(id) {
+        validateText(id, `${this.clazz.name} id`)
+        const index = this.findIndexById(id)
              if(index < 0)
                   throw new Error(`${this.clazz.name} not found`)
 
@@ -96,14 +95,3 @@ class CreditCards extends Collection{
     }
 }
 
-// TEST
-
-var users = new Collection(User, db.users)
-
-var user = new User(null, 'Ada Love', 'ada@love.com', '123123123')
-users.create(user)
-
-var posts = new Collection(Post, db.posts)
-
-var post = new Post(null, users.collection[users.collection.length - 1].id, 'http://image.com', 'hola mundo', [])
-posts.create(post)

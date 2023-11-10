@@ -17,13 +17,13 @@ function Home(props) {
   }
 
   let name = null
-
+  let user = null
+  
   try {
-      const user = logic.retrieveUser()
-
-      name = user.name
+      user = logic.retrieveUser();
+      name = user.name;
   } catch (error) {
-      alert(error.message)
+      alert(error.message);
   }
 
   function handleProfileClick(event) {
@@ -52,6 +52,7 @@ function Home(props) {
 
   try {
       posts = logic.retrievePosts()
+      console.log(posts)
 
       posts.reverse()
   } catch (error) {
@@ -129,7 +130,7 @@ function Home(props) {
 
   }
     
-  function handleDeletePostClick(postId) {
+  function handleDeletePostButtonClick(postId) {
     if (confirm('Are you sure you want to delete this post?')) {
 
         try {
@@ -209,19 +210,17 @@ function Home(props) {
                   handleToggleLikePostClick(post.id)
               }
 
-              function handleDeletePostButtonClick() {
-                console.log('Delete button clicked');
-                handleDeletePostClick(post.id)
-            }
-
             return <article key={post.id} className="post">
+               
             <h2>{post.author.name}</h2>
             <img className="post-image" src={post.image} />
             <p>{post.text}</p>
             <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-            {<button onClick={handleDeletePostButtonClick}>Delete post</button>}
+            {user && user.id && user.id === post.author.id && <button onClick={() => handleDeletePostButtonClick(post.id)}>Delete post</button> }
         </article>
           })}
       </div>}
   </div>
 }
+
+// user && user.id &&  
