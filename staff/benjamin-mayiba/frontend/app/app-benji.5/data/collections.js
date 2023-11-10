@@ -1,7 +1,7 @@
 class Collection{
-    constructor(clazz,documents){ // documents es un array
+    constructor(clazz,collection){
         this.clazz = clazz
-        this.documents = documents
+        this.collection = collection
     }
 
     clone(document){
@@ -30,24 +30,19 @@ class Collection{
         
         documentCopy.id = this.generateId()
 
-        this.documents.push(documentCopy)
+        this.collection.push(documentCopy)
     }
 
     findIndexById(id){
         validateText(id, `${this.clazz.name} id`)
 
-        return this.documents.findIndex(document => document.id === id)
+        return this.collection.findIndex(document => document.id === id)
     }
 
     findById(id){
         validateText(id,`${this.clazz.name} id`)
 
-        const document = this.documents.find(document => document.id === id)
-
-        if(!document)
-             return null
-
-        return this.clone(document)
+        return this.collection.find(document => document.id === id) || null
     }
 
     update(document){
@@ -57,7 +52,7 @@ class Collection{
              if(index < 0)
                   throw new Error(`${this.clazz.name} not found`)
 
-        this.documents[index] = this.clone(document)
+        this.collection[index] = this.clone(document)
     }
 
     // new method
@@ -68,37 +63,33 @@ class Collection{
              if(index < 0)
                   throw new Error(`${this.clazz.name} not found`)
 
-        this.documents.splice(index, 1)
+        this.collection.splice(index, 1)
     }
 }
 
-class  Users extends documents{
+class  Users extends Collection{
        constructor(){
         super(User,[])
        }
 
        findByEmail(email){
         validateText(email, `${this.clazz.name} email`)
-            const document = this.documents.find(document => document.email === email)
-
-                if (!document) 
-                return null
-
-            return this.clone(document)
+        
+        return this.collection.find(document => document.email === email)
        }
 }
 
-class Posts extends documents{
+class Posts extends Collection{
     constructor(){
         super(Post,[])
     }
 
     getAll(){
-        return this.documents.map(this.clone.bind(this))
+        return this.collection.map(this.clone.bind(this))
     }
 }
 
-class CreditCards extends documents{
+class CreditCards extends Collection{
     constructor(){
         super(CreditCard,[])
     }
