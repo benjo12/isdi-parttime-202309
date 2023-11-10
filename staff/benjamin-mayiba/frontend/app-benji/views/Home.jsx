@@ -129,6 +129,20 @@ function Home(props) {
     }
 
   }
+
+  function handleFavPostClick(postId){
+
+    try {
+
+        logic.toggleFavPost(postId)
+
+         setTimestamp(Date.now())
+        
+    } catch (error) {
+        alert(error.message)
+    }
+
+  }
     
   function handleDeletePostButtonClick(postId) {
     if (confirm('Are you sure you want to delete this post?')) {
@@ -216,6 +230,7 @@ function Home(props) {
             <img className="post-image" src={post.image} />
             <p>{post.text}</p>
             <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+            <button onClick={() => handleFavPostClick(post.id)}>{post.fav ? '✨' : '❤️'}Fav</button>
             {user && user.id && user.id === post.author.id && <button onClick={() => handleDeletePostButtonClick(post.id)}>Delete post</button> }
         </article>
           })}
@@ -223,4 +238,3 @@ function Home(props) {
   </div>
 }
 
-// user && user.id &&  

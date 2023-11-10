@@ -2,8 +2,7 @@ class Logic {
     constructor() {
         this.sessionUserId = null
     }
-       
-     // REGISTER USER
+
     registerUser(name, email, password) {
         validateText(name, 'name')
         validateText(email, 'email')
@@ -14,10 +13,9 @@ class Logic {
         if (user)
             throw new Error('user already exists')
 
-       db.users.insert(new User(name, email, password,[])) 
+       db.users.insert(new User(name, email, password)) 
     }
 
-    // LOGIN & AUTHENTICATE USER
     loginUser(email, password) {
         validateText(email, 'email')
         validateText(password, 'password')
@@ -29,19 +27,10 @@ class Logic {
 
         this.sessionUserId = user.id
     }
-       // LOGOUT USER
+
     logoutUser() {
         this.sessionUserId = null
     }
-
-
-    /**
- * Recupera y devuelve los detalles del usuario actual basado en el ID de sesión.
- * Si el usuario no se encuentra, se lanza un error.
- * La propiedad 'password' se elimina del objeto de usuario antes de devolverlo.
- * @returns {Object} - Objeto que representa al usuario actual.
- * @throws {Error} - Se lanza un error si el usuario no se encuentra.
- */
 
     retrieveUser() {
         const user = db.users.findById(this.sessionUserId)
@@ -54,7 +43,6 @@ class Logic {
         return user
     }
 
-    // CHANGE EMAIL
     changeUserEmail(newEmail, newEmailConfirm, password) {
         validateText(newEmail, 'new email')
         validateText(newEmailConfirm, 'new email confirm')
@@ -72,7 +60,7 @@ class Logic {
 
         db.users.update(user)
     }
-       // CHANGE PASSWORD
+
     changeUserPassword(newPassword, newPasswordConfirm, password) {
         validateText(newPassword, 'new password')
         validateText(newPasswordConfirm, 'new password confirm')
@@ -102,9 +90,13 @@ class Logic {
     
         posts.forEach(post => {
             post.liked = post.likes.includes(this.sessionUserId);
-            post.fav = user.favs.includes(post.id)
     
             const authorUser = db.users.findById(post.author);
+    
+            if (!authorUser) {
+                console.error('Author user not found for post:', post);
+                return;
+            }
     
             // Modificamos la estructura de post.author para incluir el ID
             post.author = {
@@ -153,30 +145,6 @@ class Logic {
             throw new Error('post not found')
 
         db.posts.deleteById(post.id)
-    }
-
-
-    toggleFavPost(postId){
-        validateText(postId, 'post id')
-         
-        const user = db.users.findById(this.sessionUserId)
-        
-        if(!user)
-             throw new Error('user not found')
-        
-        const post = db.posts.findById(postId)     
-
-        if(!post)
-             throw new Error('post not found')
-
-        const indexFav = user.favs.indexOf(postId) 
-         
-        if(indexFav < 0)
-            user.favs.push(post.id)
-        else
-            user.favs.splice(indexFav,1)
-
-        db.users.update(user)   
     }
 
     

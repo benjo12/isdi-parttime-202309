@@ -1,3 +1,5 @@
+// DATABASE
+
 const db = {
     users: new Users,
     posts: new Posts,
@@ -6,8 +8,8 @@ const db = {
 
 // populate
 
-db.users.insert(new User(null, 'Wendy Darling', 'wendy@darling.com', '123123123'))
-db.users.insert(new User(null, 'Peter Pan', 'peter@pan.com', '123123123'))
+db.users.insert(new User(null, 'Wendy Darling', 'wendy@darling.com', '123123123',[]))
+db.users.insert(new User(null, 'Peter Pan', 'peter@pan.com', '123123123',[]))
 
 db.posts.insert(new Post(
     null,

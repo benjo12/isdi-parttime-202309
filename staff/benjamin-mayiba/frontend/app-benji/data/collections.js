@@ -72,7 +72,7 @@ class Collection{
     }
 }
 
-class  Users extends documents{
+class  Users extends Collection{
        constructor(){
         super(User,[])
        }
@@ -88,7 +88,7 @@ class  Users extends documents{
        }
 }
 
-class Posts extends documents{
+class Posts extends Collection{
     constructor(){
         super(Post,[])
     }
@@ -98,7 +98,7 @@ class Posts extends documents{
     }
 }
 
-class CreditCards extends documents{
+class CreditCards extends Collection{
     constructor(){
         super(CreditCard,[])
     }
