@@ -1,24 +1,32 @@
 function Home(props) {
   console.log('Home')
 
+  // Estado para la vista actual
   const viewState = React.useState(null)
 
   const view = viewState[0]
   const setView = viewState[1]
 
+  // Estado para la marca de tiempo
   const timestampState = React.useState(null)
   //const timestamp = timestampState[0]
   const setTimestamp = timestampState[1]
 
+// Estado para los posts favoritos
+  const [favPosts, setFavPosts] = React.useState(null);
+
+  // Función para manejar el clic en el botón de logout
   function handleLogoutClick() {
       logic.logoutUser()
 
       props.onLogoutClick()
   }
 
+  // Variables para el nombre y el usuario
   let name = null
   let user = null
   
+  // Intentar obtener el usuario actual
   try {
       user = logic.retrieveUser();
       name = user.name;
@@ -26,27 +34,63 @@ function Home(props) {
       alert(error.message);
   }
 
+  // Función para manejar el clic en el enlace del perfil
   function handleProfileClick(event) {
       event.preventDefault()
 
       setView('profile')
   }
 
+  // Función para manejar el clic en el enlace de inicio
   function handleHomeClick(event) {
       event.preventDefault()
 
       setView(null)
   }
 
+  // Función para manejar el clic en el botón de nuevo post
   function handleNewPostClick() {
       setView('new-post')
   }
+
+  // Función para manejar el clic en el botón de cancelar nuevo post
 
   function handleCancelNewPostClick(event) {
       event.preventDefault()
 
       setView(null)
   }
+  // start Fav implementation   TODO
+  
+// Función para manejar el clic en el enlace de favoritos
+    function handleFavClick(event){
+        event.preventDefault()
+
+        setView('favorite')
+
+    }
+
+// Efecto secundario para cargar los posts favoritos cuando la vista cambia a 'favorite'
+    React.useEffect(() => {
+        if (view === 'favorite') {
+          try {
+
+            // Obtener los posts favoritos y actualizar el estado
+            const loadedFavPosts = logic.retrieveFavPosts();
+            setFavPosts(loadedFavPosts);
+
+            setTimestamp(Date.now());
+
+          } catch (error) {
+            alert(error.message);
+            // Volver a la vista principal (home)
+            setView(null);
+          }
+        }
+      }, [view]); // Este useEffect se ejecutará cada vez que cambie la vista
+
+
+  // End
 
   let posts = null
 
@@ -159,82 +203,104 @@ function Home(props) {
     }
 }
   
-  // End TODO
-
 
   return <div>
-      <header className="home-header">
-          <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
+            <header className="home-header">
+                <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
-          <div>
-              <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <button onClick={handleLogoutClick}>Logout</button>
-          </div>
-      </header>
+                <div>
+                     
+                    <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleFavClick}>Fav</a> <a href="" onClick={handleProfileClick}>{name}</a> <button onClick={handleLogoutClick}>Logout</button>
+                </div>
+            </header>
 
-      {view === 'profile' && <div className="view">
-          <h2>Update e-mail</h2>
+            {view === 'profile' && <div className="view">
+                <h2>Update e-mail</h2>
 
-          <form className="form" onSubmit={handleUpdateEmailSubmit}>
-              <label htmlFor="new-email-input">New e-mail</label>
-              <input id="new-email-input" type="email" />
+                <form className="form" onSubmit={handleUpdateEmailSubmit}>
+                    <label htmlFor="new-email-input">New e-mail</label>
+                    <input id="new-email-input" type="email" />
 
-              <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
-              <input id="new-email-confirm-input" type="email" />
+                    <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
+                    <input id="new-email-confirm-input" type="email" />
 
-              <label htmlFor="password-input">Password</label>
-              <input type="password" id="password-input" />
+                    <label htmlFor="password-input">Password</label>
+                    <input type="password" id="password-input" />
 
-              <button type="submit">Update e-mail</button>
-          </form>
+                    <button type="submit">Update e-mail</button>
+                </form>
 
-          <h2>Update password</h2>
+                <h2>Update password</h2>
 
-          <form className="form" onSubmit={handleUpdatePasswordSubmit}>
-              <label htmlFor="password-input">Current password</label>
-              <input type="password" id="password-input" />
+                <form className="form" onSubmit={handleUpdatePasswordSubmit}>
+                    <label htmlFor="password-input">Current password</label>
+                    <input type="password" id="password-input" />
 
-              <label htmlFor="new-password-input">New password</label>
-              <input id="new-password-input" type="password" />
+                    <label htmlFor="new-password-input">New password</label>
+                    <input id="new-password-input" type="password" />
 
-              <label htmlFor="new-password-confirm-input">Confirm new password</label>
-              <input id="new-password-confirm-input" type="password" />
+                    <label htmlFor="new-password-confirm-input">Confirm new password</label>
+                    <input id="new-password-confirm-input" type="password" />
 
-              <button type="submit">Update password</button>
-          </form>
-      </div>}
+                    <button type="submit">Update password</button>
+                </form>
+            </div>}
 
-      {view === 'new-post' && <div className="view">
-          <h2>New post</h2>
+            {view === 'new-post' && <div className="view">
+                <h2>New post</h2>
 
-          <form className="form" onSubmit={handleNewPostSubmit}>
-              <label htmlFor="image-input">Image</label>
-              <input type="url" id="image-input" />
+                <form className="form" onSubmit={handleNewPostSubmit}>
+                    <label htmlFor="image-input">Image</label>
+                    <input type="url" id="image-input" />
 
-              <label htmlFor="text-input">Text</label>
-              <input type="text" id="text-input" />
+                    <label htmlFor="text-input">Text</label>
+                    <input type="text" id="text-input" />
 
-              <button type="submit">Post</button>
-              <button onClick={handleCancelNewPostClick}>Cancel</button>
-          </form>
-      </div>}
+                    <button type="submit">Post</button>
+                    <button onClick={handleCancelNewPostClick}>Cancel</button>
+                </form>
+            </div>}
+                             
+            {view === "favorite" && favPosts !== null  && (
+                <div>
+                    <h1>Bienvenido al panel de favoritos</h1>
 
-      {view !== 'profile' && posts !== null && <div>
-          {posts.map((post) => {
-              function handleToggleLikeButtonClick() {
-                  handleToggleLikePostClick(post.id)
-              }
+                    {favPosts.map((post) => {
+                    function handleToggleLikeButtonClick() {
+                        handleToggleLikePostClick(post.id)
+                    }
 
-            return <article key={post.id} className="post">
-               
-            <h2>{post.author.name}</h2>
-            <img className="post-image" src={post.image} />
-            <p>{post.text}</p>
-            <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
-            <button onClick={() => handleFavPostClick(post.id)}>{post.fav ? '✨' : '❤️'}Fav</button>
-            {user && user.id && user.id === post.author.id && <button onClick={() => handleDeletePostButtonClick(post.id)}>Delete post</button> }
-        </article>
-          })}
-      </div>}
+                    return <article key={post.id} className="post">
+                    
+                    <h2>{post.author.name}</h2>
+                    <img className="post-image" src={post.image} />
+                    <p>{post.text}</p>
+                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button onClick={() => handleFavPostClick(post.id)}>{post.fav ? '✨' : '❤️'}Fav</button>
+                    {user && user.id && user.id === post.author.id && <button onClick={() => handleDeletePostButtonClick(post.id)}>Delete post</button> }
+                </article>
+                })}
+                </div>
+            )}
+
+            {view !== 'profile' && view !== "favorite" && posts !== null && <div>
+                {posts.map((post) => {
+                    function handleToggleLikeButtonClick() {
+                        handleToggleLikePostClick(post.id)
+                    }
+
+                    return <article key={post.id} className="post">
+                    
+                    <h2>{post.author.name}</h2>
+                    <img className="post-image" src={post.image} />
+                    <p>{post.text}</p>
+                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button onClick={() => handleFavPostClick(post.id)}>{post.fav ? '✨' : '❤️'}Fav</button>
+                    {user && user.id && user.id === post.author.id && <button onClick={() => handleDeletePostButtonClick(post.id)}>Delete post</button> }
+                </article>
+                })}
+            </div>}
+           
   </div>
 }
 

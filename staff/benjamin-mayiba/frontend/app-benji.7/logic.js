@@ -179,30 +179,5 @@ class Logic {
         db.users.update(user)   
     }
 
-   // RETRIEVE FAVOURITE POSTS
-retrieveFavPosts() {
-
-    // Obtener el usuario actual por su ID de sesión
-    const user = db.users.findById(this.sessionUserId);
-  
-    // Verificar si el usuario existe
-    if (!user) {
-      throw new Error('User not found');
-    }
-  
-    // Verificar si el usuario tiene algún post favorito
-   if (user.favs.length === 0) 
-        throw new Error('No favourite posts yet');
-    
-  
-    // Obtener todos los posts disponibles
-    const allPosts = db.posts.getAll();
-  
-    // Filtrar los posts para incluir solo aquellos cuyos IDs están en los favoritos del usuario
-    const favPosts = allPosts.filter((post) => user.favs.includes(post.id));
-  
-    return favPosts;
-  }
-  
     
 }
