@@ -2,7 +2,6 @@ function Home(props) {
     console.log('Home')
 
     const viewState = React.useState(null)
-
     const view = viewState[0]
     const setView = viewState[1]
 
@@ -49,14 +48,24 @@ function Home(props) {
     }
 
     let posts = null
+    let favs = null
 
-    try {
-        posts = logic.retrievePosts()
+    if (view === null || view === 'new-post')
+        try {
+            posts = logic.retrievePosts()
 
-        posts.reverse()
-    } catch (error) {
-        alert(error.message)
-    }
+            posts.reverse()
+        } catch (error) {
+            alert(error.message)
+        }
+    else if (view === 'favs')
+        try {
+            favs = logic.retrieveFavPosts()
+
+            favs.reverse()
+        } catch (error) {
+            alert(error.message)
+        }
 
     function handleNewPostSubmit(event) {
         event.preventDefault()
@@ -68,9 +77,17 @@ function Home(props) {
         const text = textInput.value
 
         try {
-            logic.publishPost(image, text)
+            // syncDelay(() => {
+            //     logic.publishPost(image, text)
 
-            setView(null)
+            //     setView(null)
+            // }, 5)
+
+            asyncDelay(() => {
+                logic.publishPost(image, text)
+
+                setView(null)
+            }, 5)
         } catch (error) {
             alert(error.message)
         }
@@ -86,12 +103,28 @@ function Home(props) {
         }
     }
 
+    function handleToggleFavPostClick(postId) {
+        try {
+            logic.toggleFavPost(postId)
+
+            setTimestamp(Date.now())
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+
+    function handleFavPostsClick(event) {
+        event.preventDefault()
+
+        setView('favs')
+    }
+
     return <div>
         <header className="home-header">
             <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
             <div>
-                <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <button onClick={handleLogoutClick}>Logout</button>
+                <button onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <a href="" onClick={handleFavPostsClick}>Favs</a> <button onClick={handleLogoutClick}>Logout</button>
             </div>
         </header>
 
@@ -142,10 +175,14 @@ function Home(props) {
             </form>
         </div>}
 
-        {view !== 'profile' && posts !== null && <div>
+        {(view === null || view === 'new-post') && posts !== null && <div>
             {posts.map((post) => {
                 function handleToggleLikeButtonClick() {
                     handleToggleLikePostClick(post.id)
+                }
+
+                function handleToggleFavButtonClick() {
+                    handleToggleFavPostClick(post.id)
                 }
 
                 return <article key={post.id} className="post">
@@ -153,6 +190,27 @@ function Home(props) {
                     <img className="post-image" src={post.image} />
                     <p>{post.text}</p>
                     <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button onClick={handleToggleFavButtonClick}>{post.fav ? '⭐️' : '✩'}</button>
+                </article>
+            })}
+        </div>}
+
+        {view === 'favs' && favs !== null && <div>
+            {favs.map((post) => {
+                function handleToggleLikeButtonClick() {
+                    handleToggleLikePostClick(post.id)
+                }
+
+                function handleToggleFavButtonClick() {
+                    handleToggleFavPostClick(post.id)
+                }
+
+                return <article key={post.id} className="post">
+                    <h2>{post.author}</h2>
+                    <img className="post-image" src={post.image} />
+                    <p>{post.text}</p>
+                    <button onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button onClick={handleToggleFavButtonClick}>{post.fav ? '⭐️' : '✩'}</button>
                 </article>
             })}
         </div>}

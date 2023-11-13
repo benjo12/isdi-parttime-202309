@@ -13,7 +13,7 @@ class Logic {
         if (user)
             throw new Error('user already exists')
 
-        db.users.insert(new User(null, name, email, password))
+        db.users.insert(new User(null, name, email, password, []))
     }
 
     loginUser(email, password) {
@@ -90,9 +90,11 @@ class Logic {
         posts.forEach(post => {
             post.liked = post.likes.includes(this.sessionUserId)
 
-            const user = db.users.findById(post.author)
+            const author = db.users.findById(post.author)
 
-            post.author = user.name
+            post.author = author.name
+
+            post.fav = user.favs.includes(post.id)
         })
 
         return posts
@@ -102,7 +104,7 @@ class Logic {
         validateText(image, 'image')
         validateText(text, 'text')
 
-        db.posts.insert(new Posts(null, this.sessionUserId, image, text))
+        db.posts.insert(new Post(null, this.sessionUserId, image, text, []))
     }
 
     toggleLikePost(postId) {
@@ -121,5 +123,51 @@ class Logic {
             post.likes.splice(index, 1)
 
         db.posts.update(post)
+    }
+
+    toggleFavPost(postId) {
+        validateText(postId, 'post id')
+
+        const post = db.posts.findById(postId)
+
+        if (!post)
+            throw new Error('post not found')
+
+        const user = db.users.findById(this.sessionUserId)
+
+        if (!user)
+            throw new Error('user not found')
+
+        const index = user.favs.indexOf(post.id)
+
+        if (index < 0)
+            user.favs.push(post.id)
+        else
+            user.favs.splice(index, 1)
+
+        db.users.update(user)
+    }
+
+    retrieveFavPosts() {
+        const user = db.users.findById(this.sessionUserId)
+
+        if (!user)
+            throw new Error('user not found')
+
+        //const favs = db.posts.getAll().filter(post => user.favs.includes(post.id))
+
+        const favs = user.favs.map(postId => db.posts.findById(postId))
+
+        favs.forEach(post => {
+            post.liked = post.likes.includes(this.sessionUserId)
+
+            const author = db.users.findById(post.author)
+
+            post.author = author.name
+
+            post.fav = user.favs.includes(post.id)
+        })
+
+        return favs
     }
 }
