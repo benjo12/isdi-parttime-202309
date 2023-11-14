@@ -80,18 +80,6 @@ function Home(props) {
             logic.publishPost(image, text)
 
             setView(null)
-
-            // syncDelay(() => {
-            //     logic.publishPost(image, text)
-
-            //     setView(null)
-            // }, 5)
-
-            // asyncDelay(() => {
-            //     logic.publishPost(image, text)
-
-            //     setView(null)
-            // }, 5)
         } catch (error) {
             alert(error.message)
         }

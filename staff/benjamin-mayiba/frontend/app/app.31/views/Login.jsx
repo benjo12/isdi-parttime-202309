@@ -12,9 +12,9 @@ function Login(props) {
 
         // console.log(email, password)
         try {
-            logic.loginUser(email, password, () => {
-                props.onSuccess()
-            })
+            logic.loginUser(email, password)
+
+            props.onSuccess()
         } catch (error) {
             alert(error.message)
         }
