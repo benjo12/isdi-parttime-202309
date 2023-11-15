@@ -10,9 +10,14 @@ function Login(props) {
         const email = emailInput.value
         const password = passwordInput.value
 
-        // console.log(email, password)
         try {
-            logic.loginUser(email, password, () => {
+            logic.loginUser(email, password, error => {
+                if (error) {
+                    alert(error.message)
+
+                    return
+                }
+
                 props.onSuccess()
             })
         } catch (error) {
@@ -23,7 +28,6 @@ function Login(props) {
     function handleRegisterClick(event) {
         event.preventDefault()
 
-        // console.log('register click')
         props.onRegisterClick()
     }
 

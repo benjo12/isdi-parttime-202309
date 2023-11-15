@@ -9,48 +9,21 @@ function Home(props) {
     //const timestamp = timestampState[0]
     const setTimestamp = timestampState[1]
 
-    const nameState = React.useState(null)
-    const name = nameState[0]
-    const setName = nameState[1]
-
-    const postsState = React.useState(null)
-    const posts = postsState[0]
-    const setPosts = postsState[1]
-
-    const favsState = React.useState(null)
-    const favs = favsState[0]
-    const setFavs = favsState[1]
-
     function handleLogoutClick() {
-        logic.logoutUser(error => {
-            if (error) {
-                alert(error.message)
-
-                return
-            }
-        })
+        logic.logoutUser()
 
         props.onLogoutClick()
     }
 
-    React.useEffect(() => {
-        console.log('Home -> effect (name)')
+    let name = null
 
-        try {
-            logic.retrieveUser((error, user) => {
-                if (error) {
-                    alert(error.message)
+    try {
+        const user = logic.retrieveUser()
 
-                    return
-                }
-
-                setName(user.name)
-            })
-
-        } catch (error) {
-            alert(error.message)
-        }
-    }, [])
+        name = user.name
+    } catch (error) {
+        alert(error.message)
+    }
 
     function handleProfileClick(event) {
         event.preventDefault()
@@ -74,41 +47,25 @@ function Home(props) {
         setView(null)
     }
 
-    React.useEffect(() => {
-        console.log('Home -> effect (posts)')
+    let posts = null
+    let favs = null
 
-        if (view === null || view === 'new-post')
-            try {
-                logic.retrievePosts((error, posts) => {
-                    if (error) {
-                        alert(error.message)
+    if (view === null || view === 'new-post')
+        try {
+            posts = logic.retrievePosts()
 
-                        return
-                    }
+            posts.reverse()
+        } catch (error) {
+            alert(error.message)
+        }
+    else if (view === 'favs')
+        try {
+            favs = logic.retrieveFavPosts()
 
-                    posts.reverse()
-
-                    setPosts(posts)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-        else if (view === 'favs')
-            try {
-                logic.retrieveFavPosts((error, favs) => {
-                    if (error) {
-                        alert(error.message)
-
-                        return
-                    }
-
-                    favs.reverse()
-                    setFavs(favs)
-                })
-            } catch (error) {
-                alert(error.message)
-            }
-    }, [])
+            favs.reverse()
+        } catch (error) {
+            alert(error.message)
+        }
 
     function handleNewPostSubmit(event) {
         event.preventDefault()
