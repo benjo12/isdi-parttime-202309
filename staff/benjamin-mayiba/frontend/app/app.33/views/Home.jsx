@@ -1,10 +1,25 @@
 function Home(props) {
     console.log('Home')
 
-    const [view, setView] = React.useState(null)
-    const [name, setName] = React.useState(null)
-    const [posts, setPosts] = React.useState(null)
-    const [favs, setFavs] = React.useState(null)
+    const viewState = React.useState(null)
+    const view = viewState[0]
+    const setView = viewState[1]
+
+    const timestampState = React.useState(null)
+    //const timestamp = timestampState[0]
+    const setTimestamp = timestampState[1]
+
+    const nameState = React.useState(null)
+    const name = nameState[0]
+    const setName = nameState[1]
+
+    const postsState = React.useState(null)
+    const posts = postsState[0]
+    const setPosts = postsState[1]
+
+    const favsState = React.useState(null)
+    const favs = favsState[0]
+    const setFavs = favsState[1]
 
     function handleLogoutClick() {
         logic.logoutUser(error => {
@@ -59,7 +74,9 @@ function Home(props) {
         setView(null)
     }
 
-    function refreshPosts() {
+    React.useEffect(() => {
+        console.log('Home -> effect (posts)')
+
         if (view === null || view === 'new-post')
             try {
                 logic.retrievePosts((error, posts) => {
@@ -86,18 +103,11 @@ function Home(props) {
                     }
 
                     favs.reverse()
-
                     setFavs(favs)
                 })
             } catch (error) {
                 alert(error.message)
             }
-    }
-
-    React.useEffect(() => {
-        console.log('Home -> effect (posts)')
-
-        refreshPosts()
     }, [])
 
     function handleNewPostSubmit(event) {
@@ -110,30 +120,21 @@ function Home(props) {
         const text = textInput.value
 
         try {
-            logic.publishPost(image, text, error => {
-                if (error) {
-                    alert(error.message)
+            logic.publishPost(image, text)
 
-                    return
-                }
+            setView(null)
 
-                try {
-                    logic.retrievePosts((error, posts) => {
-                        if (error) {
-                            alert(error.message)
+            // syncDelay(() => {
+            //     logic.publishPost(image, text)
 
-                            return
-                        }
+            //     setView(null)
+            // }, 5)
 
-                        posts.reverse()
+            // asyncDelay(() => {
+            //     logic.publishPost(image, text)
 
-                        setPosts(posts)
-                        setView(null)
-                    })
-                } catch (error) {
-                    alert(error.message)
-                }
-            })
+            //     setView(null)
+            // }, 5)
         } catch (error) {
             alert(error.message)
         }
@@ -141,15 +142,9 @@ function Home(props) {
 
     function handleToggleLikePostClick(postId) {
         try {
-            logic.toggleLikePost(postId, error => {
-                if (error) {
-                    alert(error.message)
+            logic.toggleLikePost(postId)
 
-                    return
-                }
-
-                refreshPosts()
-            })
+            setTimestamp(Date.now())
         } catch (error) {
             alert(error.message)
         }
@@ -157,15 +152,9 @@ function Home(props) {
 
     function handleToggleFavPostClick(postId) {
         try {
-            logic.toggleFavPost(postId, error => {
-                if (error) {
-                    alert(error.message)
+            logic.toggleFavPost(postId)
 
-                    return
-                }
-
-                refreshPosts()
-            })
+            setTimestamp(Date.now())
         } catch (error) {
             alert(error.message)
         }
@@ -174,22 +163,7 @@ function Home(props) {
     function handleFavPostsClick(event) {
         event.preventDefault()
 
-        try {
-            logic.retrieveFavPosts((error, favs) => {
-                if (error) {
-                    alert(error.message)
-
-                    return
-                }
-
-                favs.reverse()
-
-                setFavs(favs)
-                setView('favs')
-            })
-        } catch (error) {
-            alert(error.message)
-        }
+        setView('favs')
     }
 
     return <div>

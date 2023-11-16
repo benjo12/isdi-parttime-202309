@@ -1,10 +1,25 @@
 function Home(props) {
     console.log('Home')
 
-    const [view, setView] = React.useState(null)
-    const [name, setName] = React.useState(null)
-    const [posts, setPosts] = React.useState(null)
-    const [favs, setFavs] = React.useState(null)
+    const viewState = React.useState(null)
+    const view = viewState[0]
+    const setView = viewState[1]
+
+    const timestampState = React.useState(null)
+    const timestamp = timestampState[0]
+    const setTimestamp = timestampState[1]
+
+    const nameState = React.useState(null)
+    const name = nameState[0]
+    const setName = nameState[1]
+
+    const postsState = React.useState(null)
+    const posts = postsState[0]
+    const setPosts = postsState[1]
+
+    const favsState = React.useState(null)
+    const favs = favsState[0]
+    const setFavs = favsState[1]
 
     function handleLogoutClick() {
         logic.logoutUser(error => {
@@ -59,7 +74,9 @@ function Home(props) {
         setView(null)
     }
 
-    function refreshPosts() {
+    React.useEffect(() => {
+        console.log('Home -> effect (posts)')
+
         if (view === null || view === 'new-post')
             try {
                 logic.retrievePosts((error, posts) => {
@@ -86,19 +103,12 @@ function Home(props) {
                     }
 
                     favs.reverse()
-
                     setFavs(favs)
                 })
             } catch (error) {
                 alert(error.message)
             }
-    }
-
-    React.useEffect(() => {
-        console.log('Home -> effect (posts)')
-
-        refreshPosts()
-    }, [])
+    }, [timestamp])
 
     function handleNewPostSubmit(event) {
         event.preventDefault()
@@ -148,7 +158,7 @@ function Home(props) {
                     return
                 }
 
-                refreshPosts()
+                setTimestamp(Date.now())
             })
         } catch (error) {
             alert(error.message)
@@ -164,7 +174,7 @@ function Home(props) {
                     return
                 }
 
-                refreshPosts()
+                setTimestamp(Date.now())
             })
         } catch (error) {
             alert(error.message)

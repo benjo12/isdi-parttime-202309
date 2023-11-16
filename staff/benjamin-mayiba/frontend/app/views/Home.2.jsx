@@ -1,10 +1,21 @@
 function Home(props) {
     console.log('Home')
 
-    const [view, setView] = React.useState(null)
-    const [name, setName] = React.useState(null)
-    const [posts, setPosts] = React.useState(null)
-    const [favs, setFavs] = React.useState(null)
+    const viewState = React.useState(null)
+    const view = viewState[0]
+    const setView = viewState[1]
+
+    const nameState = React.useState(null)
+    const name = nameState[0]
+    const setName = nameState[1]
+
+    const postsState = React.useState(null)
+    const posts = postsState[0]
+    const setPosts = postsState[1]
+
+    const favsState = React.useState(null)
+    const favs = favsState[0]
+    const setFavs = favsState[1]
 
     function handleLogoutClick() {
         logic.logoutUser(error => {
