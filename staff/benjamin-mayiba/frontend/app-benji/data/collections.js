@@ -1,106 +1,148 @@
-class Collection{
-    constructor(clazz,documents){ // documents es un array
-        this.clazz = clazz
-        this.documents = documents
+class Collection {
+    constructor(clazz, documents) {
+        this.__clazz__ = clazz
+        this.__documents__ = documents
     }
 
-    clone(document){
-        var copy = new this.clazz
+    __clone__(document) {
+        var copy = new this.__clazz__
 
-        for(var key in document){
+        for (var key in document) {
             var value = document[key]
-            if(value instanceof Array)
-                 copy[key] = [...value]
-            else if(value instanceof Date)
-                 copy[key] = new Date(document[key])
-            else if(value instanceof Object)
-                 copy[key] = {...value}   
-            else 
-                 copy[key]  = document[key]
+
+            if (value instanceof Array)
+                copy[key] = [...value]
+            else if (value instanceof Date)
+                copy[key] = new Date(document[key])
+            else if (value instanceof Object)
+                copy[key] = { ...value }
+            else
+                copy[key] = document[key]
+
         }
+
         return copy
     }
 
-    generateId(){
+    __generateId__() {
         return Math.floor(Math.random() * 1000000000000000000).toString(36)
     }
 
-    insert(document){
-       const documentCopy = this.clone(document)
-        
-        documentCopy.id = this.generateId()
+    insert(document, callback) {
+        asyncDelay(() => {
+            const documentCopy = this.__clone__(document)
 
-        this.documents.push(documentCopy)
+            documentCopy.id = this.__generateId__()
+
+            this.__documents__.push(documentCopy)
+
+            callback(null)
+        }, 0.3)
     }
 
-    findIndexById(id){
-        validateText(id, `${this.clazz.name} id`)
+    __findIndexById__(id, callback) {
+        try {
+            validateText(id, `${this.__clazz__.name} id`)
 
-        return this.documents.findIndex(document => document.id === id)
+            asyncDelay(() => {
+                const index = this.__documents__.findIndex(document => document.id === id)
+
+                callback(null, index)
+            }, 0.4)
+        } catch (error) {
+            callback(error)
+        }
     }
 
-    findById(id){
-        validateText(id,`${this.clazz.name} id`)
+    findById(id, callback) {
+        try {
+            validateText(id, `${this.__clazz__.name} id`)
 
-        const document = this.documents.find(document => document.id === id)
+            asyncDelay(() => {
+                const document = this.__documents__.find(document => document.id === id)
 
-        if(!document)
-             return null
+                if (!document) {
+                    callback(null, null)
 
-        return this.clone(document)
+                    return
+                }
+
+                callback(null, this.__clone__(document))
+            }, 0.6)
+        } catch (error) {
+            callback(error)
+        }
     }
 
-    update(document){
-        if(!(document instanceof this.clazz)) throw new TypeError(`document is not a ${this.clazz.name}`)
+    update(document, callback) {
+        try {
+            if (!(document instanceof this.__clazz__)) throw new TypeError(`document is not a ${this.__clazz__.name}`)
 
-        const index =  this.findIndexById(document.id)
-             if(index < 0)
-                  throw new Error(`${this.clazz.name} not found`)
+            asyncDelay(() => {
+                this.__findIndexById__(document.id, (error, index) => {
+                    if (error) {
+                        callback(error)
 
-        this.documents[index] = this.clone(document)
-    }
+                        return
+                    }
 
-    // new method
+                    if (index < 0) {
+                        callback(new Error(`${this.__clazz__.name} not found`))
 
-    deleteById(id) {
-        validateText(id, `${this.clazz.name} id`)
-        const index = this.findIndexById(id)
-             if(index < 0)
-                  throw new Error(`${this.clazz.name} not found`)
+                        return
+                    }
 
-        this.documents.splice(index, 1)
-    }
-}
+                    this.__documents__[index] = this.__clone__(document)
 
-class  Users extends Collection{
-       constructor(){
-        super(User,[])
-       }
-
-       findByEmail(email){
-        validateText(email, `${this.clazz.name} email`)
-            const document = this.documents.find(document => document.email === email)
-
-                if (!document) 
-                return null
-
-            return this.clone(document)
-       }
-}
-
-class Posts extends Collection{
-    constructor(){
-        super(Post,[])
-    }
-
-    getAll(){
-        return this.documents.map(this.clone.bind(this))
-    }
-}
-
-class CreditCards extends Collection{
-    constructor(){
-        super(CreditCard,[])
+                    callback(null)
+                })
+            }, 0.5)
+        } catch (error) {
+            callback(error)
+        }
     }
 }
 
+class Users extends Collection {
+    constructor() {
+        super(User, [])
+    }
+
+    findByEmail(email, callback) {
+        try {
+            validateText(email, 'email')
+
+            asyncDelay(() => {
+                const user = this.__documents__.find(document => document.email === email)
+
+                if (!user) {
+                    callback(null, null)
+
+                    return
+                }
+
+                callback(null, this.__clone__(user))
+            }, 0.7)
+        } catch (error) {
+            callback(error)
+        }
+    }
+}
+
+class Posts extends Collection {
+    constructor() {
+        super(Post, [])
+    }
+
+    getAll(callback) {
+        asyncDelay(() => {
+            callback(null, this.__documents__.map(this.__clone__.bind(this)))
+        }, 0.8)
+    }
+}
+
+class CreditCards extends Collection {
+    constructor() {
+        super(CreditCard, [])
+    }
+}

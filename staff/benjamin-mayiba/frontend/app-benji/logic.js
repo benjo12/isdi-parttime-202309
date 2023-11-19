@@ -1,208 +1,337 @@
 class Logic {
-    constructor() {
-        this.sessionUserId = null
-    }
-       
-     // REGISTER USER
-    registerUser(name, email, password) {
-        validateText(name, 'name')
-        validateText(email, 'email')
-        validateText(password, 'password')
-
-        const user = db.users.findByEmail(email)
-
-        if (user)
-            throw new Error('user already exists')
-
-       db.users.insert(new User(name, email, password,[])) 
-    }
-
-    // LOGIN & AUTHENTICATE USER
-    loginUser(email, password) {
-        validateText(email, 'email')
-        validateText(password, 'password')
-
-        const user = db.users.findByEmail(email)
-
-        if (!user || user.password !== password)
-            throw new Error('wrong credentials')
-
-        this.sessionUserId = user.id
-    }
-       // LOGOUT USER
-    logoutUser() {
-        this.sessionUserId = null
-    }
-
-
-    /**
- * Recupera y devuelve los detalles del usuario actual basado en el ID de sesión.
- * Si el usuario no se encuentra, se lanza un error.
- * La propiedad 'password' se elimina del objeto de usuario antes de devolverlo.
- * @returns {Object} - Objeto que representa al usuario actual.
- * @throws {Error} - Se lanza un error si el usuario no se encuentra.
- */
-
-    retrieveUser() {
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user)
-            throw new Error('user not found')
-
-        delete user.password
-
-        return user
-    }
-
-    // CHANGE EMAIL
-    changeUserEmail(newEmail, newEmailConfirm, password) {
-        validateText(newEmail, 'new email')
-        validateText(newEmailConfirm, 'new email confirm')
-        validateText(password, 'password')
-
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user || user.password !== password)
-            throw new Error('wrong credentials')
-
-        if (newEmail !== newEmailConfirm)
-            throw new Error('new email and its confirmation do not match')
-
-        user.email = newEmail
-
-        db.users.update(user)
-    }
-       // CHANGE PASSWORD
-    changeUserPassword(newPassword, newPasswordConfirm, password) {
-        validateText(newPassword, 'new password')
-        validateText(newPasswordConfirm, 'new password confirm')
-        validateText(password, 'password')
-
-        const user = db.users.findById(this.sessionUserId)
-
-        if (!user || user.password !== password)
-            throw new Error('wrong credentials')
-
-        if (newPassword !== newPasswordConfirm)
-            throw new Error('new password and its confirmation do not match')
-
-        user.password = newPassword
-
-        db.users.update(user)
-    }
-
-    retrievePosts() {
-        const user = db.users.findById(this.sessionUserId);
-    
-        if (!user) {
-            throw new Error('User not found');
-        }
-    
-        const posts = db.posts.getAll();
-    
-        posts.forEach(post => {
-            post.liked = post.likes.includes(this.sessionUserId);
-            post.fav = user.favs.includes(post.id)
-    
-            const authorUser = db.users.findById(post.author);
-    
-            // Modificamos la estructura de post.author para incluir el ID
-            post.author = {
-                id: authorUser.id,
-                name: authorUser.name,
-                // Otros datos del autor si es necesario
-            };
-        });
-    
-        return posts;
-    }
-    
-
-    publishPost(image, text) {
-        validateText(image, 'image')
-        validateText(text, 'text')
-
-        db.posts.insert(new Posts(null,this.sessionUserId, image, text))
-    }
-
-    toggleLikePost(postId) {
-        validateText(postId, 'post id')
-
-        const post = db.posts.findById(postId)
-
-        if (!post)
-            throw new Error('post not found')
-
-        const likeIndex = post.likes.indexOf(this.sessionUserId)
-
-        if (likeIndex < 0)
-            post.likes.push(this.sessionUserId)
-        else
-            post.likes.splice(likeIndex, 1)
-
-            db.posts.update(post)
-    }
-
-    // TO DO
-    deletePost(postId) {
-        validateText(postId, 'post id')
-
-        const post = db.posts.findById(postId)
-
-        if (!post)
-            throw new Error('post not found')
-
-        db.posts.deleteById(post.id)
-    }
-
-
-    toggleFavPost(postId){
-        validateText(postId, 'post id')
-         
-        const user = db.users.findById(this.sessionUserId)
-        
-        if(!user)
-             throw new Error('user not found')
-        
-        const post = db.posts.findById(postId)     
-
-        if(!post)
-             throw new Error('post not found')
-
-        const indexFav = user.favs.indexOf(postId) 
-         
-        if(indexFav < 0)
-            user.favs.push(post.id)
-        else
-            user.favs.splice(indexFav,1)
-
-        db.users.update(user)   
-    }
-
-   // RETRIEVE FAVOURITE POSTS
-retrieveFavPosts() {
-
-    // Obtener el usuario actual por su ID de sesión
-    const user = db.users.findById(this.sessionUserId);
-  
-    // Verificar si el usuario existe
-    if (!user) {
-      throw new Error('User not found');
-    }
-  
-    // Verificar si el usuario tiene algún post favorito
-   if (user.favs.length === 0) 
-        throw new Error('No favourite posts yet');
-    
-  
-    // Obtener todos los posts disponibles
-    const allPosts = db.posts.getAll();
-  
-    // Filtrar los posts para incluir solo aquellos cuyos IDs están en los favoritos del usuario
-    const favPosts = allPosts.filter((post) => user.favs.includes(post.id));
-  
-    return favPosts;
+  constructor() {
+      this.sessionUserId = null
   }
-  
-    
+
+  registerUser(name, email, password, callback) {
+      validateText(name, 'name')
+      validateText(email, 'email')
+      validateText(password, 'password')
+
+      db.users.findByEmail(email, (error, user) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (user) {
+              callback(new Error('user already exists'))
+
+              return
+          }
+
+          db.users.insert(new User(null, name, email, password, []), error => {
+              if (error) {
+                  callback(error)
+
+                  return
+              }
+
+              callback(null)
+          })
+      })
+  }
+
+  loginUser(email, password, callback) {
+      validateText(email, 'email')
+      validateText(password, 'password')
+
+      db.users.findByEmail(email, (error, user) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!user || user.password !== password) {
+              callback(new Error('wrong credentials'))
+
+              return
+          }
+
+          this.sessionUserId = user.id
+
+          callback(null)
+      })
+
+  }
+
+  logoutUser(callback) {
+      asyncDelay(() => {
+          this.sessionUserId = null
+
+          callback(null)
+      }, 0.9)
+  }
+
+  retrieveUser(callback) {
+      db.users.findById(this.sessionUserId, (error, user) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!user) {
+              callback(new Error('user not found'))
+          }
+
+          delete user.password
+
+          callback(null, user)
+      })
+  }
+
+  // TODO
+  changeUserEmail(newEmail, newEmailConfirm, password) {
+      validateText(newEmail, 'new email')
+      validateText(newEmailConfirm, 'new email confirm')
+      validateText(password, 'password')
+
+      const user = db.users.findById(this.sessionUserId)
+
+      if (!user || user.password !== password)
+          throw new Error('wrong credentials')
+
+      if (newEmail !== newEmailConfirm)
+          throw new Error('new email and its confirmation do not match')
+
+      user.email = newEmail
+
+      db.users.update(user)
+  }
+
+  // TODO
+  changeUserPassword(newPassword, newPasswordConfirm, password) {
+      validateText(newPassword, 'new password')
+      validateText(newPasswordConfirm, 'new password confirm')
+      validateText(password, 'password')
+
+      const user = db.users.findById(this.sessionUserId)
+
+      if (!user || user.password !== password)
+          throw new Error('wrong credentials')
+
+      if (newPassword !== newPasswordConfirm)
+          throw new Error('new password and its confirmation do not match')
+
+      user.password = newPassword
+
+      db.users.update(user)
+  }
+
+  retrievePosts(callback) {
+      db.users.findById(this.sessionUserId, (error, user) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!user) {
+              callback(new Error('user not found'))
+
+              return
+          }
+
+          const posts = db.posts.getAll((error, posts) => {
+              if (error) {
+                  callback(error)
+
+                  return
+              }
+
+              let count = 0
+
+              posts.forEach(post => {
+                  post.liked = post.likes.includes(this.sessionUserId)
+
+                  db.users.findById(post.author, (error, author) => {
+                      if (error) {
+                          callback(error)
+
+                          return
+                      }
+
+                      post.author = author.name
+
+                      post.fav = user.favs.includes(post.id)
+
+                      count++
+
+                      if (count === posts.length)
+                          callback(null, posts)
+                  })
+              })
+          })
+      })
+
+  }
+
+  publishPost(image, text, callback) {
+      validateText(image, 'image')
+      validateText(text, 'text')
+
+      db.posts.insert(new Post(null, this.sessionUserId, image, text, []), error => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          callback(null)
+      })
+  }
+
+  toggleLikePost(postId, callback) {
+      validateText(postId, 'post id')
+
+      db.posts.findById(postId, (error, post) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!post) {
+              callback(new Error('post not found'))
+
+              return
+          }
+
+          const index = post.likes.indexOf(this.sessionUserId)
+
+          if (index < 0)
+              post.likes.push(this.sessionUserId)
+          else
+              post.likes.splice(index, 1)
+
+          db.posts.update(post, error => {
+              if (error) {
+                  callback(error)
+
+                  return
+              }
+
+              callback(null)
+          })
+      })
+
+  }
+
+  toggleFavPost(postId, callback) {
+      validateText(postId, 'post id')
+
+      db.posts.findById(postId, (error, post) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!post) {
+              callback(new Error('post not found'))
+
+              return
+          }
+
+          db.users.findById(this.sessionUserId, (error, user) => {
+              if (error) {
+                  callback(error)
+
+                  return
+              }
+
+              if (!user) {
+                  callback(new Error('user not found'))
+
+                  return
+              }
+
+              const index = user.favs.indexOf(post.id)
+
+              if (index < 0)
+                  user.favs.push(post.id)
+              else
+                  user.favs.splice(index, 1)
+
+              db.users.update(user, error => {
+                  if (error) {
+                      callback(error)
+
+                      return
+                  }
+
+                  callback(null)
+              })
+          })
+      })
+
+  }
+
+  retrieveFavPosts(callback) {
+      db.users.findById(this.sessionUserId, (error, user) => {
+          if (error) {
+              callback(error)
+
+              return
+          }
+
+          if (!user) {
+              callback(new Error('user not found'))
+
+              return
+          }
+
+          const favs = []
+
+          let count = 0
+
+          if (!user.favs.length) {
+              callback(null, favs)
+
+              return
+          }
+
+          user.favs.forEach(postId => {
+              db.posts.findById(postId, (error, post) => {
+                  if (error) {
+                      callback(error)
+
+                      return
+                  }
+
+                  favs.push(post)
+
+                  count++
+
+                  if (count === user.favs.length) {
+                      let count2 = 0
+
+                      favs.forEach(post => {
+                          post.liked = post.likes.includes(this.sessionUserId)
+
+                          db.users.findById(post.author, (error, author) => {
+                              if (error) {
+                                  callback(error)
+
+                                  return
+                              }
+
+                              post.author = author.name
+
+                              post.fav = user.favs.includes(post.id)
+
+                              count2++
+
+                              if (count2 === favs.length) callback(null, favs)
+                          })
+                      })
+                  }
+              })
+          })
+
+      })
+  }
 }

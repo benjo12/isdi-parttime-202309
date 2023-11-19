@@ -1,6 +1,7 @@
-function Register(props){
-  
-    function handleSubmit(event){
+function Register(props) {
+    console.log('Register')
+
+    function handleSubmit(event) {
         event.preventDefault()
 
         const nameInput = event.target.querySelector('#name-input')
@@ -11,43 +12,46 @@ function Register(props){
         const email = emailInput.value
         const password = passwordInput.value
 
-        try {
-            logic.registerUser(name,email,password)
+        // console.log(name, email, password)
 
-            props.onSuccess()
-            
+        try {
+            logic.registerUser(name, email, password, error => {
+                if (error) {
+                    alert(error.message)
+
+                    return
+                }
+
+                props.onSuccess()
+            })
         } catch (error) {
-           alert(error.message) 
+            alert(error.message)
         }
     }
-    
-    
-    
-    
-    function handleLoginClick(event){
-            event.preventDefault()
 
-            props.onLoginClick()
+    function handleLoginClick(event) {
+        event.preventDefault()
 
+        // console.log('login click')
+        props.onLoginClick()
     }
 
     return <div className="view">
-              
-              <h1>Register</h1>
+        <h1>Register</h1>
 
-              <form className="form" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
+            <label htmlFor="name-input">Name</label>
+            <input id="name-input" type="text" />
 
-                <label htmlFor="name-input">Name</label>
-                <input id="name-input" type="text"/>
+            <label htmlFor="email-input">E-mail</label>
+            <input id="email-input" type="email" />
 
-                <label htmlFor="email-input">E-mail</label>
-                <input id="email-input" type="email"/>
+            <label htmlFor="password-input">Password</label>
+            <input type="password" id="password-input" />
 
-                <label htmlFor="password-input">Password</label>
-                <input id="password-input" type="password"/>
+            <button type="submit">Register</button>
+        </form>
 
-                <button type="submit">Register</button>
-              </form>
-              <a href="" onClick={handleLoginClick}>Login</a>
+        <a href="" onClick={handleLoginClick}>Login</a>
     </div>
 }

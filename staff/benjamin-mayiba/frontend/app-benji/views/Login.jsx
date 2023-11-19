@@ -1,5 +1,6 @@
 function Login(props) {
-  
+    console.log('Login')
+
     function handleSubmit(event) {
         event.preventDefault()
 
@@ -10,39 +11,39 @@ function Login(props) {
         const password = passwordInput.value
 
         try {
-            logic.loginUser(email, password)
+            logic.loginUser(email, password, error => {
+                if (error) {
+                    alert(error.message)
 
-            props.onSuccess()
-            
+                    return
+                }
+
+                props.onSuccess()
+            })
         } catch (error) {
-
             alert(error.message)
         }
-
     }
 
-function handleRegisterClick(event) {
-    event.preventDefault()
+    function handleRegisterClick(event) {
+        event.preventDefault()
 
-// console.log('register click')
-    props.onRegisterClick()
-}
+        props.onRegisterClick()
+    }
 
     return <div className="view">
-          <h1>Login</h1>
+        <h1>Login</h1>
 
-          <form className="form" onSubmit={handleSubmit}>
-              <label htmlFor="email-input">E-mail</label>
-              <input id="email-input" type="email" />
+        <form className="form" onSubmit={handleSubmit}>
+            <label htmlFor="email-input">E-mail</label>
+            <input id="email-input" type="email" />
 
-              <label htmlFor="password-input">Password</label>
-              <input type="password" id="password-input" />
+            <label htmlFor="password-input">Password</label>
+            <input type="password" id="password-input" />
 
-              <button type="submit">Login</button>
+            <button type="submit">Login</button>
+        </form>
 
-          </form>
-
-          <a href="" onClick={handleRegisterClick}>Register</a>
-
+        <a href="" onClick={handleRegisterClick}>Register</a>
     </div>
 }
