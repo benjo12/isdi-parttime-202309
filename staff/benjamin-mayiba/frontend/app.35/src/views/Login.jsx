@@ -1,10 +1,4 @@
-import React from 'react'
-
 import logic from '../logic'
-
-import {Button, Link, Form, Field, Container} from '../library'
-
-
 
 function Login(props) {
     console.log('Login')
@@ -36,22 +30,24 @@ function Login(props) {
     function handleRegisterClick(event) {
         event.preventDefault()
 
-        props.onRegisterClick() 
+        props.onRegisterClick()
     }
 
-    return <Container>
+    return <div className="view">
         <h1>Login</h1>
 
-        <Form onSubmit={handleSubmit}>
-            <Field id="email-input" type='email'>E-mail</Field>
-            
-            <Field id="password-input" type='password'>Password</Field>
-            
-            <Button type="submit">Login</Button>
-        </Form>
+        <form className="form" onSubmit={handleSubmit}>
+            <label htmlFor="email-input">E-mail</label>
+            <input id="email-input" type="email" />
 
-        <Link onClick={handleRegisterClick}>Register</Link>
-    </Container>
+            <label htmlFor="password-input">Password</label>
+            <input type="password" id="password-input" />
+
+            <button className="button" type="submit">Login</button>
+        </form>
+
+        <a href="" onClick={handleRegisterClick}>Register</a>
+    </div>
 }
 
 export default Login

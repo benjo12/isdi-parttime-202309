@@ -1,11 +1,5 @@
 import React from 'react'
-
 import logic from '../logic'
-
-import {Button, Link, Input, Field} from '../library'
-
-import {Post} from '../components'
-
 
 function Home(props) {
     console.log('Home')
@@ -107,7 +101,7 @@ function Home(props) {
         console.log('Home -> effect (posts)')
 
         refreshPosts()
-    }, [view])
+    }, [])
 
     function handleNewPostSubmit(event) {
         event.preventDefault()
@@ -203,62 +197,98 @@ function Home(props) {
 
     return <div>
         <header className="home-header">
-            <h1><Link onClick={handleHomeClick}>Home</Link></h1>
+            <h1><a href="" onClick={handleHomeClick}>Home</a></h1>
 
             <div>
-                <Button onClick={handleNewPostClick}>+</Button> <Link onClick={handleProfileClick}>{name}</Link> <Link onClick={handleFavPostsClick}>Favs</Link> <Button onClick={handleLogoutClick}>Logout</Button>
+                <button className="button" onClick={handleNewPostClick}>+</button> <a href="" onClick={handleProfileClick}>{name}</a> <a href="" onClick={handleFavPostsClick}>Favs</a> <button className="button" onClick={handleLogoutClick}>Logout</button>
             </div>
         </header>
 
-        {view === 'profile' && <div className="container">
+        {view === 'profile' && <div className="view">
             <h2>Update e-mail</h2>
 
             <form className="form">
-                <Field id="new-email-input" type="email">New e-mail</Field>
-               
+                <label htmlFor="new-email-input">New e-mail</label>
+                <input id="new-email-input" type="email" />
 
-                <Field id="new-email-confirm-input" type="email">Confirm new e-mail</Field>
-                
-                <Field id="password-input" type="password">Password</Field>
-                
+                <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
+                <input id="new-email-confirm-input" type="email" />
 
-                <Button type="submit">Update e-mail</Button>
+                <label htmlFor="password-input">Password</label>
+                <input type="password" id="password-input" />
+
+                <button className="button" type="submit">Update e-mail</button>
             </form>
 
             <h2>Update password</h2>
 
             <form className="form">
-                <Field id="password-input" type="password">Current password</Field>
-                
-                <Field id="new-password-input" type="password">New password</Field>
-               
-                <Field id="new-password-confirm-input" type="password">Confirm new password</Field>
+                <label htmlFor="password-input">Current password</label>
+                <input type="password" id="password-input" />
 
-                <Button type="submit">Update password</Button>
+                <label htmlFor="new-password-input">New password</label>
+                <input id="new-password-input" type="password" />
+
+                <label htmlFor="new-password-confirm-input">Confirm new password</label>
+                <input id="new-password-confirm-input" type="password" />
+
+                <button className="button" type="submit">Update password</button>
             </form>
         </div>}
 
-        {view === 'new-post' && <div className="container">
+        {view === 'new-post' && <div className="view">
             <h2>New post</h2>
 
             <form className="form" onSubmit={handleNewPostSubmit}>
                 <label htmlFor="image-input">Image</label>
-                <Input type="url" id="image-input" />
+                <input type="url" id="image-input" />
 
                 <label htmlFor="text-input">Text</label>
-                <Input type="text" id="text-input" />
+                <input type="text" id="text-input" />
 
-                <Button type="submit">Post</Button>
-                <Button onClick={handleCancelNewPostClick}>Cancel</Button>
+                <button className="button" type="submit">Post</button>
+                <button className="button" onClick={handleCancelNewPostClick}>Cancel</button>
             </form>
         </div>}
 
         {(view === null || view === 'new-post') && posts !== null && <div>
-            {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavClick={handleToggleFavPostClick}/>)}
+            {posts.map((post) => {
+                function handleToggleLikeButtonClick() {
+                    handleToggleLikePostClick(post.id)
+                }
+
+                function handleToggleFavButtonClick() {
+                    handleToggleFavPostClick(post.id)
+                }
+
+                return <article key={post.id} className="post">
+                    <h2>{post.author}</h2>
+                    <img className="post-image" src={post.image} />
+                    <p>{post.text}</p>
+                    <button className="button" onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button className="button" onClick={handleToggleFavButtonClick}>{post.fav ? '⭐️' : '✩'}</button>
+                </article>
+            })}
         </div>}
 
         {view === 'favs' && favs !== null && <div>
-            {favs.map(post => <Post key={post.id} post={post} onToggleLikeClick={handleToggleLikePostClick} onToggleFavClick={handleToggleFavPostClick}/>)}
+            {favs.map((post) => {
+                function handleToggleLikeButtonClick() {
+                    handleToggleLikePostClick(post.id)
+                }
+
+                function handleToggleFavButtonClick() {
+                    handleToggleFavPostClick(post.id)
+                }
+
+                return <article key={post.id} className="post">
+                    <h2>{post.author}</h2>
+                    <img className="post-image" src={post.image} />
+                    <p>{post.text}</p>
+                    <button className="button" onClick={handleToggleLikeButtonClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</button>
+                    <button className="button" onClick={handleToggleFavButtonClick}>{post.fav ? '⭐️' : '✩'}</button>
+                </article>
+            })}
         </div>}
     </div>
 }

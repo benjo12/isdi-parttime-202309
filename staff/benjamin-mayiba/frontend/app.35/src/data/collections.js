@@ -41,7 +41,7 @@ class Collection {
             this.__documents__.push(documentCopy)
 
             callback(null)
-        })
+        }, 0.3)
     }
 
     __findIndexById__(id, callback) {
@@ -52,7 +52,7 @@ class Collection {
                 const index = this.__documents__.findIndex(document => document.id === id)
 
                 callback(null, index)
-            })
+            }, 0.4)
         } catch (error) {
             callback(error)
         }
@@ -72,7 +72,7 @@ class Collection {
                 }
 
                 callback(null, this.__clone__(document))
-            })
+            }, 0.6)
         } catch (error) {
             callback(error)
         }
@@ -100,7 +100,7 @@ class Collection {
 
                     callback(null)
                 })
-            })
+            }, 0.5)
         } catch (error) {
             callback(error)
         }
@@ -126,7 +126,7 @@ class Users extends Collection {
                 }
 
                 callback(null, this.__clone__(user))
-            })
+            }, 0.7)
         } catch (error) {
             callback(error)
         }
@@ -141,7 +141,7 @@ class Posts extends Collection {
     getAll(callback) {
         randomDelay(() => {
             callback(null, this.__documents__.map(this.__clone__.bind(this)))
-        })
+        }, 0.8)
     }
 }
 

@@ -1,7 +1,6 @@
 import { validateText } from './utils/validators'
 import db from './data/db'
 import { User, Post } from './data/models'
-import randomDelay from './utils/randomDelay'
 
 class Logic {
     constructor() {
@@ -67,7 +66,7 @@ class Logic {
             this.sessionUserId = null
 
             callback(null)
-        })
+        }, 0.9)
     }
 
     retrieveUser(callback) {
@@ -299,7 +298,7 @@ class Logic {
                 return
             }
 
-            user.favs.forEach((postId, index) => {
+            user.favs.forEach(postId => {
                 db.posts.findById(postId, (error, post) => {
                     if (error) {
                         callback(error)
@@ -307,7 +306,7 @@ class Logic {
                         return
                     }
 
-                    favs[index] = post
+                    favs.push(post)
 
                     count++
 
