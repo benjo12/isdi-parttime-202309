@@ -5,15 +5,6 @@
   font-size: 1rem;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-html, body {
-  margin: 0;
-}
-
-/* variables */
 /* library */
 .container {
   display: flex;
@@ -60,15 +51,10 @@ html, body {
 }
 
 /* custom compos */
-.header {
+.home-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-}
-
-.new-post {
-  margin-bottom: 1rem;
 }
 
 .post {
@@ -79,37 +65,5 @@ html, body {
 .post-image {
   max-width: 320px;
 }
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
 
-.posts {
-  background-color: yellow;
-  margin-bottom: 3rem;
-}
-
-@media (min-width: 768px) {
-  .posts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .posts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-.footer {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 3rem;
-}
+/*# sourceMappingURL=index.css.map */
