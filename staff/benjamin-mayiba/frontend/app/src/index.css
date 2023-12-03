@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 /* resets */
 * {
-  font-family: Inter;
+  font-family: "Inter";
   font-size: 1rem;
 }
 
@@ -13,7 +13,7 @@ html, body {
   margin: 0;
 }
 
-/* variables */
+/* variables */  
 /* library */
 .container {
   display: flex;
@@ -60,7 +60,7 @@ html, body {
 }
 
 /* custom compos */
-.header {
+.home-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -93,13 +93,13 @@ html, body {
 @media (min-width: 768px) {
   .posts {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, fr);
   }
 }
 @media (min-width: 1024px) {
   .posts {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, fr);
   }
 }
 .footer {
@@ -113,3 +113,5 @@ html, body {
   width: 100%;
   min-height: 3rem;
 }
+
+/*# sourceMappingURL=index.css.map */
