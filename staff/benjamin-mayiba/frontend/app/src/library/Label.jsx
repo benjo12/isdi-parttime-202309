@@ -1,6 +1,6 @@
-function Label(props){
+function Label({forId, children}){
 
-    return <label className="label" htmlFor={props.forId}>{props.children}</label>
+    return <label className="label" htmlFor={forId}>{children}</label>
 }
 
 export default Label

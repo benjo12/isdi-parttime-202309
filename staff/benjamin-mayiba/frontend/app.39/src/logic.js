@@ -339,41 +339,6 @@ class Logic {
 
         })
     }
-
-    // TODO EDIT TEXT
-
-    editPost(postId, newText, callback) {
-        validateText(newText, 'new text');
-        validateText(postId, 'post id');
-
-        db.posts.findById(postId, (error, post) => {
-            if (error) {
-                callback(error);
-                return;
-            }
-
-            if (!post) {
-                callback(new Error('post not found'));
-                return;
-            }
-
-            if (post.author !== this.sessionUserId) {
-                callback(new Error('user is not the author of the post'));
-                return;
-            }
-
-            post.text = newText;
-
-            db.posts.update(post, updateError => {
-                if (updateError) {
-                    callback(updateError);
-                    return;
-                }
-
-                callback(null);
-            });
-        });
-    }
 }
 
 const logic = new Logic

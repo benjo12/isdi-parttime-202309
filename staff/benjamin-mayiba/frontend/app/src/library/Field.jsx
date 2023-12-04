@@ -1,10 +1,10 @@
 import Label from "./Label"
 import Input from "./Input"
 
-function Field(props){
+function Field({id, children, type, value}){
     return <>
-        <Label forId={props.id}>{props.children}</Label>
-        <Input  id={props.id} type={props.type || "text"} />
+        <Label forId={id}>{children}</Label>
+        <Input  id={id} type={type || "text"} value={value} />
     </>
 }
 
