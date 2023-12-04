@@ -15,6 +15,12 @@ class Post {
         this.image = image
         this.text = text
         this.likes = likes
+        this.comments = comments || [];
+    }
+
+    addComments(comment){
+
+        this.comments.push(comment)
     }
 }
 
