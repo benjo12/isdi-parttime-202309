@@ -97,52 +97,31 @@ function Post({post, onToggleLikeClick, onToggleFavClick, onPostTextUpdate, onPo
         }
     }
 
-    return (
-    <article className="post">
-      <h2>{post.author.name}</h2>
-      <img className="post-image" src={post.image} />
+    return <article className="post">
+        <h2>{post.author.name}</h2>
+        <img className="post-image" src={post.image} />
 
-      {view === null && <p>{post.text}</p>}
-      {view === 'edit' && (
-        <Form onSubmit={handleEditSubmit}>
-          <Field id="text" value={post.text} />
-          <Button type="submit">Save</Button>
-          <Button onClick={handleEditCancelClick}>Cancel</Button>
-        </Form>
-      )}
+        {view === null && <p>{post.text}</p>}
+        {view === 'edit' && <Form onSubmit={handleEditSubmit}>
+        <Field id="text" value={post.text} />
+        <Button type="submit">Save</Button>
+        <Button onClick={handleEditCancelClick}>Cancel</Button>     
+        </Form>}
 
-      {comment === 'new comment' && (
-        <Form onSubmit={handleCommentSubmit}>
-          <Field id="text" value={comment}></Field>
-          <Button type="submit">publish</Button>
-          <Button onClick={handleCommentCancel}>✏️</Button>
-        </Form>
-      )}
-         {/* Sección de comentarios */}
-          {/* Verifica si existen comentarios en el post y si hay al menos uno */}
-      {post.comments && post.comments.length > 0 && (
-        <div className="post-comments">
-         {/* Título de la sección de comentarios */}
-          <h3>Comments:</h3>
-          {/* Lista de comentarios */}
-          <ul>
-          {/* Mapea sobre cada comentario en el array de comentarios */}
-            {post.comments.map((comment, index) => (
-              <li key={index}>{comment}</li>
-            ))}
-          </ul>
+        {comment === 'new comment' && <Form onSubmit={handleCommentSubmit}>
+            <Field id="text" value={comment}></Field>
+            <Button type="submit">publish</Button>
+            <Button onClick={handleCommentCancel}>✏️</Button>
+
+        </Form> }
+
+        <div className="post-actions">
+            <Button onClick={handleToggleLikeClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</Button>
+            <Button onClick={handleToggleFavClick}>{post.fav ? '⭐️' : '✩'}</Button>
+            {logic.sessionUserId === post.author.id && view === null && <Button onClick={handleEditClick}>✏️</Button>}
+            <Button onClick={handleCommentClick}>💭</Button>
         </div>
-      )}
-
-      <div className="post-actions">
-        <Button onClick={handleToggleLikeClick}>{post.liked ? '❤️' : '🤍'} {post.likes.length} likes</Button>
-        <Button onClick={handleToggleFavClick}>{post.fav ? '⭐️' : '✩'}</Button>
-        {logic.sessionUserId === post.author.id && view === null && <Button onClick={handleEditClick}>✏️</Button>}
-        <Button onClick={handleCommentClick}>💭</Button>
-      </div>
     </article>
-  );
 }
-
 
 export default Post
