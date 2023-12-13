@@ -2,23 +2,23 @@
 
 ## Register user
 
-```sh
-$ curl 'http://localhost:8000/register' \
--H 'Content-Type: application/json' \
--d '{ "name": "Man Zana", "email": "man@zana.com", "password": "123123123" }' \
--v
+Request: POST /users "Content-Type: application/json" {name, email, password}
 
-> POST /register HTTP/1.1
-> Host: localhost:8000
-> User-Agent: curl/8.1.2
-> Accept: */*
-> Content-Type: application/json
-> Content-Length: 72
+Response: 201
+Response (error): 400 "Content-Type: application/json" {error, message}
 
-< HTTP/1.1 201 Created
-< X-Powered-By: Express
-< Date: Tue, 12 Dec 2023 20:30:46 GMT
-< Connection: keep-alive
-< Keep-Alive: timeout=5
-< Content-Length: 0
-```
+## Authenticate user
+
+Request: POST /users/auth "Content-Type: application/json" {email, password}
+
+Response: 200 "Content-Type: application/json" userId
+
+Response (error): 400 "Content-Type: application/json" {error, message}
+
+## Retrieve user
+
+Request: GET /users "Authorization: Bearer userId"
+
+Response: 200 "Content-Type: application/json" {name}
+
+Response (error): 400 "Content-Type: application/json" {error, message}
