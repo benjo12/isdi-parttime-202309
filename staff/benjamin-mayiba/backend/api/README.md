@@ -5,7 +5,7 @@
 Request: POST /users "Content-Type: application/json" {name, email, password}
 
 Response: 201
-Response (error): 400 "Content-Type: application/json" {error, message}
+Response (error): 400|409|500 "Content-Type: application/json" {error, message}
 
 ## Authenticate user
 
@@ -22,3 +22,19 @@ Request: GET /users "Authorization: Bearer userId"
 Response: 200 "Content-Type: application/json" {name}
 
 Response (error): 400 "Content-Type: application/json" {error, message}
+
+## Create Post
+
+Request: POST/posts "Authorization: Bearer userId" "Content-Type: application/json" {image, text}
+
+Response: 201
+
+Response (error): 400 "Content-Type: application/json" {error, message} 
+
+## Toggle like post
+
+Request: PATCH/posts/postId/likes "Authorization: Bearer userid"
+
+Response: 204
+
+Response (error): 400|404|406|500 "Content-Type: application/json" {error, message}
