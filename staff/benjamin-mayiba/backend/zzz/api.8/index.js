@@ -17,15 +17,6 @@ server.get('/' , (req, res) => res.send('Hello, World!'))
 
 const jsonBodyParser = express.json()
 
-server.use((req, res, next) =>{
-
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Headers', '*')
-    res.setHeader('Access-Control-Allow-Methods', '*')
-
-    next()
-})
-
 server.post('/users', jsonBodyParser, (req, res)=>{
     try {
         const {name, email, password} = req.body
