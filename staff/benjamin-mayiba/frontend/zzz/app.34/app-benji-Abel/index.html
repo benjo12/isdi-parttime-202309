@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!--<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"><!-->
+    <title>ISDI Page - REACT</title>
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+    <!--LIBRERÍAS REACT-->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!--TANSPILADOR DE CÓDIGO-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script src="utils/syncDelay.js" defer></script>
+    <script src="utils/asyncDelay.js" defer></script>
+    <script src="utils/pollyfills.js" defer></script>
+
+    <script src="data/models.js" defer></script>
+    <script src="data/collections.js" defer></script>
+    <script src="data/db.js" defer></script>
+
+    <script src="validators.js" defer></script>
+    <script src="logic.js" defer></script>
+
+    <script src="views/Login.jsx" type="text/babel" defer></script>
+    <script src="views/Register.jsx" type="text/babel" defer></script>
+    <script src="views/Home.jsx" type="text/babel" defer></script>
+    <script src="App.jsx" type="text/babel" defer></script>
+
+    <script src="main.jsx" type="text/babel" defer></script>
+    <!--Ponemos el type='text-babel' para que el compilador de código babel actue sobre el main.jsx-->
+
+</body>
+
+</html>

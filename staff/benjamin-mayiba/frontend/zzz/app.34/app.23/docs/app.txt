@@ -1,0 +1,27 @@
+title App
+
+User->Client: go to App url
+Client->App: loads
+App->App: inits view='login' state
+App->App: declares handleRegisterShow
+App->App: declares handleLoginShow
+App->App: renders itself
+App->Login: renders Login (props: onRegisterClick=handleRegisterShow)
+Login->Login: declares handleRegisterClick
+Login->Login: renders itself
+Login->User: 00
+
+User->Client: clicks on Register link
+Client->Login: launches click event on Register link
+Login->Login: calls handleRegisterClick(event) 
+Login->Login: calls props.onRegisterClick()
+Login->App: calls handleRegisterShow
+App->App: updates view='register' state
+App->App: renders itself
+App->Register: renders Register (props: onLoginClick=handleLoginShow)
+Register->Register: declares handleLoginClick
+Register->Register: renders itself
+Register->User: 00
+
+User->Client: clicks on Login link
+Client->Register: launches click event on Login link ...
