@@ -1,7 +1,7 @@
 const retrievePosts = require('./retrievePosts.js')
 
 try {
-    retrievePosts('6ttz1tptn2c0', (error, posts) => {
+    retrievePosts('730thx7n4n4', (error, posts) => {
         if (error) {
             console.error(error)
 

@@ -5,7 +5,7 @@ function retrievePosts(userId, callback) {
     validateText(userId, 'user id')
     validateFunction(callback, 'callback')
 
-    JSON.parseFromFile('../data/users.json', (error, users) => {
+    JSON.parseFromFile('./data/users.json', (error, users) => {
         if (error) {
             callback(error)
 
@@ -20,7 +20,7 @@ function retrievePosts(userId, callback) {
             return
         }
 
-        JSON.parseFromFile('../data/posts.json', (error, posts) => {
+        JSON.parseFromFile('./data/posts.json', (error, posts) => {
             if (error) {
                 callback(error)
 

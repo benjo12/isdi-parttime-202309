@@ -88,7 +88,7 @@ function Home(props) {
 
         {view === 'profile' && <Profile />}
 
-        {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
+        {/* (view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} /> */}
 
         {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic)} />}
 
