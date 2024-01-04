@@ -1,57 +1,26 @@
-const { validateText, validateFunction } = require('../utils/validators')
-const JSON = require('../utils/JSON')
-const generateId = require('../data/generateId')
+const { validateText, validateFunction, validateId } = require('./helpers/validators')
+const {User, Post } = require('../data/models')
+const { SystemError, NotFoundError} = require('./errors')
 
 function createPost(userId, image, text, callback) {
-    validateText(userId, 'user id')
+    validateId(userId, 'user id')
     validateText(image, 'image')
     validateText(text, 'text')
     validateFunction(callback, 'callback')
 
-    JSON.parseFromFile('./data/users.json', (error, users) => {
-        if (error) {
-            callback(error)
+    // TODO use models
 
-            return
-        }
-
-        const user = users.find(user => user.id === userId)
-
-        if (!user) {
-            callback(new Error('user not found'))
-
-            return
-        }
-          //console.log(user)
-
-        JSON.parseFromFile('./data/posts.json', (error, posts) => {
-            if (error) {
-                callback(error)
-
+    User.findById(userId)
+         .then(user =>{
+            if(!user){
+                callback(new NotFoundError('user not found'))
                 return
             }
-
-            const post = {
-                id: generateId(),
-                author: userId,
-                image,
-                text,
-                likes: []
-            }
-
-            posts.push(post)
-
-            JSON.stringifyToFile('./data/posts.json', posts, error => {
-                if (error) {
-                    callback(error)
-
-                    return
-                }
-
-                callback(null)
-            })
-        })
-    })
+           Post.create({author: userId, image, text})
+               .then(()=> callback(null))
+               .catch(error => callback(new SystemError(error.message)))
+         })
+         .catch(error => callback(new SystemError(error.message)))
 }
 
 module.exports = createPost

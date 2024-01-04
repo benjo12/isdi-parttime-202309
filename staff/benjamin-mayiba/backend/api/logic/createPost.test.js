@@ -1,15 +1,22 @@
+const mongoose = require('mongoose')
 const createPost = require('./createPost')
 
-try {
-    createPost('730thx7n4n4', 'https://cdn2.vectorstock.com/i/1000x1000/81/46/hello-world-code-vector-22928146.jpg', 'Hello, World!', error => {
-        if (error) {
-            console.error(error)
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+    .then(()=>{
 
-            return
-        }
+                try {
+                createPost('65898c9a9a021cf5ab44f35a', 'http://image.com/123', 'Hola, Popeye!', error => {
+                    if (error) {
+                        console.error(error)
 
-        console.log('created')
+                        return
+                    }
+
+                    console.log('Post created')
+                })
+            } catch (error) {
+                console.error(error)
+            }
     })
-} catch (error) {
-    console.error(error)
-}
+    .catch(error => console.error(error))
+
