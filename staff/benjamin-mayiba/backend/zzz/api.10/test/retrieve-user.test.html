@@ -1,0 +1,21 @@
+<script>
+   const req = {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer 730thx7n4n4'
+          }
+   }
+
+   fetch('http://localhost:8000/users', req)
+        .then(res =>{
+            if(res.ok)
+                 res.json()
+                    .then(body => console.log(res.status, body))
+                    .catch(error => console.error(error))
+            else
+              console.error(res.status)     
+        })
+        .catch(error => console.error(error))
+        
+
+</script>

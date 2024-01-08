@@ -1,0 +1,20 @@
+<script>
+   const req = {
+         method: 'POST',
+         headers: {
+            Authorization: 'Bearer 6ufezr85vfg0',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({image:'http://image.com/123', text: 'Hola, Popeye!'})
+   }
+
+   fetch('http://localhost:8000/posts', req)
+       .then(res =>{
+         if(res.ok)
+             console.log(res.status)
+         else
+           console.error(res.status)    
+       })
+       .catch(error => console.error(error))
+
+</script>

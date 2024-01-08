@@ -10,7 +10,7 @@ function createPost(userId, image, text, callback) {
 
     // TODO use models
 
-    User.findById(userId).lean()
+    User.findById(userId)
          .then(user =>{
             if(!user){
                 callback(new NotFoundError('user not found'))
