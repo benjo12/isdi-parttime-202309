@@ -22,6 +22,7 @@ function Home(props) {
             }
         })
 
+        // eslint-disable-next-line react/prop-types
         props.onLogoutClick()
     }
 

@@ -1,7 +1,11 @@
+const mongoose = require('mongoose')
+
 const registerUser = require('./registerUser')
 
-try {
-    registerUser('Le Chuga', 'le@chuga.com', '123123123', error => {
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+   .then(()=>{
+    try {
+    registerUser('Bon Gamin', 'bon@gamin.com', '234234234', error => {
         if (error) {
             console.error(error)
 
@@ -13,3 +17,7 @@ try {
 } catch (error) {
     console.log(error)
 }
+
+   })
+   .catch(error => console.error(error))
+

@@ -1,17 +1,22 @@
+const mongoose = require('mongoose')
 const changeUserPassword = require('./changeUserPassword')
 
-try {
-    changeUserPassword('zana@horia.com', '123123123', '123123123', '234234234', error =>{
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+         .then(() =>{
 
-           if(error){
-            console.error(error)
+                try{
 
-            return
-           }
+                    changeUserPassword('bon@gamin.com', '234234234', '234234234', '123123123', error =>{
+                        if(error){
+                            console.error(error)
+                            return
+                        }
+                        console.log('Password changed')
+                    })          
+                }catch(error){
 
-           console.log('Password changed')
-    })
-    
-} catch (error) {
-    console.error(error)
-}
+                    console.error(error)
+                }
+       
+          })
+          .catch(error =>console.error(error))
