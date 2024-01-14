@@ -6,11 +6,7 @@ function changeUserEmail(newEmail, newEmailConfirm, password, callback) {
   validate.email(newEmailConfirm)
   validate.password(password)
   validate.function(callback, 'callback')
-
-console.log('newEmail:', newEmail)
-console.log('newEmailConfirm:', newEmailConfirm)
-console.log('password:', password)
-
+  
   const req = {
     method: 'POST',
     headers: {
