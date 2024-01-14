@@ -1,7 +1,9 @@
-
+import validate from './helpers/validate'
 import context from './context'
 
 function retrievePosts(callback) {
+    validate.function(callback, 'callback')
+
     const req = {
         method: 'GET',
         headers: {
@@ -9,10 +11,9 @@ function retrievePosts(callback) {
         }
     }
 
-    fetch('http://localhost:8000/posts', req)
+    fetch(`${import.meta.env.VITE_API_URL}/posts`, req)
         .then(res => {
             if (!res.ok) {
-                //throw new Error(`Error: ${res.status} - ${res.statusText}`)
                 res.json()
                     .then(body => callback(new Error(body.message)))
                     .catch(error => callback(error))
@@ -27,4 +28,4 @@ function retrievePosts(callback) {
         .catch(error => callback(error))
 }
 
-export default retrievePosts;
+export default retrievePosts

@@ -1,42 +1,44 @@
-const { validateFunction, validateId } = require('./helpers/validators')
-const {User, Post} = require('../data/models')
-const { NotFoundError, SystemError } = require('./errors')
+const validate = require('./helpers/validate')
 
-function retrievePosts(userId,callback){
-         validateId(userId, 'user id')
-         validateFunction(callback, 'callback')
+const { User, Post } = require('../data/models')
+const { SystemError, NotFoundError } = require('./errors')
 
-         User.findById(userId).lean()
-             .then(user =>{
-                if(!user){
-                    callback(new NotFoundError('user not found'))
-                    return
-                }
-                Post.find().populate('author', 'name').lean()
-                    .then(posts =>{
-                        posts.forEach(post =>{
-                            post.id = post._id.toString()
+function retrievePosts(userId, callback) {
+    validate.id(userId, 'user id')
+    validate.function(callback, 'callback')
 
-                            delete post._id
+    User.findById(userId).lean()
+        .then(user => {
+            if (!user) {
+                callback(new NotFoundError('user not found'))
 
-                            if(post.author._id){
-                                post.author.id = post.author._id.toString() 
-                                delete post.author._id
-                            }
+                return
+            }
 
-                            delete post.__v
+            Post.find().populate('author', 'name').lean()
+                .then(posts => {
+                    posts.forEach(post => {
+                        post.id = post._id.toString()
+                        delete post._id
 
-                            post.likes = post.likes.map(userObjectId => userObjectId.toString())
-                            post.liked = post.likes.includes(userId)
+                        if (post.author._id) {
+                            post.author.id = post.author._id.toString()
+                            delete post.author._id
+                        }
 
-                            post.fav = user.favs.some(postObjectId => postObjectId.toString() === post.id )
+                        delete post.__v
 
-                        })
-                        callback(null, posts)
+                        post.likes = post.likes.map(userObjectId => userObjectId.toString())
+                        post.liked = post.likes.includes(userId)
+
+                        post.fav = user.favs.some(postObjectId => postObjectId.toString() === post.id)
                     })
-                    .catch(error => callback(new SystemError(error.message)))
-             })
-             .catch(error => callback(new SystemError(error.message)))
 
+                    callback(null, posts)
+                })
+                .catch(error => callback(new SystemError(error.message)))
+        })
+        .catch(error => callback(new SystemError(error.message)))
 }
+
 module.exports = retrievePosts

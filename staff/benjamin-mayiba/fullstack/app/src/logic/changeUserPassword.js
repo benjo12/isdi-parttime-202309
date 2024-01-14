@@ -1,9 +1,9 @@
-import { validateText } from '../utils/validators'
+import validate from './helpers/validate'
 
 function changeUserPassword(newPassword, newPasswordConfirm, password) {
-    validateText(newPassword, 'new password')
-    validateText(newPasswordConfirm, 'new password confirm')
-    validateText(password, 'password')
+    validate.password(newPassword, 'new password')
+    validate.password(newPasswordConfirm, 'new password confirm')
+    validate.password(password)
 
     // TODO call api
 }

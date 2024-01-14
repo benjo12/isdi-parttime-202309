@@ -1,7 +1,7 @@
 import React from 'react'
-import Login from './views/Login'
-import Register from './views/Register'
-import Home from './views/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Home from './pages/Home'
 
 function App() {
   console.log('App')
