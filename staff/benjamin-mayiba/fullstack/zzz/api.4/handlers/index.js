@@ -7,7 +7,6 @@ const toggleLikePostHandler = require('./toggleLikePostHandler')
 const toggleFavPostHandler = require('./toggleFavPostHandler')
 const retrieveFavPostsHandler = require('./retrieveFavPostsHandler')
 const changeUserEmailHandler = require('./changeUserEmailHandler')
-const changeUserPasswordHandler = require('./changeUserPasswordHandler')
 
 module.exports = {
     registerUserHandler,
@@ -18,6 +17,5 @@ module.exports = {
     toggleLikePostHandler,
     toggleFavPostHandler,
     retrieveFavPostsHandler,
-    changeUserEmailHandler,
-    changeUserPasswordHandler
+    changeUserEmailHandler
 }

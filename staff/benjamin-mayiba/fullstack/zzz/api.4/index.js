@@ -14,8 +14,7 @@ const {
     toggleLikePostHandler,
     toggleFavPostHandler,
     retrieveFavPostsHandler,
-    changeUserEmailHandler,
-    changeUserPasswordHandler
+    changeUserEmailHandler
 } = require('./handlers')
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -32,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         server.post('/users/auth', jsonBodyParser, authenticateUserHandler)
         server.post('/users/change-email', jsonBodyParser,changeUserEmailHandler)
-        server.post('/users/change-password', jsonBodyParser, changeUserPasswordHandler)
+
 
 
         server.get('/users', retrieveUserHandler)

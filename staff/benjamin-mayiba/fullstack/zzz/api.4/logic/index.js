@@ -2,7 +2,7 @@ const registerUser = require('./registerUser')
 const authenticateUser = require('./authenticateUser')
 const retrieveUser = require('./retrieveUser')
  const changeUserEmail = require('./changeUserEmail')
- const changeUserPassword = require('./changeUserPassword')
+// const changeUserPassword = require('./changeUserPassword')
 
 const createPost = require('./createPost')
 const retrieveFavPosts = require('./retrieveFavPosts')
@@ -16,7 +16,7 @@ const logic = {
     authenticateUser,
     retrieveUser,
     changeUserEmail,
-    changeUserPassword,
+    // changeUserPassword,
     createPost,
     retrieveFavPosts,
     retrievePosts,

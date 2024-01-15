@@ -6,7 +6,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
 
                 try{
 
-                    changeUserPassword('65970bf69cff9048c5a22123', '123123123', '234234234', '234234234', error =>{
+                    changeUserPassword('bon@gamin.com', '234234234', '234234234', '123123123', error =>{
                         if(error){
                             console.error(error)
                             return
