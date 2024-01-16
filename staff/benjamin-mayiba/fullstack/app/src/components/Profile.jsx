@@ -1,7 +1,9 @@
 import logic from '../logic'
 
 import { Button, Form, Field, Container } from '../library'
+import { useState } from 'react'
 
+// eslint-disable-next-line react/prop-types
 export default function Profile({ onChangeEmail, onChangePassword }) {
 
     const [successMessage, setSuccessMessage] = useState(null)
@@ -13,16 +15,24 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
         const newEmail = event.target.querySelector('#new-email-input').value
         const newEmailConfirm = event.target.querySelector('#new-email-confirm-input').value
         const password = event.target.querySelector('#password-input').value
-
+         
         try {
             logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
                 if (error) {
                     alert(error.message)
                     return
                 }
+                  // Limpiar los campos después de la actualización exitosa
+                    event.target.querySelector('#new-email-input').value = ''
+                    event.target.querySelector('#new-email-confirm-input').value = ''
+                    event.target.querySelector('#password-input').value = ''
 
                 setSuccessMessage('E-mail succefully updated')
+                    
+            
                 onChangeEmail()
+
+            
             })
 
         } catch (error) {
@@ -44,9 +54,17 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
                     alert(error.message)
                     return
                 }
+
+                            
+                    // Limpiar los campos después de la actualización exitosa
+                    event.target.querySelector('#password-input').value = '';
+                    event.target.querySelector('#new-password-input').value = '';
+                    event.target.querySelector('#new-password-confirm-input').value = '';
                 setSuccessMessage('Password succefully updated')
 
                 onChangePassword()
+
+            
             })
         } catch (error) {
             alert(error.message)

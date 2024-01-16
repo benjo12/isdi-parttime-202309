@@ -22,6 +22,7 @@ function Home(props) {
             }
         })
 
+        // eslint-disable-next-line react/prop-types
         props.onLogoutClick()
     }
 
@@ -82,7 +83,7 @@ function Home(props) {
         setView(null)
     }
 
-    const handleChangePassword = (event) => {
+    const handlechangePassword = (event) => {
         event.preventDefault()
         setView(null)
     }

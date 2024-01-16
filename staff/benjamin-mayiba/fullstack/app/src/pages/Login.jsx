@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 
 import logic from '../logic'
@@ -26,6 +27,7 @@ function Login(props) {
                     return
                 }
 
+                // eslint-disable-next-line react/prop-types
                 props.onSuccess()
             })
         } catch (error) {
@@ -36,6 +38,7 @@ function Login(props) {
     function handleRegisterClick(event) {
         event.preventDefault()
 
+        // eslint-disable-next-line react/prop-types
         props.onRegisterClick() 
     }
 
