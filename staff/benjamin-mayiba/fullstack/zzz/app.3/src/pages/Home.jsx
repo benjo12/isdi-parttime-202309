@@ -22,6 +22,7 @@ function Home(props) {
             }
         })
 
+        // eslint-disable-next-line react/prop-types
         props.onLogoutClick()
     }
 
@@ -77,16 +78,6 @@ function Home(props) {
         setView('favs')
     }
 
-    const handleChangeEmail = (event) => {
-        event.preventDefault()
-        setView(null)
-    }
-
-    const handleChangePassword = (event) => {
-        event.preventDefault()
-        setView(null)
-    }
-
     return <div>
         <header className="header">
             <h1><Link onClick={handleHomeClick}>Home</Link></h1>
@@ -96,7 +87,7 @@ function Home(props) {
             </div>
         </header>
 
-        {view === 'profile' && <Profile onChangeEmail={handleChangeEmail} onChangePassword={handlechangePassword} />}
+        {view === 'profile' && <Profile />}
 
         {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
 

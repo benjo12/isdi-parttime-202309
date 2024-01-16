@@ -113,25 +113,5 @@ html, body {
   width: 100%;
   min-height: 3rem;
 }
-/* css nuevo para el mensaje de exito de Profile*/
-
-.success-message-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px; /* Ajusta la altura según sea necesario */
-  position: relative;
-}
-
-.success-message {
-  color: #4CAF50;
-  background-color: #DFF2BF;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #4CAF50;
-  border-radius: 4px;
-  position: absolute;
-  top: 0;
-}
 
 /*# sourceMappingURL=index.css.map */
