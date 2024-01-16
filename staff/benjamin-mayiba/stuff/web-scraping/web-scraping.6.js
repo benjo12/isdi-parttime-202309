@@ -53,26 +53,32 @@ googl('pepito grillo')
 
         results.forEach(result => console.log(result))
 
-        return googl('campanilla hada')
-    })
-    .then(results => {
-        console.log('campanillas search', Date.now() - before)
+        googl('campanilla hada')
+            .then(results => {
+                console.log('campanillas search', Date.now() - before)
 
-        document.body.innerHTML = ''
+                document.body.innerHTML = ''
 
-        results.forEach(result => {
-            const h2 = document.createElement('h2')
-            h2.innerText = result.title
+                results.forEach(result => {
+                    const h2 = document.createElement('h2')
+                    h2.innerText = result.title
 
-            document.body.appendChild(h2)
-        })
+                    document.body.appendChild(h2)
+                })
 
-        return googl('hormiga atomica')
-    })
-    .then(results => {
-        console.warn('hormigas search', Date.now() - before)
+                googl('hormiga atomica')
+                    .then(results => {
+                        console.warn('hormigas search', Date.now() - before)
 
-        results.forEach(result => console.warn(result))
+                        results.forEach(result => console.warn(result))
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+            })
+            .catch(error => {
+                console.error(error)
+            })
     })
     .catch(error => {
         console.error(error)
