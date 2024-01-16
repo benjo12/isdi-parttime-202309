@@ -38,7 +38,7 @@ class CredentialsError extends Error {
     }
 }
 
-module.exports = {
+export {
     NotFoundError,
     SystemError,
     ContentError,

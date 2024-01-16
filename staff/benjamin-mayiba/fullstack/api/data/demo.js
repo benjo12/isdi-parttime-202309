@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { User, Post } = require('./models')
+import mongoose from 'mongoose'
+import { User, Post } from './models.js'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
     .then(() =>{

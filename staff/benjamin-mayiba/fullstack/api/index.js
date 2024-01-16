@@ -1,11 +1,12 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const mongoose = require('mongoose')
-const express = require('express')
+import mongoose from 'mongoose'
+import express from 'express'
+import cors from 'cors'
 
-const cors = require('./utils/cors')
 
-const {
+import {
     registerUserHandler,
     authenticateUserHandler,
     retrieveUserHandler,
@@ -16,7 +17,7 @@ const {
     retrieveFavPostsHandler,
     changeUserEmailHandler,
     changeUserPasswordHandler
-} = require('./handlers')
+} from './handlers/index.js'
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
@@ -26,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         const jsonBodyParser = express.json()
 
-        server.use(cors)
+        server.use(cors())
 
         server.post('/users', jsonBodyParser, registerUserHandler)
 

@@ -1,7 +1,7 @@
-const logic = require('../logic')
-const { NotFoundError, ContentError, CredentialsError } = require('../logic/errors')
+import logic from '../logic/index.js'
+import { NotFoundError, ContentError, CredentialsError } from '../logic/errors.js'
 
-module.exports = (req, res) => {
+export default (req, res) => {
     try {
         const { email, password } = req.body
 

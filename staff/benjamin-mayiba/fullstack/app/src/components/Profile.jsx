@@ -57,13 +57,13 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
 
                             
                     // Limpiar los campos después de la actualización exitosa
-                    event.target.querySelector('#password-input').value = '';
-                    event.target.querySelector('#new-password-input').value = '';
-                    event.target.querySelector('#new-password-confirm-input').value = '';
-                setSuccessMessage('Password succefully updated')
+                    event.target.querySelector('#password-input').value = ''
+                    event.target.querySelector('#new-password-input').value = ''
+                    event.target.querySelector('#new-password-confirm-input').value = ''
+                    
+                    setSuccessMessage('Password succefully updated')
 
-                onChangePassword()
-
+                    onChangePassword()
             
             })
         } catch (error) {
