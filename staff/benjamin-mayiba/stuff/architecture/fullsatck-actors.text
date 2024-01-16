@@ -1,0 +1,57 @@
+title hola
+
+note right of User
+:)
+end note
+
+User -> Browser:
+
+note right of Browser
+client http://
+chrome, firefox, brave, ...
+end note
+
+Browser -> App:
+
+Browser->Browser: boot App
+activate Browser
+deactivate Browser 
+
+note right of App
+server http://
+vite :5173
+end note
+
+Browser -> API:
+
+note right of curl
+client http://
+curl
+end note
+
+curl -> API:
+
+note right of API
+server http://
+node :8000
+end note
+
+API -> DB:
+
+note right of mongosh
+client mongodb://
+mongosh
+end note
+
+note right of compass
+client mongodb://
+mongodb compass
+end note
+
+note right of DB
+server mongodb://
+mongod :27017
+end note
+
+mongosh -> DB:
+compass -> DB:
