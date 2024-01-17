@@ -5,9 +5,8 @@ export default (req, res) => {
     try {
         const { email, password } = req.body
 
-        logic.authenticateUser(email, password)
-            .then(userId => res.json(userId))
-            .catch(error => {
+        logic.authenticateUser(email, password, (error, userId) => {
+            if (error) {
                 let status = 500
 
                 if (error instanceof NotFoundError)
@@ -16,7 +15,12 @@ export default (req, res) => {
                     status = 401
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
-            })
+
+                return
+            }
+
+            res.json(userId)
+        })
     } catch (error) {
         let status = 500
 

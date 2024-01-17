@@ -4,13 +4,13 @@ TEST "authenticate-user"
 
 CASE "success on correct credentials"
 
-curl 'http://localhost:9000/users/auth' \
+curl 'http://localhost:8000/users/auth' \
 -H 'Content-Type: application/json' \
--d '{ "email": "man@zana.com", "password": "123123123" }' \
+-d '{ "email": "le@chuga.com", "password": "123123123" }' \
 -v
 
 # > POST /users/auth HTTP/1.1
-# > Host: localhost:9000
+# > Host: localhost:8000
 # > User-Agent: curl/8.1.2
 # > Accept: */*
 # > Content-Type: application/json
@@ -29,13 +29,13 @@ curl 'http://localhost:9000/users/auth' \
 
 CASE "error on wrong email"
 
-curl 'http://localhost:9000/users/auth' \
+curl 'http://localhost:8000/users/auth' \
 -H 'Content-Type: application/json' \
 -d '{ "email": "wrong-man@zana.com", "password": "123123123" }' \
 -v
 
 # > POST /users/auth HTTP/1.1
-# > Host: localhost:9000
+# > Host: localhost:8000
 # > User-Agent: curl/8.1.2
 # > Accept: */*
 # > Content-Type: application/json
@@ -54,13 +54,13 @@ curl 'http://localhost:9000/users/auth' \
 
 CASE "error on wrong password"
 
-curl 'http://localhost:9000/users/auth' \
+curl 'http://localhost:8000/users/auth' \
 -H 'Content-Type: application/json' \
 -d '{ "email": "man@zana.com", "password": "wrong-123123123" }' \
 -v
 
 # > POST /users/auth HTTP/1.1
-# > Host: localhost:9000
+# > Host: localhost:8000
 # > User-Agent: curl/8.1.2
 # > Accept: */*
 # > Content-Type: application/json

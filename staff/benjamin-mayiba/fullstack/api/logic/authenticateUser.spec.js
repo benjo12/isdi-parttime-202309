@@ -3,44 +3,32 @@ import { expect } from 'chai'
 
 import authenticateUser from './authenticateUser.js'
 import { SystemError, NotFoundError, CredentialsError } from './errors.js'
+import { User } from '../data/models.js'
 
 describe('authenticateUser', () => {
     before(() => mongoose.connect('mongodb://127.0.0.1:27017/test'))
 
-    it('succeeds on correct credentials', done => {
-        // debugger
-        authenticateUser('le@chuga.com', '123123123', (error, userId) => {
-            if (error) {
-                done(error)
+    beforeEach(() => User.deleteMany())
 
-                return
-            }
-
-            try {
-                expect(userId).to.be.a('number')
-                expect(userId).to.have.lengthOf(24)
-                expect(userId).to.equal('6589723a2f54e0241e364128')
-
-                done()
-            } catch (error) {
-                done(error)
-            }
-        })
+    it('succeeds on correct credentials', () => {
+        return User.create({ name: 'Le Chuga', email: 'le@chuga.com', password: '123123123' })
+            .then(user => {
+                return authenticateUser('le@chuga.com', '123123123')
+                    .then(userId => {
+                        expect(userId).to.be.a('string')
+                        expect(userId).to.have.lengthOf(24)
+                        expect(userId).to.equal(user.id)
+                    })
+            })
     })
 
-    it('fails on wrong email', done => {
-        // debugger
-        authenticateUser('le@chuga2.com', '123123123', (error, userId) => {
-            try {
+    it('fails on wrong email', () => {
+        return authenticateUser('le@chuga.com', '123123123')
+            .then(() => { throw new Error('should not reach this point') })
+            .catch(error => {
                 expect(error).to.be.instanceOf(NotFoundError)
-                expect(error.message).to.equal(' user not found')
-                expect(userId).to.be.undefined
-
-                done()
-            } catch (error) {
-                done(error)
-            }
-        })
+                expect(error.message).to.equal('user not found')
+            })
     })
 
     after(() => mongoose.disconnect())
