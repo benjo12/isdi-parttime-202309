@@ -47,37 +47,35 @@ function googl(what) {
 
 const before = Date.now()
 
-async function main() {
-    try {
-        const results = await googl('pepito grillo')
-
+googl('pepito grillo')
+    .then(results => {
         console.log('pepitos search', Date.now() - before)
 
         results.forEach(result => console.log(result))
 
-        const results2 = await googl('campanilla hada')
-
+        return googl('campanilla hada')
+    })
+    .then(results => {
         console.log('campanillas search', Date.now() - before)
 
         document.body.innerHTML = ''
 
-        results2.forEach(result => {
+        results.forEach(result => {
             const h2 = document.createElement('h2')
             h2.innerText = result.title
 
             document.body.appendChild(h2)
         })
 
-        const results3 = await googl('hormiga atomica')
-
+        return googl('hormiga atomica')
+    })
+    .then(results => {
         console.warn('hormigas search', Date.now() - before)
 
-        results3.forEach(result => console.warn(result))
-    } catch (error) {
+        results.forEach(result => console.warn(result))
+    })
+    .catch(error => {
         console.error(error)
-    }
-}
-
-main()
+    })
 
 console.log('continue doing other good sh*t...')
