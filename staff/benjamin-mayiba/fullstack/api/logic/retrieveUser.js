@@ -3,23 +3,19 @@ import validate from './helpers/validate.js'
 import { User } from '../data/models.js'
 import { SystemError, NotFoundError } from './errors.js'
 
-function retrieveUser(userId, callback) {
+function retrieveUser(userId) {
     validate.id(userId, 'user id')
-    validate.function(callback, 'callback')
 
-    User.findById(userId, 'name').lean()
+    return User.findById(userId, 'name').lean()
+        .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) {
-                callback(new NotFoundError('user not found'))
-
-                return
-            }
+            if (!user)
+                throw new NotFoundError('user not found')
 
             delete user._id
 
-            callback(null, user)
+            return user
         })
-        .catch(error => callback(new SystemError(error.message)))
 }
 
 export default retrieveUser

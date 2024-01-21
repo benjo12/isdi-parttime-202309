@@ -1,19 +1,16 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import mongoose from 'mongoose'
 import changeUserEmail from './changeUserEmail.js'
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.TEST_MONGODB_URL)
          .then(() =>{
             try{
-              changeUserEmail('le@roy.com', 'bon@gamin.com','bon@gamin.com', '234234234', error =>{
-                     if(error){
-                     console.error(error)
-                         return
-                     }
-                console.log('Email changed')
-              })
-           
+              changeUserEmail('65aae1db78e21a8709d53a47', 'bon@gamin.com','bon@gamin.com', '234234234')
+                     .then(() => console.log('Email changed'))
+                      .catch(error => console.error(error))                   
             }catch(error){
-
                 console.error(error)
             }
        

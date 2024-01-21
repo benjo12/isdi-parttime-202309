@@ -19,7 +19,7 @@ import {
     changeUserPasswordHandler
 } from './handlers/index.js'
 
-mongoose.connect(process.env.TEST_MONGODB_URL )
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         const server = express()
 

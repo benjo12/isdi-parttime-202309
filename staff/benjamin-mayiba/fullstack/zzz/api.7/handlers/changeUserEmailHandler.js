@@ -3,10 +3,9 @@ import { NotFoundError, ContentError, CredentialsError } from '../logic/errors.j
 
 export default (req, res) => {
   try {
-    const userId = req.headers.authorization.substring(7)
-    const { newEmail, newEmailConfirm, password } = req.body
+    const { email, newEmail, newEmailConfirm, password } = req.body
     
-    logic.changeUserEmail(userId, newEmail, newEmailConfirm, password, error => {
+    logic.changeUserEmail(email, newEmail, newEmailConfirm, password, error => {
       if (error) {
         let status = 500
         if (error instanceof NotFoundError)

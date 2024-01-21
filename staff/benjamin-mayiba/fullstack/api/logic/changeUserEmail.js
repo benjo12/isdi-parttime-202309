@@ -1,39 +1,34 @@
 import { User } from '../data/models.js'
 import validate from './helpers/validate.js'
-import { SystemError, NotFoundError } from './errors.js'
+import { SystemError, NotFoundError, CredentialsError, ContentError } from './errors.js'
 
 
-function changeUserEmail(email, newEmail, newEmailConfirm , password, callback){
+function changeUserEmail(userId, newEmail, newEmailConfirm , password){
 
-    validate.email(email, 'email')
+    validate.id(userId, 'user id')
     validate.email(newEmail, 'new email')
     validate.email(newEmailConfirm, 'new email confirm')
     validate.text(password, 'password')
-    validate.function(callback, 'callback')
    
-    User.findOne({email})
+   return User.findById(userId)
+        .catch(error => {throw new SystemError(error.message)})
         .then(user =>{
            if(!user){
-           callback(new NotFoundError('user not found'))
-               return
+               throw new NotFoundError('user not found')
+              
            }
             if(newEmail !== newEmailConfirm ){
-              callback(new ContentError('new email and its confirmation do not match'))
-                return
+               throw new ContentError('new email and its confirmation do not match')
             }
             if(user.password !== password){
-              callback(new ContentError('wrong credentials'))
-                return  
+                throw new CredentialsError('wrong credentials')  
             }
            
              user.email = newEmail
              user.save()
-             .then(() => callback(null))
-              .catch(error => callback(new SystemError(error.message)))
+              .catch(error => {throw new SystemError(error.message)})
          })
-        .catch(error => {
-          callback(new SystemError(error.message))
-        })
+        
 }
 
 export default changeUserEmail
