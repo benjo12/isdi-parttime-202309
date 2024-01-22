@@ -3,20 +3,18 @@ import mongoose from 'mongoose'
 import toggleLikePost from './toggleLikePost.js'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
-     .then(()=>{     
+    .then(() => {
+
         try {
-            toggleLikePost('65898c9a9a021cf5ab44f35a', '658acf3c086e86846b984996', error =>{
-                if(error){
+            toggleLikePost('65849effd6fe566e658c5580', '659c4a0d735c5e851dad76cd')
+                .then(() => {
+                    console.log('post like toggled')
+                })
+                .catch(() => {
                     console.error(error)
-
-                    return
-                }
-
-                console.log('post like toggled')
-            })
+                })
         } catch (error) {
             console.error(error)
         }
-
-     })
-     .catch(error => console.error(error))
+    })
+    .catch(error => console.error(error))

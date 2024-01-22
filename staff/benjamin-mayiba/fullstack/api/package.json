@@ -9,7 +9,9 @@
     "inspect": "node --inspect-brk .",
     "test": "mocha logic/*.spec.js",
     "test-inspect": "mocha --inspect-brk logic/*.spec.js",
-    "test-coverage": "nyc --cache=false --reporter=text-summary --reporter=html mocha logic/*.spec.js"
+    "test-coverage": "nyc --cache=false --reporter=text-summary --reporter=html mocha logic/*.spec.js",
+    "test-what": "mocha",
+    "test-inspect-what": "mocha --inspect-brk"
   },
   "keywords": [],
   "author": "",
