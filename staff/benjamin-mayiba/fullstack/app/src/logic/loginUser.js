@@ -25,8 +25,14 @@ function loginUser(email, password, callback) {
             }
 
             res.json()
-                .then(userId => {
+                .then(token => {
+                    const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
+                    const payloadJson = atob(payloadB64)
+                    const payload = JSON.parse(payloadJson)
+                    const userId = payload.sub
+
                     context.sessionUserId = userId
+                    context.token = token
 
                     callback(null)
                 })

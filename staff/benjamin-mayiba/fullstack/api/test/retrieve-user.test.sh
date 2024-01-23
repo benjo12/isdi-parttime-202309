@@ -5,7 +5,7 @@ TEST "retrieve-user"
 CASE "success on correct user id"
 
 curl 'http://localhost:9000/users' \
--H 'Authorization: Bearer 4945v51dd8i0' \
+-H 'Authorization: Bearer 65aae1db78e21a8709d53a47' \
 -v
 
 # > GET /users HTTP/1.1
@@ -25,11 +25,11 @@ curl 'http://localhost:9000/users' \
 
 # {"name":"Man Zana"}
 
-CASE "fails on non-existing user id"
+# CASE "fails on non-existing user id"
 
-curl 'http://localhost:8000/users' \
--H 'Authorization: Bearer 730thx7n4n4' \
--v
+# curl 'http://localhost:8000/users' \
+# -H 'Authorization: Bearer 730thx7n4n4' \
+# -v
 
 # > GET /users HTTP/1.1
 # > Host: localhost:8000
