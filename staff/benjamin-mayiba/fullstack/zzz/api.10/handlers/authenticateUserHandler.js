@@ -9,7 +9,7 @@ export default (req, res) => {
 
         logic.authenticateUser(email, password)
             .then(userId => {
-                const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '1s' })
+                const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET)
 
                 res.json(token)
             })

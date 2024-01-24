@@ -28,7 +28,7 @@ function Login(props) {
                 }
 
                 // eslint-disable-next-line react/prop-types
-                props.onSuccess()
+                 setTimeout(() => props.onSuccess(), 2000)
             })
         } catch (error) {
             alert(error.message)

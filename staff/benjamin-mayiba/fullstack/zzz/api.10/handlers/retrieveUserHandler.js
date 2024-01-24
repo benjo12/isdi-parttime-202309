@@ -1,25 +1,23 @@
 import jwt from 'jsonwebtoken'
 
 import logic from '../logic/index.js'
-import { NotFoundError, ContentError, CredentialsError } from '../logic/errors.js'
+import { NotFoundError, ContentError } from '../logic/errors.js'
 
 export default (req, res) => {
     try {
-        const { email, password } = req.body
+        const token = req.headers.authorization.substring(7)
 
-        logic.authenticateUser(email, password)
-            .then(userId => {
-                const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '1s' })
+        const payload = jwt.verify(token, process.env.JWT_SECRET)
 
-                res.json(token)
-            })
+        const userId = payload.sub
+
+        logic.retrieveUser(userId)
+            .then(user => res.json(user))
             .catch(error => {
                 let status = 500
 
                 if (error instanceof NotFoundError)
                     status = 404
-                else if (error instanceof CredentialsError)
-                    status = 401
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             })

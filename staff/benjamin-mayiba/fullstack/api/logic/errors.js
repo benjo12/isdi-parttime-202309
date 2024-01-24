@@ -1,36 +1,51 @@
-class NotFoundError extends Error{
-    constructor(message){
+class NotFoundError extends Error {
+    constructor(message) {
         super(message)
 
         this.name = this.constructor.name
     }
 }
 
-class SystemError extends Error{
-    constructor(message){
+class SystemError extends Error {
+    constructor(message) {
         super(message)
 
         this.name = this.constructor.name
     }
 }
 
-class ContentError extends Error{
-    constructor(message){
+class ContentError extends Error {
+    constructor(message) {
         super(message)
 
         this.name = this.constructor.name
     }
 }
 
-class DuplicityError extends Error{
-    constructor(message){
-       super(message)
+class DuplicityError extends Error {
+    constructor(message) {
+        super(message)
 
-       this.name = this.constructor.name
+        this.name = this.constructor.name
     }
 }
 
 class CredentialsError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
+class TokenError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+class ForbiddenError extends Error {
     constructor(message) {
         super(message)
 
@@ -43,5 +58,7 @@ export {
     SystemError,
     ContentError,
     DuplicityError,
-    CredentialsError
+    CredentialsError,
+    TokenError,
+    ForbiddenError
 }
