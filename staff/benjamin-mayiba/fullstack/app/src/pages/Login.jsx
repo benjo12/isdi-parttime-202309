@@ -22,16 +22,15 @@ function Login(props) {
         try {
             logic.loginUser(email, password, error => {
                 if (error) {
-                    alert(error.message)
+                    props.onError(error)
 
                     return
                 }
-
-                // eslint-disable-next-line react/prop-types
-                 setTimeout(() => props.onSuccess(), 2000)
+                 //setTimeout(() => props.onSuccess(), 2000)
+                 props.onSuccess()
             })
         } catch (error) {
-            alert(error.message)
+            props.onError(error)
         }
     }
 

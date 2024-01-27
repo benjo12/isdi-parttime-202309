@@ -1,7 +1,7 @@
 import { Button, Container, Form, Field } from "../library"
 import logic from "../logic"
 
-export default function ({onPublish, onCancel }){
+export default function (props){
 
     const handleSubmit = event => {
         event.preventDefault()
@@ -14,22 +14,22 @@ export default function ({onPublish, onCancel }){
             logic.publishPost(image, text, error =>{
 
                 if(error){
-                    alert(error.message)
+                    props.onError(error)
 
                     return
                 }
 
-                onPublish()
+                props.onPublish()
             })
         } catch (error) {
-            alert(error.message)
+            props.onError(error)
         }
     }
 
     const handleCancel = event => {
     event.preventDefault()
 
-    onCancel()
+    props.onCancel()
 }
   return <Container className="new-post">
             <h2>New post</h2>

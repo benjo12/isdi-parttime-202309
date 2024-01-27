@@ -16,7 +16,7 @@ function Home(props) {
     function handleLogoutClick() {
         logic.logoutUser(error => {
             if (error) {
-                alert(error.message)
+                props.onError(error)
 
                 return
             }
@@ -32,7 +32,7 @@ function Home(props) {
         try {
             logic.retrieveUser((error, user) => {
                 if (error) {
-                    alert(error.message)
+                    props.onError(error)
 
                     return
                 }
@@ -41,7 +41,7 @@ function Home(props) {
             })
 
         } catch (error) {
-            alert(error.message)
+            props.onError(error)
         }
     }, [])
 
@@ -99,12 +99,12 @@ function Home(props) {
 
         {view === 'profile' && <Profile onChangeEmail={handleChangeEmail} onChangePassword={handlechangePassword} />}
 
-        {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts.bind(logic)} stamp={stamp} />}
+        {(view === null || view === 'new-post') && <Posts loadPosts={logic.retrievePosts} stamp={stamp} onError={props.onError} />}
 
-        {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts.bind(logic)} />}
+        {view === 'favs' && <Posts loadPosts={logic.retrieveFavPosts} onError={props.onError} />}
 
         <footer className="footer">
-            {view === 'new-post' && <NewPost onPublish={handleNewPostPublish} onCancel={handleNewPostCancel} />}
+            {view === 'new-post' && <NewPost onPublish={handleNewPostPublish} onCancel={handleNewPostCancel} onError={props.onError} />}
 
             {view !== 'new-post' && <Button onClick={handleNewPostClick}>+</Button>}
         </footer>

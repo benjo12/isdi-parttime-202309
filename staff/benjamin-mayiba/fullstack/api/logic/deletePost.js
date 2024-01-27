@@ -12,18 +12,18 @@ function deletePost(userId, postId) {
         })
         .then(user => {
             if (!user) {
-                throw new NotFoundError('User not found');
+                throw new NotFoundError('user not found');
             }
 
             return Post.findOne({ _id: postId, author: user._id })
                 .then(post => {
                     if (!post) {
-                        throw new NotFoundError('Post not found');
+                        throw new NotFoundError('post not found');
                     }
 
                     // Check if the post belongs to the user
                     if (post.author.toString() !== user._id.toString()) {
-                        throw new ForbiddenError('You do not have permission to delete this post');
+                        throw new ForbiddenError('you do not have permission to delete this post');
                     }
 
                     // Delete the post
