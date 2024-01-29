@@ -16,7 +16,8 @@ import {
     toggleFavPostHandler,
     retrieveFavPostsHandler,
     changeUserEmailHandler,
-    changeUserPasswordHandler
+    changeUserPasswordHandler,
+    commentPostHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.TEST_MONGODB_URL )
@@ -43,10 +44,12 @@ mongoose.connect(process.env.TEST_MONGODB_URL )
         server.post('/posts', jsonBodyParser, createPostHandler)
 
         server.patch('/posts/:postId/likes', toggleLikePostHandler)
-
+    
         server.patch('/posts/:postId/favs', toggleFavPostHandler)
 
         server.get('/posts/favs', retrieveFavPostsHandler)
+
+        server.post('/posts/:postId/comments', jsonBodyParser, commentPostHandler)
         
 
         server.listen(process.env.PORT, () => console.log(`server running on port ${process.env.PORT}`))

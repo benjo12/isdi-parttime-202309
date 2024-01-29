@@ -41,6 +41,12 @@ const post = new Schema({
     likes:[{
         type: ObjectId,
         ref: 'User'
+    }],
+
+    comments:[{
+        author: { type: ObjectId, ref: 'User' },
+        text: { type: String, required: true }
+
     }]
     
 })

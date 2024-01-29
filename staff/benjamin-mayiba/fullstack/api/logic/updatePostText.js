@@ -1,5 +1,5 @@
 import { User, Post } from '../data/models.js'
-import { NotFoundError, ForbiddenError, SystemError } from './errors'
+import { NotFoundError, ForbiddenError, SystemError } from './errors.js'
 import validate from './helpers/validate.js'
 
 function updatePostText(userId, postId, text) {
@@ -16,7 +16,7 @@ function updatePostText(userId, postId, text) {
                 throw new NotFoundError('user not found')
             }
 
-            return Post.findOne({ _id: postId, author: user._id })
+            return Post.findOne({ _id: postId, author: user.id })
                 .catch(error => {
                     throw new SystemError(error.message)
                 })
