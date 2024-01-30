@@ -12,8 +12,8 @@ function App() {
   console.log('App')
 
   const [view, setView] = useState('login')
-  const [level, setLevel ] = useState(null)
-  const [message, setMessage ] = useState(null)
+  const [level, setLevel] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const handleRegisterShow = () => {
     setView('register')
@@ -55,7 +55,6 @@ function App() {
 
   const context = { handleError }
 
-
   return <>
     <Context.Provider value={context}>
       {message && <Feedback level={level} message={message} onAccepted={handleFeedbackAccepted} />}
@@ -68,4 +67,3 @@ function App() {
 }
 
 export default App
-
