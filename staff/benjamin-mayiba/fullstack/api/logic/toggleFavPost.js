@@ -1,10 +1,10 @@
-import { NotFoundError, SystemError } from './errors.js'
-import validate from './helpers/validate.js'
+import {validate, errors } from 'com'
+const { NotFoundError, SystemError } = errors
 import { User, Post } from '../data/models.js'
 
 function toggleFavPost(userId, postId) {
-    validate.text(userId, 'user id')
-    validate.text(postId, 'post id')
+    validate.id(userId, 'user id')
+    validate.id(postId, 'post id')
 
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })

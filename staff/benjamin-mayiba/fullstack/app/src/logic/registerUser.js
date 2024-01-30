@@ -1,4 +1,4 @@
-import validate from './helpers/validate'
+import { validate } from 'com'
 import errors from './errors'
 
 function registerUser(name, email, password, callback) {

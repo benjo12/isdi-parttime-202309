@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
 import Post from './Post'
+import { useContext } from '../hooks'
 
 function Posts(props) {
     console.log('Posts')
 
     const [posts, setPosts] = useState([])
 
+    const context = useContext()
+
     const refreshPosts = () => {
         try {
             props.loadPosts((error, posts) => {
                 if (error) {
-                    props.onError(error)
+                    context.handleError(error)
 
                     return
                 }
@@ -20,7 +23,7 @@ function Posts(props) {
                 setPosts(posts)
             })
         } catch (error) {
-            props.onError(error)
+            context.handleError(error)
         }
     }
 
@@ -31,7 +34,7 @@ function Posts(props) {
     }, [props.stamp])
 
     return <div className="posts">
-       {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={refreshPosts} onToggleFavClick={refreshPosts} onPostTextUpdate={refreshPosts} onError={props.onError} />)}
+        {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={refreshPosts} onToggleFavClick={refreshPosts} onPostTextUpdate={refreshPosts} onError={props.onError} />)}
     </div>
 }
 

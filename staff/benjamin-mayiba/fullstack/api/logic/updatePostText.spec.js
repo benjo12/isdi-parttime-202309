@@ -8,7 +8,8 @@ import dotenv from 'dotenv'
   import {User, Post } from '../data/models.js'
 
 const { ObjectId } = mongoose.Types
-  import {NotFoundError} from './errors.js'
+import { errors } from 'com'
+  const {NotFoundError} = errors
 
 describe('updatePostText', () =>{
     before(() => mongoose.connect(process.env.PRUEBA_MONGODB_URL))

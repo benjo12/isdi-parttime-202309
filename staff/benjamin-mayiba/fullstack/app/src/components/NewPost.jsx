@@ -1,7 +1,12 @@
-import { Button, Container, Form, Field } from "../library"
-import logic from "../logic"
+import { Button, Container, Form, Field } from '../library'
+import logic from '../logic'
 
-export default function (props){
+import { useContext } from '../hooks'
+
+export default function (props) {
+    console.log('NewPost')
+
+    const context = useContext()
 
     const handleSubmit = event => {
         event.preventDefault()
@@ -10,45 +15,34 @@ export default function (props){
         const text = event.target.text.value
 
         try {
-            
-            logic.publishPost(image, text, error =>{
-
-                if(error){
-                    props.onError(error)
-
+            logic.publishPost(image, text, error => {
+                if (error) {
+                    context.handleError(error)
                     return
                 }
 
                 props.onPublish()
             })
         } catch (error) {
-            props.onError(error)
+            context.handleError(error)
         }
     }
 
     const handleCancel = event => {
-    event.preventDefault()
+        event.preventDefault()
 
-    props.onCancel()
+        props.onCancel()
+    }
+
+    return <Container className="new-post">
+        <h2>New post</h2>
+
+        <Form onSubmit={handleSubmit}>
+            <Field id="image" type="url">Image</Field>
+            <Field id="text">Text</Field>
+
+            <Button type="submit">Post</Button>
+            <Button onClick={handleCancel}>Cancel</Button>
+        </Form>
+    </Container>
 }
-  return <Container className="new-post">
-            <h2>New post</h2>
-             
-             <Form onSubmit={handleSubmit}>
-               <Field id="image" type="url">Image</Field>
-               <Field id="text">Text</Field>
-
-               <Button type="submit">Post</Button>
-               <Button onClick={handleCancel}></Button>
-             
-             </Form >
-  
-        </Container>
-
-
-    
-}
-
-
-
-    

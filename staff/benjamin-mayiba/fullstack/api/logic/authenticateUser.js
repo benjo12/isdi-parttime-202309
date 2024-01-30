@@ -1,11 +1,12 @@
-import validate from './helpers/validate.js'
+import { validate, errors } from 'com';
 
 import { User } from '../data/models.js'
-import { SystemError, NotFoundError, CredentialsError } from './errors.js'
+
+const { SystemError, NotFoundError, CredentialsError } = errors
 
 function authenticateUser(email, password) {
     validate.email(email, 'email')
-    validate.text(password, 'password')
+    validate.password(password, 'password')
 
     return User.findOne({ email })
         .catch(error => {

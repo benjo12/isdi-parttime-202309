@@ -7,7 +7,8 @@ import deletePost from './deletePost.js'
 
 import {User, Post} from '../data/models.js'
 import random from './helpers/random.js'
-import {NotFoundError, ForbiddenError } from './errors.js'
+import { errors } from 'com'
+const {NotFoundError, ForbiddenError } = errors
 
 const  {ObjectId} = mongoose.Types
 

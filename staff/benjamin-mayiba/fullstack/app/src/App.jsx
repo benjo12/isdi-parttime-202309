@@ -2,6 +2,9 @@ import { useState } from 'react'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import Feedback from './components/Feedback'
+
+import Context from './Context'
 
 import { ContentError, DuplicityError, NotFoundError } from './logic/errors'
 
@@ -9,62 +12,60 @@ function App() {
   console.log('App')
 
   const [view, setView] = useState('login')
-  const [type, setType ] = useState(null)
+  const [level, setLevel ] = useState(null)
   const [message, setMessage ] = useState(null)
 
-  function handleRegisterShow() {
+  const handleRegisterShow = () => {
     setView('register')
     setMessage(null)
-    setType(null)
+    setLevel(null)
   }
 
-  function handleLoginShow() {
+  const handleLoginShow = () => {
     setView('login')
     setMessage(null)
-    setType(null)
+    setLevel(null)
   }
 
-  function handleHomeShow() {
+  const handleHomeShow = () => {
     setView('home')
     setMessage(null)
-    setType(null)
+    setLevel(null)
   }
 
-  function  handleError(error){
-      if(error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-         setType('warn')
-      else if(error instanceof DuplicityError || error instanceof NotFoundError)
-          setType('error')
-      else
-          setType('fatal')  
+  const handleError = error => {
+    let level = 'fatal'
 
-     setMessage(error.message)       
+    if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+      level = 'warn'
+    else if (error instanceof DuplicityError || error instanceof NotFoundError)
+      level = 'error'
+
+    //   alert(error.message)
+    setLevel(level)
+    setMessage(error.message)
+
+    console2.log(error.message, level)
   }
+
+  const handleFeedbackAccepted = () => {
+    setMessage(null)
+    setLevel(null)
+  }
+
+  const context = { handleError }
+
 
   return <>
-    {message && <Feedback type={type} message={message}/>}
-    {view === 'login' && <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} onError={handleError} />}
-    {view === 'register' && <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} onError={handleError} />}
-    {view === 'home' && <Home onLogoutClick={handleLoginShow} onError={handleError} />}
+    <Context.Provider value={context}>
+      {message && <Feedback level={level} message={message} onAccepted={handleFeedbackAccepted} />}
+
+      {view === 'login' && <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />}
+      {view === 'register' && <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />}
+      {view === 'home' && <Home onLogoutClick={handleLoginShow} />}
+    </Context.Provider>
   </>
 }
 
 export default App
 
-function Feedback(props) {
-  let color = 'yellowgreen'
-  let backgroundColor = 'transparent'
-
-  if (props.type === 'info')
-    color = 'dodgerblue'
-  else if (props.type === 'warn')
-    color = 'gold'
-  else if (props.type === 'error')
-    color = 'tomato'
-  else if (props.type === 'fatal') {
-    color = 'white' 
-    backgroundColor = 'tomato'
-  }
-
-  return <p style={{ color, backgroundColor }}>{props.message}</p>
-}

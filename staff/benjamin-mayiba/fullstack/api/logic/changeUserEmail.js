@@ -1,6 +1,6 @@
 import { User } from '../data/models.js'
-import validate from './helpers/validate.js'
-import { SystemError, NotFoundError, CredentialsError, ContentError } from './errors.js'
+import { validate, errors } from 'com'
+const { SystemError, NotFoundError, CredentialsError, ContentError } = errors
 
 
 function changeUserEmail(userId, newEmail, newEmailConfirm , password){

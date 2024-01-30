@@ -1,5 +1,7 @@
 import logic from '../logic/index.js'
-import { ContentError, DuplicityError } from '../logic/errors.js'
+
+import { errors } from 'com'
+const { ContentError, DuplicityError } = errors
 
 export default (req, res) => {
     try {

@@ -1,11 +1,13 @@
-import React from 'react'
-
+import { Button, Link, Form, Field, Container } from '../library'
 import logic from '../logic'
+import { ContentError, DuplicityError } from '../logic/errors'
 
-import {Button, Link, Form, Field, Container} from '../library'
+import { useContext } from '../hooks'
 
 function Register(props) {
     console.log('Register')
+
+    const context = useContext()
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -18,12 +20,10 @@ function Register(props) {
         const email = emailInput.value
         const password = passwordInput.value
 
-
         try {
             logic.registerUser(name, email, password, error => {
                 if (error) {
-                    //alert(error.message)
-                    props.onError(error)
+                    context.handleError(error)
 
                     return
                 }
@@ -31,8 +31,7 @@ function Register(props) {
                 props.onSuccess()
             })
         } catch (error) {
-            //alert(error.message)
-            props.onError(error)
+            context.handleError(error)
         }
     }
 
@@ -47,12 +46,10 @@ function Register(props) {
         <h1>Register</h1>
 
         <Form onSubmit={handleSubmit}>
-            <Field id="name-input" >Name</Field>
-           
-            <Field id="email-input" type='email'>E-mail</Field>
-            
-            <Field id="password-input" type='password'>Password</Field>
-            
+            <Field id="name-input">Name</Field>
+            <Field id="email-input" type="email">E-mail</Field>
+            <Field id="password-input" type="password">Password</Field>
+
             <Button type="submit">Register</Button>
         </Form>
 

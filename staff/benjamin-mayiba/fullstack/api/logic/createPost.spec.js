@@ -6,8 +6,10 @@ import { expect } from 'chai'
 import random from './helpers/random.js'
 
 import createPost from './createPost.js'
-import { DuplicityError, NotFoundError } from './errors.js'
+import { errors } from 'com'
 import { User, Post } from '../data/models.js'
+
+const { NotFoundError } = errors
 
 const { ObjectId } = mongoose.Types
 

@@ -6,7 +6,9 @@ import { expect } from 'chai'
 import random from './helpers/random.js'
 
 import authenticateUser from './authenticateUser.js'
-import { NotFoundError, CredentialsError } from './errors.js'
+import { errors } from 'com'
+
+const { NotFoundError, CredentialsError } = errors
 import { User } from '../data/models.js'
 
 describe('authenticateUser', () => {

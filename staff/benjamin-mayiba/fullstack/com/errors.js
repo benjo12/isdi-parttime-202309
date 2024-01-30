@@ -45,7 +45,8 @@ class TokenError extends Error {
         this.name = this.constructor.name
     }
 }
-class ForbiddenError extends Error {
+
+class  ForbiddenError extends Error {
     constructor(message) {
         super(message)
 
@@ -62,3 +63,15 @@ export {
     TokenError,
     ForbiddenError
 }
+
+const errors = {
+    NotFoundError,
+    SystemError,
+    ContentError,
+    DuplicityError,
+    CredentialsError,
+    TokenError,
+    ForbiddenError
+}
+
+export default errors

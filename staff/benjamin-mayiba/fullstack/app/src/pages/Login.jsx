@@ -1,14 +1,13 @@
-// eslint-disable-next-line no-unused-vars
-import React from 'react'
-
 import logic from '../logic'
 
-import {Button, Link, Form, Field, Container} from '../library'
+import { Button, Link, Form, Field, Container } from '../library'
 
-
+import { useContext } from '../hooks'
 
 function Login(props) {
     console.log('Login')
+
+    const context = useContext()
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -22,33 +21,32 @@ function Login(props) {
         try {
             logic.loginUser(email, password, error => {
                 if (error) {
-                    props.onError(error)
+                    context.handleError(error)
 
                     return
                 }
-                 //setTimeout(() => props.onSuccess(), 2000)
-                 props.onSuccess()
+
+                //setTimeout(() => props.onSuccess(), 2000)
+                props.onSuccess()
             })
         } catch (error) {
-            props.onError(error)
+            context.handleError(error)
         }
     }
 
     function handleRegisterClick(event) {
         event.preventDefault()
 
-        // eslint-disable-next-line react/prop-types
-        props.onRegisterClick() 
+        props.onRegisterClick()
     }
 
     return <Container>
         <h1>Login</h1>
 
         <Form onSubmit={handleSubmit}>
-            <Field id="email-input" type='email'>E-mail</Field>
-            
-            <Field id="password-input" type='password'>Password</Field>
-            
+            <Field id="email-input" type="email">E-mail</Field>
+            <Field id="password-input" type="password">Password</Field>
+
             <Button type="submit">Login</Button>
         </Form>
 

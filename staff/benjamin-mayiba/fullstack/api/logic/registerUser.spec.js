@@ -6,8 +6,10 @@ import { expect } from 'chai'
 import random from './helpers/random.js'
 
 import registerUser from './registerUser.js'
-import { DuplicityError } from './errors.js'
+import { errors } from 'com'
 import { User } from '../data/models.js'
+
+const { DuplicityError } = errors
 
 describe('registerUser', () => {
     before(() => mongoose.connect(process.env.PRUEBA_MONGODB_URL))

@@ -3,7 +3,8 @@ dotenv.config()
 
 import mongoose from 'mongoose'
 import { expect } from 'chai'
-import { NotFoundError } from './errors.js'
+import { errors } from 'com'
+const { NotFoundError } = errors
 import random from './helpers/random.js'
 import commentPost from './commentPost.js'
 import {User, Post } from '../data/models.js'

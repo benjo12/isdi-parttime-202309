@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'
 const { JsonWebTokenError } = jwt
 
 import logic from '../logic/index.js'
-import { NotFoundError, ContentError, CredentialsError, TokenError } from '../logic/errors.js'
+import { errors } from 'com'
+const { NotFoundError, ContentError, CredentialsError, TokenError } = errors
 
 
 export default (req, res) =>{

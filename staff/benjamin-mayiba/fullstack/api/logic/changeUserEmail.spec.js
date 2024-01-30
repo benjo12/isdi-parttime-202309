@@ -7,7 +7,8 @@ import random from './helpers/random.js'
 
 import { User } from '../data/models.js'
 import changeUserEmail from './changeUserEmail.js'
-import { NotFoundError, CredentialsError, ContentError } from './errors.js'
+import { errors } from 'com'
+const { NotFoundError, CredentialsError, ContentError } = errors
 
 const { ObjectId } = mongoose.Types
 

@@ -1,6 +1,8 @@
-import validate from './helpers/validate.js'
+import { validate, errors } from 'com'
+
 import { User, Post } from '../data/models.js'
-import { SystemError, NotFoundError } from './errors.js'
+
+const { SystemError, NotFoundError } = errors
 
 function createPost(userId, image, text) {
     validate.id(userId, 'user id')
