@@ -1,6 +1,5 @@
 import { Button, Link, Form, Field, Container } from '../library'
 import logic from '../logic'
-import { ContentError, DuplicityError } from '../logic/errors'
 
 import { useContext } from '../hooks'
 

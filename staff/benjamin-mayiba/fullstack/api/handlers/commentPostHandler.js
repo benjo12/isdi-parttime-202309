@@ -17,7 +17,7 @@ export default (req, res) =>{
         const { comment } = req.body
 
            logic.commentPost(userId, postId, comment)
-                .then(() => res.status(204).send())
+                .then(name => res.json(name))
                 .catch(error =>{
                     let status = 500
                     if(error instanceof NotFoundError)

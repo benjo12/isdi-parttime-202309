@@ -1,6 +1,6 @@
-import { validate } from 'com'
+import { validate, errors } from 'com'
+
 import context from './context'
-import errors from './errors'
 
 function publishPost(image, text, callback) {
     validate.text(image, 'image')

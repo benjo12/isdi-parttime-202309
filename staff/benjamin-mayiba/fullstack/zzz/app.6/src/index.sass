@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap')
+
+/* resets */
+
+*
+    font-family: Inter
+    font-size: 1rem
+
+html
+    scroll-behavior: smooth
+
+html, body
+    margin: 0
+
+/* variables */
+
+$m-size: 768px
+$l-size: 1024px
+$footer-h: 3rem
+
+/* library */
+
+.container
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 1rem
+    padding: 1rem
+
+.container--horizontal
+    flex-direction: row
+    justify-content: center
+
+.form
+    display: flex
+    flex-direction: column
+    max-width: 240px
+    gap: 5px
+
+.label
+    font-weight: bold
+
+.input
+    border: 2px solid black
+    padding: 5px
+
+.button
+    border: 2px solid black
+    padding: 5px
+    background-color: transparent
+    font-weight: bold
+
+.link
+    text-decoration: none
+    color: black
+
+    &:visited
+        color: black
+
+    &::before
+        content: '[ '
+
+    &::after
+        content: ' ]'
+
+/* custom compos */
+
+.header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: .5rem
+
+.new-post
+    margin-bottom: 1rem
+
+.post
+    display: flex
+    flex-direction: column
+    align-items: center
+
+    &-image
+        max-width: 320px
+
+    &-actions
+        display: flex
+        justify-content: space-between
+        gap: .5rem
+
+.posts
+    background-color: yellow
+    margin-bottom: $footer-h
+
+@media (min-width: $m-size)
+    .posts
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+
+@media (min-width: $l-size)
+    .posts
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+
+.footer
+    background-color: white
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    position: fixed
+    bottom: 0
+    width: 100%
+    min-height: $footer-h

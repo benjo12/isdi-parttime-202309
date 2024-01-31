@@ -1,6 +1,7 @@
-import { validate } from 'com'
+import { validate, errors } from 'com'
+
 import context from './context'
-import errors from './errors'
+
 
 function changeUserPassword(password, newPassword, newPasswordConfirm,  callback) {
     validate.password(password, 'password')

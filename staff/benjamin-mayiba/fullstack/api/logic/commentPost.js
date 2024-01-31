@@ -13,7 +13,7 @@ function commentPost(userId, postId, comment){
                 .then(user =>{
                     if(!user)
                         throw new NotFoundError('user not found')
-                    delete user._id
+                    const userName = user.name
 
                     return Post.findById(postId)
                         .catch(error => {throw new SystemError(error.message)})
@@ -24,6 +24,7 @@ function commentPost(userId, postId, comment){
                                 
                          const commentText = {
                                     author: userId,
+                                    name: userName,
                                     text: comment
                                 };
                           post.comments.push(commentText)
