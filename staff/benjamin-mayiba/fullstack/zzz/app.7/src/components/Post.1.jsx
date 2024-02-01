@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useContext } from 'react'
 
-import { Button, Form, Field, Link } from '../library'
-import { useContext } from '../hooks'
+import { Button, Form, Field } from '../library'
+
+import Context from '../Context'
 
 import logic from '../logic'
 
@@ -12,8 +12,7 @@ function Post(props) {
 
     const [view, setView] = useState(null)
 
-    const context = useContext()
-    const navigate = useNavigate()
+    const context = useContext(Context)
 
     const handleToggleLikeClick = () => {
         try {
@@ -72,14 +71,8 @@ function Post(props) {
         }
     }
 
-    const handleUserClick = event =>{
-         event.preventDefault()
-
-         navigate(`/users/${props.post.author.id}`)
-    }
-
     return <article className="post">
-       <h2><Link onClick={handleUserClick}>{props.post.author.name}</Link></h2>
+        <h2>{props.post.author.name}</h2>
 
         <img className="post-image" src={props.post.image} />
 
