@@ -85,15 +85,12 @@ function Home(props) {
         navigate('/favs')
     }
 
-    const handleChangeEmail = (event) => {
-        event.preventDefault()
-        setView(null)
+    const handleChangeEmail = () => {
+       
         navigate('/')
     }
 
-    const handlechangePassword = (event) => {
-        event.preventDefault()
-        setView(null)
+    const handlechangePassword = () => {
         navigate('/')
     }
 

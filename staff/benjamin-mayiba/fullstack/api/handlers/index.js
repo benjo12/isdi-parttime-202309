@@ -9,6 +9,7 @@ import retrieveFavPostsHandler from './retrieveFavPostsHandler.js'
 import changeUserEmailHandler from'./changeUserEmailHandler.js'
 import changeUserPasswordHandler from'./changeUserPasswordHandler.js'
 import commentPostHandler from './commentPostHandler.js'
+import retrieveUserPostsHandler from './retrieveUserPostsHandler.js'
 // import deletePostHandler from './deletePostHandler.js'
 // import updatePostTextHandler from './updatePostTextHandler.js'
 
@@ -24,6 +25,7 @@ export {
     changeUserEmailHandler,
     changeUserPasswordHandler,
     commentPostHandler,
+    retrieveUserPostsHandler
     //deletePostHandler,
    // updatePostTextHandler
 }

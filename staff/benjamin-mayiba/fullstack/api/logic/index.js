@@ -12,6 +12,7 @@ import toggleLikePost from './toggleLikePost.js'
 import updatePostText from './updatePostText.js'
 import commentPost from './commentPost.js'
 import deletePost from './deletePost.js'
+import retrieveUserPosts from './retrieveUserPosts.js'
 
 const logic = {
     registerUser,
@@ -26,7 +27,8 @@ const logic = {
     toggleLikePost,
     updatePostText,
     commentPost,
-    deletePost
+    deletePost,
+    retrieveUserPosts
 }
 
 export default logic

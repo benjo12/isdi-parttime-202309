@@ -34,7 +34,7 @@ function Posts(props) {
     }, [props.stamp])
 
     return <div className="posts">
-        {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={refreshPosts} onToggleFavClick={refreshPosts} onPostTextUpdate={refreshPosts} onError={props.onError} />)}
+        {posts.map(post => <Post key={post.id} post={post} onToggleLikeClick={refreshPosts} onToggleFavClick={refreshPosts} onPostTextUpdate={refreshPosts}/>)}
     </div>
 }
 

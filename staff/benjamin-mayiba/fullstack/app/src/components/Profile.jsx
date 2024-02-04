@@ -15,9 +15,13 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
     const handleChangeEmailSubmit = (event) => {
         event.preventDefault()
 
-        const newEmail = event.target.querySelector('#new-email-input').value
-        const newEmailConfirm = event.target.querySelector('#new-email-confirm-input').value
-        const password = event.target.querySelector('#email-password-input').value
+        const newEmailInput = event.target.querySelector('#new-email-input')
+        const newEmailConfirmInput = event.target.querySelector('#new-email-confirm-input')
+        const passwordInput = event.target.querySelector('#email-password-input')
+
+        const newEmail = newEmailInput.value
+        const newEmailConfirm = newEmailConfirmInput.value
+        const password = passwordInput.value
          
         try {
             logic.changeUserEmail(newEmail, newEmailConfirm, password, error => {
@@ -25,16 +29,11 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
                     context.handleError(error)
                     return
                 }
-                  // Limpiar los campos después de la actualización exitosa
-                    event.target.querySelector('#new-email-input').value = ''
-                    event.target.querySelector('#new-email-confirm-input').value = ''
-                    event.target.querySelector('#email-password-input').value = ''
-
+                onChangeEmail()
+                console.log('email changed')
+                 
                 setSuccessMessage('E-mail succefully updated')
                     
-            
-                onChangeEmail()
-
             
             })
 
@@ -46,27 +45,26 @@ export default function Profile({ onChangeEmail, onChangePassword }) {
     const handleChangePasswordSubmit = (event) => {
         event.preventDefault()
 
-        const password = event.target.querySelector('#current-password-input').value
-        const newPassword = event.target.querySelector('#new-password-input').value
-        const newPasswordConfirm = event.target.querySelector('#new-password-confirm-input').value
+        const passwordInput = event.target.querySelector('#current-password-input')
+        const newPasswordInput = event.target.querySelector('#new-password-input')
+        const newPasswordConfirmInput = event.target.querySelector('#new-password-confirm-input')
+
+        const password = passwordInput.value
+        const newPassword = newPasswordInput.value
+        const newPasswordConfirm = newPasswordConfirmInput.value
 
         try {
             logic.changeUserPassword(password, newPassword, newPasswordConfirm, error => {
-
+                 
                 if(error) {
                     context.handleError(error)
                     return
                 }
 
+                onChangePassword()
+                alert('password changed')
                             
-                    // Limpiar los campos después de la actualización exitosa
-                    event.target.querySelector('#current-password-input').value = ''
-                    event.target.querySelector('#new-password-input').value = ''
-                    event.target.querySelector('#new-password-confirm-input').value = ''
-                    alert('email changed')
-                    setSuccessMessage('Password succefully updated')
-
-                    onChangePassword()
+                setSuccessMessage('Password succefully updated')
             
             })
         } catch(error) {

@@ -17,7 +17,8 @@ import {
     retrieveFavPostsHandler,
     changeUserEmailHandler,
     changeUserPasswordHandler,
-    commentPostHandler
+    commentPostHandler,
+    retrieveUserPostsHandler
 } from './handlers/index.js'
 
 mongoose.connect(process.env.TEST_MONGODB_URL )
@@ -40,6 +41,8 @@ mongoose.connect(process.env.TEST_MONGODB_URL )
         server.get('/users', retrieveUserHandler)
 
         server.get('/posts', retrievePostsHandler)
+
+        server.get('/users/posts', retrieveUserPostsHandler)
 
         server.post('/posts', jsonBodyParser, createPostHandler)
 
