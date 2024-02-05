@@ -1,144 +1,122 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
-/* resets */
-* {
-  font-family: Inter;
-  font-size: 1rem;
-}
 
-html {
-  scroll-behavior: smooth;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html, body {
-  margin: 0;
-}
+@layer components {
+   /* library */
 
-/* variables */
-/* library */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-}
+   .form {
+    @apply flex flex-col max-w-[240px] gap-[5px];
+   }
 
-.container--horizontal {
-  flex-direction: row;
-  justify-content: center;
-}
+   .label {
+    @apply font-bold;
+   }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  max-width: 240px;
-  gap: 5px;
-}
+   .input {
+    @apply  border-[2px] border-solid border-black p-[5px];
+   }
 
-.label {
-  font-weight: bold;
-}
+   .button {
+    @apply border-[2px] border-solid border-black p-[5px] bg-[transparent] font-bold;
+   }
 
-.input {
-  border: 2px solid black;
-  padding: 5px;
-}
+   .link {
+    @apply decoration-[none] text-black visited:text-black before:content-['[_'] after:content-['_]'];
+   }
 
-.button {
-  border: 2px solid black;
-  padding: 5px;
-  background-color: transparent;
-  font-weight: bold;
-}
+   .container {
+    @apply flex flex-col items-center gap-[1rem] p-[1rem];
+   }
 
-.link {
-  text-decoration: none;
-  color: black;
-}
-.link:visited {
-  color: black;
-}
-.link::before {
-  content: "[ ";
-}
-.link::after {
-  content: " ]";
-}
-
-/* custom compos */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-}
-
-.new-post {
-  margin-bottom: 1rem;
-}
-
-.post {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.post-image {
-  max-width: 320px;
-}
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.posts {
-  background-color: yellow;
-  margin-bottom: 3rem;
-}
-
-@media (min-width: 768px) {
-  .posts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+   .container--horizontal {
+    @apply flex-row justify-center;
   }
-}
-@media (min-width: 1024px) {
-  .posts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+  /* custom */
+
+  .header {
+    @apply flex items-center justify-between p-[0.5rem];
   }
-}
-.footer {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 3rem;
-  
+
+  .new-post {
+    @apply mb-[1rem];
+  }
+
+    
+  .post {
+    @apply flex flex-col items-center;
+  }
+
+  .post-image {
+    @apply max-w-[320px];
+  }
+
+
+  .post-actions {
+    @apply flex flex-col justify-between gap-[.5rem];
+  }
+
+  .posts {
+    @apply mb-[3rem] bg-amber-300 md:grid md:grid-cols-2 lg:grid-cols-3;
+
+  }
+
+      .footer {
+      @apply bg-white flex flex-col justify-center items-center fixed bottom-0 w-full min-h-[3rem];
+    }
+
+    
+  .Feedback {
+    @apply fixed top-0 w-full box-border;
+  }
+
+  .Feedback--debug {
+    @apply bg-[yellowgreen];
+  }
+
+  .Feedback--info {
+    @apply bg-[dodgerblue];
+  }
+
+  .Feedback--warn {
+    @apply bg-[gold];
+  }
+
+  .Feedback--error {
+    @apply bg-[orange];
+  }
+
+  .Feedback--fatal {
+    @apply bg-[red] text-white;
+  }
+
   /* css nuevo para el mensaje de exito de Profile*/
-}
 
 .success-message-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  position: relative;
+  @apply flex justify-center items-center relative h-12;
 }
 
 .success-message {
-  color: #4CAF50;
-  background-color: #DFF2BF;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #4CAF50;
-  border-radius: 4px;
-  position: absolute;
-  top: 0;
+  @apply text-white bg-white p-[10px] mt-[10px] border-[1px] border-solid rounded absolute;
+  
+}
+    
 }
 
-/*# sourceMappingURL=index.css.map */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
