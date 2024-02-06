@@ -19,16 +19,10 @@ function Login(props) {
         const password = passwordInput.value
 
         try {
-            logic.loginUser(email, password, error => {
-                if (error) {
-                    context.handleError(error)
-
-                    return
-                }
-
-                //setTimeout(() => props.onSuccess(), 2000)
-                props.onSuccess()
-            })
+            logic.loginUser(email, password)
+               .then(() =>  props.onSuccess())
+               .catch(error => context.handleError(error))
+                        
         } catch (error) {
             context.handleError(error)
         }

@@ -4,11 +4,9 @@ import createPost from './createPost.js'
 import { User } from '../data/models.js'
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
-    .then(() => User.deleteMany())
-    .then(() => User.create({ name: 'Peter Pan', email: 'peter@pan.com', password: '123123123' }))
-    .then(user => {
+    .then(() => {
         try {
-            createPost(user.id, 'https://media.istockphoto.com/id/181072765/es/foto/lechuga-aislado.jpg?s=612x612&w=0&k=20&c=7spdLdTK_iyTUdpdp6cjdHkDE9dCkahoTtnOvQYY8mE=', 'Mensaje de prueba')
+            createPost('65c2b7788c61deb37111c081', 'https://fastly.picsum.photos/id/1061/536/354.jpg?hmac=8cdmqmsElSk7dkolhCRglVqgKnGmq_OjxXZnsThorXc', 'my city!')
                 .then(() => console.log('created'))
                 .catch(error => console.error(error))
         } catch (error) {   

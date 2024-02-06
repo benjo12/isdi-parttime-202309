@@ -8,6 +8,7 @@ import random from './helpers/random.js'
 import registerUser from './registerUser.js'
 import { errors } from 'com'
 import { User } from '../data/models.js'
+import bcrypt from 'bcryptjs'
 
 const { DuplicityError } = errors
 
@@ -28,7 +29,9 @@ describe('registerUser', () => {
                         expect(user).to.exist
                         expect(user.name).to.equal(name)
                         expect(user.email).to.equal(email)
-                        expect(user.password).to.equal(password)
+                        
+                        return bcrypt.compare(password, user.password)
+                           .then(match => expect(match).to.be.true)
                     })
             })
     })
