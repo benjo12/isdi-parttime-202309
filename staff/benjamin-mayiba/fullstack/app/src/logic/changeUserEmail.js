@@ -1,42 +1,31 @@
 import { validate, errors } from 'com'
-
 import context from './context'
 
+const { SystemError } = errors
 
-function changeUserEmail(newEmail, newEmailConfirm, password, callback) {
+function changeUserEmail(newEmail, newEmailConfirm, password) {
   validate.email(newEmail)
   validate.email(newEmailConfirm)
   validate.password(password)
-  validate.function(callback, 'callback')
-  
+
   const req = {
-    method: 'POST',
+    method: 'PATCH', // Aquí se debe corregir a 'PATCH'
     headers: {
-       Authorization: `Bearer ${context.token}`,
+      Authorization: `Bearer ${context.token}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ newEmail, newEmailConfirm, password })
   }
 
-  fetch(`${import.meta.env.VITE_API_URL}/users/change-email`, req)   
-    .then(res => {
-       
+  return fetch(`${import.meta.env.VITE_API_URL}/users/change-email`, req)
+    .catch(error => { throw new SystemError(error.message) })  // maneja errores conexión 
+    .then(res => {  
       if (!res.ok) {
-        res.json()
-          .then(body => callback(new errors[body.error](body.message)))
-          .catch(error => callback(error))
-          
-        return
+        return res.json()
+          .catch(error => { throw new SystemError(error.message) })
+          .then(body => { throw new errors[body.error](body.message) });     
       }
-      
-      callback(null)
-    })
-    .catch(error =>{
-      
-      callback(error)
-    })
-      
-    
+    });
 }
 
-export default changeUserEmail
+export default changeUserEmail;

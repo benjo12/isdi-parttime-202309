@@ -34,8 +34,8 @@ mongoose.connect(process.env.TEST_MONGODB_URL )
         server.post('/users', jsonBodyParser, registerUserHandler)
 
         server.post('/users/auth', jsonBodyParser, authenticateUserHandler)
-        server.post('/users/change-email', jsonBodyParser,changeUserEmailHandler)
-        server.post('/users/change-password', jsonBodyParser, changeUserPasswordHandler)
+        server.patch('/users/change-email', jsonBodyParser,changeUserEmailHandler)
+        server.patch('/users/change-password', jsonBodyParser, changeUserPasswordHandler)
 
 
         server.get('/users', retrieveUserHandler)
