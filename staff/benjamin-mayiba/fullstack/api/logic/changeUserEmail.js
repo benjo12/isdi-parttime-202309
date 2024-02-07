@@ -16,11 +16,11 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password) {
         })
         .then(user => {
             if (!user) {
-                throw new NotFoundError('User not found')
+                throw new NotFoundError('user not found')
             }
 
             if (newEmail !== newEmailConfirm) {
-                throw new ContentError('New email and its confirmation do not match')
+                throw new ContentError('new email and its confirmation do not match')
             }
 
             return bcrypt.compare(password, user.password)
@@ -29,7 +29,7 @@ function changeUserEmail(userId, newEmail, newEmailConfirm, password) {
                 })
                 .then(match => {
                     if (!match) {
-                        throw new CredentialsError('Wrong password')
+                        throw new CredentialsError('wrong password')
                     }
 
                     user.email = newEmail

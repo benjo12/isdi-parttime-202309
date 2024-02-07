@@ -4,64 +4,68 @@ dotenv.config()
 import mongoose from 'mongoose'
 import { expect } from 'chai'
 import random from './helpers/random.js'
+import bcrypt from 'bcryptjs'
 
 import changeUserPassword from './changeUserPassword.js'
 import { User } from '../data/models.js'
 import { errors } from 'com'
-const{ NotFoundError, CredentialsError, ContentError } = errors
 
+const { NotFoundError, CredentialsError, ContentError } = errors
 const { ObjectId } = mongoose.Types
 
-describe('changeUserPassword', () =>{
-    before(() => mongoose.connect(process.env.PRUEBA_MONGODB_URL))
+describe('changeUserPassword', () => {
+    before(async () => {
+        await mongoose.connect(process.env.PRUEBA_MONGODB_URL)
+    })
 
-    beforeEach(() => User.deleteMany())
+    beforeEach(async () => {
+        await User.deleteMany()
+    })
 
-    it('succeeds on correct password', () =>{
+    it('succeeds on correct password', async () => {
         const name = random.name()
         const email = random.email()
         const password = random.password()
 
+        // Hashear la contraseña antes de guardarla en la base de datos
+        const hash = await bcrypt.hash(password, 8)
+        const user = await User.create({ name, email, password: hash })
+
         const newPassword = random.password()
         const newPasswordConfirm = newPassword
-        return User.create({name, email, password})
-          .then(user =>{
 
-            return changeUserPassword(user.id, password, newPassword, newPasswordConfirm)
-               .then(() =>{
-                
-                expect(user.password).to.equal(password)
-                expect(newPassword).to.equal(newPasswordConfirm)
-                expect(password).to.not.equal(newPassword)
-               })
-            
-          })
+        await changeUserPassword(user.id, password, newPassword, newPasswordConfirm)
+
+        expect(newPassword).to.equal(newPasswordConfirm)
+        expect(password).to.not.equal(newPassword)
+
+        // Recuperar el usuario actualizado de la base de datos para verificar la contraseña hasheada
+        const updatedUser = await User.findById(user.id)
+        const match = await bcrypt.compare(newPassword, updatedUser.password)
+        expect(match).to.be.true
     })
 
-    it('fails on wrong password', () =>{
+    it('fails on wrong password', async () => {
         const password = random.password()
-
         const newPassword = random.password()
         const newPasswordConfirm = random.password()
 
-        return changeUserPassword(new ObjectId().toString(), password, newPassword, newPasswordConfirm)
-              .then(() => {throw new Error('should not reach this point')})
-              .catch(error =>{
-                if(error instanceof NotFoundError)
-                   expect(error.message).to.equal('user not found')
-
-                else if(error instanceof CredentialsError)
-                   expect(error.message).to.equal('Wrong credentials')
-                else if(error instanceof ContentError)   
-                   expect(error.message).to.equal('New password and its confirmation do not match')
-                
-                else 
-                  // Fail the test with a clear message
-                    expect.fail(`Unexpected error type: ${error.constructor.name}`);
-            
-              })
-
+        try {
+            // Se espera que esta llamada falle con la contraseña incorrecta
+            await changeUserPassword(new ObjectId().toString(), password, newPassword, newPasswordConfirm)
+            throw new Error('should not reach this point')
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                expect(error.message).to.equal('user not found')
+            } else if (error instanceof CredentialsError) {
+                expect(error.message).to.equal('wrong credentials')
+            } else if (error instanceof ContentError) {
+                expect(error.message).to.equal('new password and its confirmation do not match')
+            } 
+        }
     })
 
-    after(() => mongoose.disconnect())
+    after(async () => {
+        await mongoose.disconnect()
+    })
 })

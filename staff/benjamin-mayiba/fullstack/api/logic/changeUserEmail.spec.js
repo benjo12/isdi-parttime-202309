@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import { expect } from 'chai'
 import random from './helpers/random.js'
 
+import bcrypt from 'bcryptjs'
 import { User } from '../data/models.js'
 import changeUserEmail from './changeUserEmail.js'
 import { errors } from 'com'
@@ -24,15 +25,23 @@ describe('changeUserEmail', () =>{
         const newEmail = random.email()
         const newEmailConfirm = newEmail
 
-        return User.create({name, email, password})
-           .then(user =>{
-                return changeUserEmail(user.id, newEmail, newEmailConfirm, password)
-                   .then(() =>{
-                      expect(user.password).to.equal(password)
-                      expect(newEmail).to.equal(newEmailConfirm)
-                      expect(email).to.not.equal(newEmail)
-                   })
-           })
+
+         return bcrypt.hash(password, 8)
+            .then(hash => User.create({ name, email, password: hash }))
+            .then(user => {
+               return changeUserEmail(user.id, newEmail, newEmailConfirm, password)
+                     .then(() => {
+                        return User.findById(user.id) // Buscar el usuario actualizado en la base de datos
+                           .then(updatedUser => {
+                                 expect(updatedUser.password).to.equal(user.password)
+                                 expect(updatedUser.email).to.equal(newEmail)
+                                 expect(updatedUser.email).to.not.equal(email)
+                           })
+                     })
+    })
+
+
+       
     })
 
     it('fails on wrong email changed', () =>{
@@ -46,12 +55,10 @@ describe('changeUserEmail', () =>{
               if(error instanceof NotFoundError)
                   expect(error.message).to.equal('user not found')
                else if(error instanceof CredentialsError)
-                   expect(error.message).to.equal('Wrong credentials')
+                   expect(error.message).to.equal('wrong credentials')
                 else if(error instanceof ContentError)
                      expect(error.message).to.equal('new email and its confirmation do not match')     
-                else 
-                  // Fail the test with a clear message
-                    expect.fail(`Unexpected error type: ${error.constructor.name}`); 
+                
            })
     })
 

@@ -13,44 +13,48 @@ import bcrypt from 'bcryptjs'
 const { DuplicityError } = errors
 
 describe('registerUser', () => {
-    before(() => mongoose.connect(process.env.PRUEBA_MONGODB_URL))
+    before(async () => await mongoose.connect(process.env.PRUEBA_MONGODB_URL))
 
-    beforeEach(() => User.deleteMany())
+    beforeEach(async () => await User.deleteMany())
 
-    it('succeds on new user', () => {
+    it('succeds on new user', async () => {
         const name = random.name()
         const email = random.email()
         const password = random.password()
 
-        return registerUser(name, email, password)
-            .then(() => {
-                return User.findOne({ email })
-                    .then(user => {
-                        expect(user).to.exist
-                        expect(user.name).to.equal(name)
-                        expect(user.email).to.equal(email)
+        await registerUser(name, email, password) 
+
+        const user = await User.findOne({ email })
+
+        expect(user).to.exist
+        expect(user.name).to.equal(name)
+        expect(user.email).to.equal(email)
                         
-                        return bcrypt.compare(password, user.password)
-                           .then(match => expect(match).to.be.true)
-                    })
-            })
+        const match = await bcrypt.compare(password, user.password)
+        expect(match).to.be.true
+                    
+            
     })
 
-    it('fails on already existing user', () => {
+    it('fails on already existing user', async () => {
         const name = random.name()
         const email = random.email()
         const password = random.password()
 
-        return User.create({ name, email, password })
-            .then(() => {
-                return registerUser(name, email, password)
-                    .then(() => { throw new Error('should not reach this point') })
-                    .catch(error => {
-                        expect(error).to.be.instanceOf(DuplicityError)
-                        expect(error.message).to.equal('user already exists')
-                    })
-            })
+        await User.create({ name, email, password })
+        
+        try {
+            await registerUser(name, email, password)
+
+            throw new Error('should not reach this point')
+
+        } catch (error) {
+            expect(error).to.be.instanceOf(DuplicityError)
+            expect(error.message).to.equal('user already exists')
+        }   
+                
+            
     })
 
-    after(() => mongoose.disconnect())
+    after( async () => await mongoose.disconnect())
 })
