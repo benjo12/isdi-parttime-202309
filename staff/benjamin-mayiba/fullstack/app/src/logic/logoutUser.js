@@ -1,14 +1,11 @@
 import { validate } from 'com'
 
-import context from "./context"
-
-function logoutUser(callback) {
+export default function logoutUser(callback) {
     validate.function(callback, 'callback')
 
-    context.token = null
-    context.sessionUserId = null
+    this.token = null
+    this.sessionUserId = null
 
     callback(null)
 }
 
-export default logoutUser

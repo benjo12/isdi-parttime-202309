@@ -1,42 +1,52 @@
 import { validate, errors } from 'com'
-
-import context from './context'
-
 const { SystemError } = errors
 
-function loginUser(email, password) {
+
+export default function loginUser(email, password) {
     validate.email(email)
-    validate.password(password)   
+    validate.password(password)
 
-    const req = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    }
+    return (async () => {
+        const req = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        }
 
-   return fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
-        .catch(error => {throw SystemError(error.message)})
-        .then(res => {
-            if (!res.ok) {
-                return res.json()
-                    .catch(error => {throw SystemError(error.message)})
-                    .then(body => {throw new errors[body.error](body.message)})
+        let res
+
+        try {
+            res = await fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+
+        if (!res.ok) {
+            let body
+
+            try {
+                body = await res.json()
+            } catch (error) {
+                throw new SystemError(error.message)
             }
 
-           return res.json()
-                .catch(error => {throw SystemError(error.message)})
-                .then(token => {
-                    const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
-                    const payloadJson = atob(payloadB64)
-                    const payload = JSON.parse(payloadJson)
-                    const userId = payload.sub
+            throw new errors[body.error](body.message)
+        }
 
-                    context.sessionUserId = userId
-                    context.token = token
-                })
-        })        
+        try {
+            const token = await res.json()
+
+            const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
+            const payloadJson = atob(payloadB64)
+            const payload = JSON.parse(payloadJson)
+            const userId = payload.sub
+
+            this.sessionUserId = userId
+            this.token = token
+        } catch (error) {
+            throw new SystemError(error.message)
+        }
+    })()
 }
-
-export default loginUser

@@ -1,16 +1,13 @@
 import { validate, errors } from 'com'
 
-import context from './context'
-
-
-function toggleLikePost(postId, callback) {
+export default function toggleLikePost(postId, callback) {
     validate.text(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${this.token}`
         }
     }
 
@@ -28,5 +25,3 @@ function toggleLikePost(postId, callback) {
         })
         .catch(error => callback(error))
 }
-
-export default toggleLikePost

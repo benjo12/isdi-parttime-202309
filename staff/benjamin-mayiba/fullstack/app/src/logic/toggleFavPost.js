@@ -1,16 +1,15 @@
 import { validate, errors } from 'com'
 
-import context from './context'
 
 
-function toggleFavPost(postId, callback) {
+export default function toggleFavPost(postId, callback) {
     validate.text(postId, 'post id')
     validate.function(callback, 'callback')
 
     const req = {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${context.token}`
+            Authorization: `Bearer ${this.token}`
         }
     }
 
@@ -28,5 +27,3 @@ function toggleFavPost(postId, callback) {
         })
         .catch(error => callback(error))
 }
-
-export default toggleFavPost

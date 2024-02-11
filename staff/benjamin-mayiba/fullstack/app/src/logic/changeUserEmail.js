@@ -1,9 +1,8 @@
 import { validate, errors } from 'com'
-import context from './context'
 
 const { SystemError } = errors
 
-function changeUserEmail(newEmail, newEmailConfirm, password) {
+export default function changeUserEmail(newEmail, newEmailConfirm, password) {
   validate.email(newEmail)
   validate.email(newEmailConfirm)
   validate.password(password)
@@ -11,7 +10,7 @@ function changeUserEmail(newEmail, newEmailConfirm, password) {
   const req = {
     method: 'PATCH', // Aquí se debe corregir a 'PATCH'
     headers: {
-      Authorization: `Bearer ${context.token}`,
+      Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ newEmail, newEmailConfirm, password })
@@ -28,4 +27,4 @@ function changeUserEmail(newEmail, newEmailConfirm, password) {
     });
 }
 
-export default changeUserEmail;
+

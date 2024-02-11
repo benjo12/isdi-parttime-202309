@@ -1,9 +1,8 @@
 import { validate, errors } from 'com'
-import context from './context'
 
 const { SystemError } = errors
 
-function changeUserPassword(password, newPassword, newPasswordConfirm) {
+export default function changeUserPassword(password, newPassword, newPasswordConfirm) {
     // Validar las contraseñas
     validate.password(password, 'password')
     validate.password(newPassword, 'new password')
@@ -13,7 +12,7 @@ function changeUserPassword(password, newPassword, newPasswordConfirm) {
     const req = {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${String(context.token)}`,
+            Authorization: `Bearer ${String(this.token)}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ password, newPassword, newPasswordConfirm })
@@ -34,4 +33,3 @@ function changeUserPassword(password, newPassword, newPasswordConfirm) {
         })
 }
 
-export default changeUserPassword;
