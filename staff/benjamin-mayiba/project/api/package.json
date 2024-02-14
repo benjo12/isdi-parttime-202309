@@ -1,0 +1,27 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "watch": "node --watch .",
+    "inspect": "node --inspect-brk .",
+    "test": "mocha logic/*.spec.js",
+    "test-inspect": "mocha --inspect-brk logic/*.spec.js",
+    "test-coverage": "nyc --cache=false --reporter=text-summary --reporter=html mocha logic/*.spec.js",
+    "test-what": "mocha",
+    "test-inspect-what": "mocha --inspect-brk"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mocha": "^10.3.0",
+    "mongoose": "^8.1.2"
+  },
+  "type": "module"
+}

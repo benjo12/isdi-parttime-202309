@@ -48,4 +48,4 @@ Event:
 - service  (reference to Service.id)
 - date (date)
 - time (time)
-- status (string)
+
