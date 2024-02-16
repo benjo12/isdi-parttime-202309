@@ -1,10 +1,13 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import mongoose from 'mongoose'
 
 import registerUser from './registerUser.js'
 
 (async () =>{
    
-    await  mongoose.connect('mongodb://127.0.0.1:27017/project')
+    await  mongoose.connect(process.env.MONGODB_URL)
     
     try {
         await registerUser('De Borah', 'debo@rah.com', '123123123')

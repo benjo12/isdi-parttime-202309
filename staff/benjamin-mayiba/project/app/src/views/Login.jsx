@@ -1,7 +1,9 @@
+import logic from '../logic'
+
 export default function Login(props) {
     console.log('Login')
 
-    function handleSubmit(event) {
+    const handleSubmit = async event => {
         event.preventDefault()
 
         const emailInput = event.target.querySelector('#email-input')
@@ -12,7 +14,7 @@ export default function Login(props) {
 
         // console.log(email, password)
         try {
-            logic.loginUser(email, password)
+            await logic.loginUser(email, password)
 
             props.onSuccess()
         } catch (error) {
