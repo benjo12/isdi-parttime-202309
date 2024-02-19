@@ -18,7 +18,7 @@ const { SystemError } = errors
         let res
 
         try {
-            res = await fetch(`${import.meta.env.VITE_API_URL}/users/auth`, req)
+            res = await fetch('http://localhost:3000/users/auth', req)
         } catch (error) {
             throw new SystemError(error.message)
         }

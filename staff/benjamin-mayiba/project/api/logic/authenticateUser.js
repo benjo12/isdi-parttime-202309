@@ -1,24 +1,26 @@
-import { validate, errors } from 'com';
-import { User } from '../data/models.js';
+import { validate, errors } from 'com'
+import { User } from '../data/models.js'
+const { SystemError, CredentialsError, NotFoundError } = errors
 
-const { SystemError, CredentialsError, NotFoundError } = errors;
+export default function authenticateUser(email, password){
+    validate.email(email, 'email')
+     validate.password(password, 'password')
+     
+   return (async () => {
+        let user
 
-export default async function authenticateUser(email, password) {
-    try {
-        validate.email(email, 'email');
-        validate.password(password, 'password');
-        
-        const user = await User.findOne({ email });
-        if (!user) {
-            throw new NotFoundError('User not found');
+        try {
+            user = await User.findOne({ email })
+            if(!user)
+               throw new NotFoundError('user not found')
+        } catch (error) {
+            throw new SystemError(error.message)
         }
-        
-        if (user.password !== password) {
-            throw new CredentialsError('Wrong password');
-        }
 
-        return user.id;
-    } catch (error) {
-        throw new SystemError(error.message);
-    }
+         if (user.password !== password) 
+            
+            throw new CredentialsError('wrong password')
+
+        return user.id
+    })()
 }

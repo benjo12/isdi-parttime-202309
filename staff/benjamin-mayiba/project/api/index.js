@@ -8,9 +8,13 @@ import express from 'express'
 
 import registerUser from './logic/registerUser.js'
 import authenticateUser from './logic/authenticateUser.js'
+import retrieveUser from './logic/retrieveUser.js'
+import createService from './logic/createService.js'
+import createEvent from './logic/createEvent.js'
+
 const { SystemError, DuplicityError, NotFoundError, ContentError, CredentialsError } = errors
 
-mongoose.connect('mongodb://127.0.0.1:27017/project')
+mongoose.connect(process.env.MONGODB_URL)
   .then(() =>{
             const server = express()
         const jsonBodyParser = express.json()
@@ -24,7 +28,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/project')
 
             next()
         })
-
+          // crear un usuario
         server.post('/users', jsonBodyParser, (req, res) =>{
             try {
 
@@ -48,7 +52,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/project')
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         })
-
+         // authenticar un usuario
         server.post('/users/auth', jsonBodyParser, async (req, res) => {
             try {
                 const { email, password } = req.body;
@@ -66,6 +70,70 @@ mongoose.connect('mongodb://127.0.0.1:27017/project')
                 res.status(status).json({ error: error.constructor.name, message: error.message });
             }
         });
+       // Obtener usuario
+        server.get('/users', async (req, res) =>{
+             try {
+                const userId = req.headers.authorization.substring(7)
+
+                const user = await retrieveUser(userId)
+
+                res.json(user)
+                
+             } catch (error) {
+                let status = 500
+
+                if(error instanceof NotFoundError)
+                    status = 404
+                else if(error instanceof ContentError || error instanceof TypeError)
+                    status = 406    
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+             }
+        })
+  // Crear servicio
+        server.post('/services', jsonBodyParser, async(req, res) =>{
+            try{
+                const userId = req.headers.authorization.substring(7)
+                
+                const {name, description} = req.body
+                
+            const serviceId= await createService(userId,name, description )
+            res.json(serviceId)
+            
+            }catch(error){
+            let status = 500
+            if(error instanceof NotFoundError){
+                status = 404
+            }
+            else if(error instanceof ContentError || error instanceof TypeError){
+                        status = 406
+            }
+                
+            res.status(status).json({error: error.constructor.name, message: error.message}) 
+            }
+        })
+
+        // crear un servicio
+         server.post('/events', jsonBodyParser, async(req, res) =>{
+            try{
+                const userId = req.headers.authorization.substring(7)
+                
+                const { serviceId, date, time } = req.body
+                
+            await createEvent(userId ,serviceId, date, time )
+                res.status(201).send()
+            
+            }catch(error){
+            let status = 500
+            if(error instanceof NotFoundError){
+                status = 404
+            }
+            else if(error instanceof ContentError || error instanceof TypeError){
+                        status = 406
+            }
+                
+            res.status(status).json({error: error.constructor.name, message: error.message}) 
+            }
+        })
 
         server.listen(3000, () => console.log('server is up'))
  })

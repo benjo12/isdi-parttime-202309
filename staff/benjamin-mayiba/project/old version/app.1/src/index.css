@@ -4,6 +4,11 @@
     font-family: Inter;
 }
 
+.home-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
 .view {
     display: flex;
@@ -17,18 +22,4 @@
     flex-direction: column;
     max-width: 240px;
     gap: 5px;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header h1 {
-  margin-left: 10px;
-}
-
-.header button {
-  margin-right: 10px;
-  background-color: #b0aec8;
 }

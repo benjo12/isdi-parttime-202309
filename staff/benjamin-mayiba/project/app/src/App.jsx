@@ -1,30 +1,51 @@
-import React from 'react'
-import Login from './views/Login'
-import Register from './views/Register'
-import Home from './views/Home'
+import React, { useState } from 'react';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'; // Añade Navigate aquí
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Home from './pages/Home';
 
 function App() {
-  console.log('App')
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
-  const [view, setView] = React.useState('login')
-
-  function handleRegisterShow() {
-    setView('register')
+  const handleLoginShow = () =>{
+    setIsAuthenticated(false);
+    navigate('/login');
   }
 
-  function handleLoginShow() {
-    setView('login')
+  const handleRegisterShow = () =>{
+      setIsAuthenticated(false);
+      navigate('/register');
   }
 
   function handleHomeShow() {
-    setView('home')
+    setIsAuthenticated(true);
+    navigate('/home');
   }
 
-  return <>
-    {view === 'login' && <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />}
-    {view === 'register' && <Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />}
-    {view === 'home' && <Home onLogoutClick={handleLoginShow} />}
-  </>
+  function handleLogout() {
+    setIsAuthenticated(false);
+    navigate('/login');
+  }
+
+  return (
+    <Routes>
+      <Route path="/login" element={<Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
+      <Route path="/register" element={<Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
+      <Route path="/home" element={<Home onLogout={handleLogout} />} />
+      {/* Redirigir de manera condicional */}
+      <Route
+        path="/*"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/home" />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+    </Routes>
+  );
 }
 
-export default App
+export default App;

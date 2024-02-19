@@ -24,6 +24,11 @@ const user = new Schema({
 })
 
 const service = new Schema({
+    author: {
+        type: ObjectId,
+        ref: 'User',
+        required: true
+    },
      name: {
         type: String,
         required: true
@@ -37,15 +42,15 @@ const service = new Schema({
 const event = new Schema({
     user: {
         type: ObjectId,
-        ref: 'User' 
+        ref: 'User'
     },
     service: {
         type: ObjectId,
         ref: 'Service'
     },
     date: {
-        type: Date,
-        default: Date.now   // fecha y hora del evento
+        type: String, // Cambiado a tipo String
+        default: () => new Date().toISOString().slice(0, 10) // Fecha en formato ISO (YYYY-MM-DD)
     },
     time: {
         type: String  // hora del evento en formato HH:MM
