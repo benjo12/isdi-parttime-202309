@@ -1,34 +1,26 @@
 import { validate, errors } from 'com';
-import { Service, User, Event } from '../data/models.js';
+import { User, Event } from '../data/models.js';
 
 const { NotFoundError, SystemError } = errors;
 
-export default async function retrieveEvent(userId, serviceId) {
+export default async function retrieveEvent(userId) {
     validate.id(userId, 'user id');
-    validate.id(serviceId, 'serviceId');
-   
+
     try {
+        // Validar si el usuario existe
         const user = await User.findById(userId);
         if (!user) {
             throw new NotFoundError('user not found');
         }
 
-        const service = await Service.findById(serviceId);
-        if (!service) {
-            throw new NotFoundError('service not found');
+        // Si el usuario existe, proceder con la búsqueda de eventos asociados
+        const fullEvents = await Event.find({ user: userId }).populate('service').select('-__v').exec();
+
+        if (fullEvents.length === 0) {
+            throw new NotFoundError('events not found for the user');
         }
 
-       const fullEvent = await Event.find({ user: userId, service: serviceId }).populate('service').select('-__v').exec();
-                              
-                              
-                              
-
-       
-        if (fullEvent.length === 0) {
-            throw new NotFoundError('Event not found');
-        }
-       
-        const eventDetails = fullEvent.map(event => {
+        const eventDetails = fullEvents.map(event => {
             return {
                 name: event.service.name,
                 date: event.date,

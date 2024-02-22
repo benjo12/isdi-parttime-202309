@@ -7,9 +7,7 @@ export default async (req, res) => {
   try {
     const userId = req.headers.authorization.substring(7);
 
-    const serviceId = req.query.serviceId;
-
-    const event = await logic.retrieveEvent(userId, serviceId);
+    const event = await logic.retrieveEvent(userId);
     res.json(event);
   } catch (error) {
     let status = 500;

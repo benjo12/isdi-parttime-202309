@@ -42,7 +42,7 @@ mongoose
 
     // obtener eventos
 
-    server.get("/events", jsonBodyParser, retrieveEventHandler);
+    server.get("/events", retrieveEventHandler);
 
     // obtener servicios
 

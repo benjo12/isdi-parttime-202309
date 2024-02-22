@@ -8,35 +8,25 @@ export default async function retrieveService(userId) {
 
     try {
         // Buscar usuario
-        const user = await User.findById(userId)
-        if(!user){
-             throw new NotFoundError('user not found');
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new NotFoundError('user not found');
         }
        
         // Buscar servicios asociados al usuario
-        const services = await Service.find({ author: userId }).populate('author', 'name').select('-__v').lean();
-
+        const services = await Service.find({ author: userId }).exec();
 
         if (!services || services.length === 0) {
             throw new NotFoundError('service not found');
         }
 
-        // Convertir _id en id para cada servicio y para el autor utilizando forEach
-        services.forEach(service => {
-           
-            service.id = service._id.toString();
+        // Crear un nuevo arreglo de objetos con id y nombre de servicio
+        const formattedServices = services.map(service => ({
+            id: service._id.toString(), // Convertir ObjectId a string
+            name: service.name, // Incluir nombre del servicio
+        }));
 
-            if (service.author && service.author._id) {
-                service.author.id = service.author._id.toString();
-                delete service.author._id;
-            }
-           
-            delete service._id;
-           
-
-        });
-
-        return services;
+        return formattedServices;
     } catch (error) {
         throw new SystemError(error.message);
     }
