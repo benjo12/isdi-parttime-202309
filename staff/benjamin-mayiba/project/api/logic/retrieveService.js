@@ -24,6 +24,7 @@ export default async function retrieveService(userId) {
         const formattedServices = services.map(service => ({
             id: service._id.toString(), // Convertir ObjectId a string
             name: service.name, // Incluir nombre del servicio
+            description: service.description,
         }));
 
         return formattedServices;

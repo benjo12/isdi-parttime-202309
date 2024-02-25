@@ -16,20 +16,25 @@ export default async function retrieveEvent(userId) {
         // Si el usuario existe, proceder con la búsqueda de eventos asociados
         const fullEvents = await Event.find({ user: userId }).populate('service').select('-__v').exec();
 
-        if (fullEvents.length === 0) {
-            throw new NotFoundError('events not found for the user');
+        if (!fullEvents) {
+            return []
+        }else{
+
+                const eventDetails = fullEvents.map(event => {
+                return {
+                    name: event.service.name,
+                    date: event.date,
+                    time: event.time
+                };
+            });
+
+            return eventDetails;
         }
 
-        const eventDetails = fullEvents.map(event => {
-            return {
-                name: event.service.name,
-                date: event.date,
-                time: event.time
-            };
-        });
-
-        return eventDetails;
+       
     } catch (error) {
+        
         throw new SystemError(error.message);
+       
     }
 }

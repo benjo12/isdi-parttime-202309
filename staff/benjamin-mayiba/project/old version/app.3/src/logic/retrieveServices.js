@@ -1,20 +1,15 @@
 import context from "./context";
-import { validate, errors } from "com";
+import { errors } from "com";
 
 const { SystemError } = errors;
 
-export default function createService(name, description) {
-  validate.text(name, "name");
-  validate.text(description, "description");
-
+export default function retrieveServices() {
   return (async () => {
     const req = {
-      method: "POST",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${context.sessionUserId}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, description }),
     };
 
     let res;
@@ -32,6 +27,13 @@ export default function createService(name, description) {
       }
 
       throw new errors[body.error](body.message);
+    }
+
+    try {
+      const services = await res.json();
+      return services;
+    } catch (error) {
+      throw new SystemError(error.message);
     }
   })();
 }

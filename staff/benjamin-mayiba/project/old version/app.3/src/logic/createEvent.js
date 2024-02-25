@@ -3,9 +3,10 @@ import { validate, errors } from "com";
 
 const { SystemError } = errors;
 
-export default function createService(name, description) {
-  validate.text(name, "name");
-  validate.text(description, "description");
+export default function createEvent(serviceId, date, time) {
+  validate.id(serviceId, "service id");
+  validate.text(date, "date");
+  validate.text(time, "time");
 
   return (async () => {
     const req = {
@@ -14,23 +15,25 @@ export default function createService(name, description) {
         Authorization: `Bearer ${context.sessionUserId}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, description }),
+      body: JSON.stringify({ serviceId, date, time }),
     };
 
     let res;
+
     try {
-      res = await fetch(`${import.meta.env.VITE_API_URL}/services`, req);
+      res = await fetch(`${import.meta.env.VITE_API_URL}/events`, req);
     } catch (error) {
       throw new SystemError(error.message);
     }
+
     if (!res.ok) {
       let body;
+
       try {
         body = await res.json();
       } catch (error) {
         throw new SystemError(error.message);
       }
-
       throw new errors[body.error](body.message);
     }
   })();
