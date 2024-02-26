@@ -21,10 +21,10 @@ export default function ServiceForm(){
     return (
         <div>
            <form onSubmit={handleSubmit}>
-               <label htmlFor="name-input">Name</label>
+               <label htmlFor="name-input">Name </label>
                <input id="name-input" type='text' value={name} onChange={e => setName(e.target.value)}/>
 
-                <label htmlFor="description-input">Description</label>
+                <label htmlFor="description-input"> Description </label>
                <input id="description-input" type='text' value={description} onChange={e => setDescription(e.target.value)}/>
 
                <button type="submit">Add</button>

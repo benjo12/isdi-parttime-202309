@@ -13,9 +13,9 @@ export default function createEvent(serviceId, date, time) {
       method: "POST",
       headers: {
         Authorization: `Bearer ${context.sessionUserId}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ serviceId, date, time }),
+      body: JSON.stringify({serviceId, date, time })
     };
 
     let res;

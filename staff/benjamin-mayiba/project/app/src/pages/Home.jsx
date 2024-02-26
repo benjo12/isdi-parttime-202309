@@ -10,15 +10,30 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
   const [showServices, setShowServices] = useState(false); // Inicialmente oculto
   const [showEvents, setShowEvents] = useState(true); // Inicialmente visible
-  const [dateTime, setDateTime] = useState(new Date());
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [showAddServices, setShowAddServices] = useState(false); // Inicialmente oculto
 
   useEffect(() => {
-    const intervalId = setInterval(() => {}, 1000); // Actualizar cada segundo
+    const intervalID = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000); // Actualizar cada segundo
 
     // Limpieza del intervalo para evitar fugas de memoria
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => clearInterval(intervalID);
+  }, []); // El efecto se ejecuta solo una vez al montar el componente
+
+  // Función para formatear la hora, minutos y segundos con ceros a la izquierda si es necesario
+  const formatTimeUnit = (unit) => {
+    return unit < 10 ? `0${unit}` : unit;
+  };
+
+  // Función para formatear la fecha en formato DD/MM/YYYY
+  const formatDate = (date) => {
+    const day = formatTimeUnit(date.getDate());
+    const month = formatTimeUnit(date.getMonth() + 1); // Los meses comienzan en 0
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   const handleLogoutClick = (event) => {
     event.preventDefault();
@@ -33,7 +48,7 @@ export default function Home(props) {
   const handleShowEvents = () => {
     setShowServices(false);
     setShowEvents(true);
-    setShowAddServices(false); // Asegurarse de que showAddServices esté desactivado
+    setShowAddServices(false); 
   };
 
   const handleServiceClick = (event) => {
@@ -64,14 +79,15 @@ export default function Home(props) {
     })();
   }, []);
 
-  // Formatear la fecha y la hora
-  const formattedDateTime = dateTime.toLocaleString();
-
   return (
     <div className="home-container">
       <header className="header">
         <div>
-          <p>{formattedDateTime}</p>
+          <p className="time">{`${formatDate(currentDateTime)} ${formatTimeUnit(
+            currentDateTime.getHours()
+          )}:${formatTimeUnit(currentDateTime.getMinutes())}:${formatTimeUnit(
+            currentDateTime.getSeconds()
+          )}`}</p>
           <h1>
             Connected: <a href="">{name}</a>
           </h1>
