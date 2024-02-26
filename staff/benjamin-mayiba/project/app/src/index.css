@@ -11,7 +11,7 @@ html, body {
 }
 
 .home-container {
-  background-image: url(C:\Users\cmayi\isdi-parttime-202309\staff\benjamin-mayiba\project\app\src\logic\images\mx8bzvjg.png);
+  background-image: url('logic/images/mx8bzvjg.png');
   background-position: center;
   background-size: cover;
   height: 100vh;
