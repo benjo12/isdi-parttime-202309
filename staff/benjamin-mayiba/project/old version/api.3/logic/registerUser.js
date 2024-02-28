@@ -1,5 +1,3 @@
-import bcrypt from 'bcryptjs'
-
 import { User } from '../data/models.js'
 import { validate, errors } from 'com'
 
@@ -12,8 +10,7 @@ export default async function registerUser(name, email, password) {
     validate.password(password, 'password')
 
     try {
-        const hash = await bcrypt.hash(password, 8)
-        await User.create({ name, email, password: hash })
+        await User.create({ name, email, password })
     } catch (error) {
         if (error.code === 11000) {
             throw new DuplicityError('user already exists')

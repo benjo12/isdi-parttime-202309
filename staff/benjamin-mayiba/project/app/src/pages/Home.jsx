@@ -75,8 +75,8 @@ export default function Home(props) {
 
         const fullEvents = await logic.retrieveEvent();
         if (Array.isArray(fullEvents) && fullEvents.length > 0) {
-          setEvents(fullEvents);
           fullEvents.reverse();
+          setEvents(fullEvents);
           setShowMessage(false); // Ocultar el mensaje si hay eventos disponibles
         } else {
           setMessage("No pending events");

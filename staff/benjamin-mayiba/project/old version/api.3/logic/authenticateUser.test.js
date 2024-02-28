@@ -7,7 +7,7 @@ import authenticateUser from './authenticateUser.js'
     await mongoose.connect(process.env.MONGODB_URL)
    
     try{
-      const userId = await authenticateUser('debo@rah.com', '123123123')
+      const userId = await authenticateUser('ben@jamin.com', '123123123')
                      console.log('user authenticated', userId)
                      
     }catch(error){

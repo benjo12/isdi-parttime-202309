@@ -10,7 +10,7 @@ import registerUser from './registerUser.js'
     await  mongoose.connect(process.env.MONGODB_URL)
     
     try {
-        await registerUser('Mi Zuki', 'mi@zuki.com', '123123123')
+        await registerUser('De Borah', 'debo@rah.com', '123123123')
 
         console.log('user registered')
         
