@@ -5,6 +5,8 @@ import createService from './createService'
 import createEvent from './createEvent'
 import retrieveServices from './retrieveServices'
 import retrieveEvent from './retrieveEvent'
+import isUserLoggedIn from './isUserLoggedIn'
+import logoutUser from './logoutUser'
 
 const logic = {
     registerUser,
@@ -13,7 +15,9 @@ const logic = {
     createService,
     createEvent,
     retrieveServices,
-    retrieveEvent
+    retrieveEvent,
+    isUserLoggedIn,
+    logoutUser
     
 }
 

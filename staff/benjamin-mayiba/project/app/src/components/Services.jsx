@@ -9,7 +9,7 @@ function Services() {
   const [showEventForm, setShowEventForm] = useState(false); // Estado para controlar la visualización del formulario
   const [selectedServiceId, setSelectedServiceId] = useState(null); // Estado para almacenar el serviceId seleccionado
 
-  const userId = context.sessionUserId; // Obtén el userId de tu lógica de autenticación
+  const userId = context.token; // Obtén el userId de tu lógica de autenticación
 
   useEffect(() => {
     (async () => {

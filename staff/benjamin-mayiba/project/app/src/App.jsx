@@ -3,47 +3,32 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'; // Aña
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import logic from './logic'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginShow = () =>{
-    setIsAuthenticated(false);
-    navigate('/login');
+    //setIsAuthenticated(false);
+    logic.logoutUser(() => navigate("/login"));
   }
 
   const handleRegisterShow = () =>{
-      setIsAuthenticated(false);
+      //setIsAuthenticated(false);
       navigate('/register');
   }
 
   function handleHomeShow() {
-    setIsAuthenticated(true);
-    navigate('/home');
+    //setIsAuthenticated(true);
+    navigate('/');
   }
 
-  function handleLogout() {
-    setIsAuthenticated(false);
-    navigate('/login');
-  }
 
   return (
     <Routes>
-      <Route path="/login" element={<Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
-      <Route path="/register" element={<Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
-      <Route path="/home" element={<Home onLogout={handleLogout} />} />
-      {/* Redirigir de manera condicional */}
-      <Route
-        path="/*"
-        element={
-          isAuthenticated ? (
-            <Navigate to="/home" />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
+      <Route path="/login" element={logic.isUserLoggedIn() ? <Navigate to="/" /> : <Login onRegisterClick={handleRegisterShow} onSuccess={handleHomeShow} />} />
+      <Route path="/register" element={logic.isUserLoggedIn() ? <Navigate to='/'/>:<Register onLoginClick={handleLoginShow} onSuccess={handleLoginShow} />} />
+      <Route path="/*" element={logic.isUserLoggedIn() ? <Home onLogout={handleLoginShow} /> : <Navigate to='/login'/>} />
     </Routes>
   );
 }

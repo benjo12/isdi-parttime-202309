@@ -3,15 +3,16 @@ import logic from "../logic";
 import EventList from "../components/EventList";
 import Services from "../components/Services";
 import ServiceForm from "../components/ServiceForm";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 export default function Home(props) {
   const [name, setName] = useState(null);
   const [events, setEvents] = useState([]);
   const [message, setMessage] = useState("");
-  const [showServices, setShowServices] = useState(false); // Inicialmente oculto
-  const [showEvents, setShowEvents] = useState(true); // Inicialmente visible
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const [showAddServices, setShowAddServices] = useState(false); // Inicialmente oculto
+  const [showMessage, setShowMessage] = useState(true); // Controla la visibilidad del mensaje
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const intervalID = setInterval(() => {
@@ -40,22 +41,30 @@ export default function Home(props) {
     props.onLogout();
   };
   const handleShowServices = () => {
-    setShowServices(true);
-    setShowEvents(false);
-    setShowAddServices(false); // Asegurarse de que showAddServices esté desactivado
+    navigate("/services");
+    setShowMessage(false); // Oculta el mensaje al cambiar de página
   };
 
-  const handleShowEvents = () => {
-    setShowServices(false);
-    setShowEvents(true);
-    setShowAddServices(false); 
+  const handleShowEvents = async () => {
+    navigate("/events");
+    try {
+      const fullEvents = await logic.retrieveEvent();
+      if (Array.isArray(fullEvents) && fullEvents.length === 0) {
+        setMessage("No pending events");
+        setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
+      } else {
+        setEvents(fullEvents);
+        setShowMessage(false); // Oculta el mensaje si hay eventos disponibles
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleServiceClick = (event) => {
     event.preventDefault();
-    setShowAddServices(true);
-    setShowEvents(false);
-    setShowServices(false);
+    navigate("/addService ");
+    setShowMessage(false);
   };
 
   useEffect(() => {
@@ -65,18 +74,21 @@ export default function Home(props) {
         setName(user.name);
 
         const fullEvents = await logic.retrieveEvent();
-        if (fullEvents.length === 0) {
-          //alert('No hay eventos pendientes');
-          setMessage("No pending events");
-        } else {
-          fullEvents.reverse();
-
+        if (Array.isArray(fullEvents) && fullEvents.length > 0) {
           setEvents(fullEvents);
+          fullEvents.reverse();
+          setShowMessage(false); // Ocultar el mensaje si hay eventos disponibles
+        } else {
+          setMessage("No pending events");
+          setShowMessage(true); // Muestra el mensaje al inicio si no hay eventos disponibles
         }
       } catch (error) {
         alert(error.message);
       }
     })();
+
+    // Llamar a handleShowEvents al cargar la página para mostrar los eventos por defecto
+    handleShowEvents();
   }, []);
 
   return (
@@ -107,13 +119,21 @@ export default function Home(props) {
       {/* Renderizar EventList con los eventos solo si hay eventos presentes */}
       <div className="event">
         <div className="event-container">
-          {showEvents && message && <p>{message}</p>}
-          {showEvents && events.length > 0 && <EventList events={events} />}
+          {/* Mensaje de eventos */}
+          {showMessage && <p>{message}</p>}
 
-          {/* Mostrar el componente Services si showServices es true */}
-          {showServices && <Services />}
-          {/* Mostrar ServiceForm si showAddServices es true */}
-          {showAddServices && <ServiceForm />}
+          <Routes>
+            <Route
+              path="/events"
+              element={events.length > 0 ? <EventList events={events} /> : null}
+            />
+
+            {/* Mostrar el componente Services si showServices es true */}
+            <Route path="/services" element={<Services />} />
+
+            {/* Mostrar ServiceForm si showAddServices es true */}
+            <Route path="/addService" element={<ServiceForm />} />
+          </Routes>
         </div>
       </div>
     </div>

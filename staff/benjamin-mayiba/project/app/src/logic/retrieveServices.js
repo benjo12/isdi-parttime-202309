@@ -8,7 +8,7 @@ export default function retrieveServices() {
     const req = {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${context.sessionUserId}`,
+        Authorization: `Bearer ${context.token}`,
       },
     };
 

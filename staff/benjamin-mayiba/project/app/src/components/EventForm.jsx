@@ -21,9 +21,9 @@ export default function EventForm({serviceId, onCreateEvent}){
         <div>
             <form onSubmit={handleSubmit}>
 
-               <input id="date-input" type='text' value={date} placeholder='Insert date' onChange={e => setDate(e.target.value)}/>
+               <input id="date-input" type='text' value={date} placeholder='Insert date (YYYY-MM-DD)' onChange={e => setDate(e.target.value)}/>
 
-               <input id="time-input" type='text' value={time} placeholder='Insert time' onChange={e => setTime(e.target.value)}/>
+               <input id="time-input" type='text' value={time} placeholder='Insert time (HH:MM)' onChange={e => setTime(e.target.value)}/>
 
                <button type="submit">Add</button>
            </form>

@@ -11,7 +11,7 @@ export default function createService(name, description) {
     const req = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${context.sessionUserId}`,
+        Authorization: `Bearer ${context.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, description }),

@@ -36,11 +36,15 @@ const { SystemError } = errors
         }
 
         try {
-            const userId = await res.json()
+            const token = await res.json()
 
-            
+            const payloadB64 = token.slice(token.indexOf('.') + 1, token.lastIndexOf('.'))
+            const payloadJson = atob(payloadB64)
+            const payload = JSON.parse(payloadJson)
+            const userId = payload.sub
 
             context.sessionUserId = userId
+            context.token = token
            
         } catch (error) {
             throw new SystemError(error.message)
