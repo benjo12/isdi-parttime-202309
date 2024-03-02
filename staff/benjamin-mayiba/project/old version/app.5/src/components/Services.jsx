@@ -47,21 +47,6 @@ function Services() {
     }
   };
 
-  const handleDeleteService = async (serviceId) => {
-    if (window.confirm("Do you really want to remove this service?")) {
-      try {
-        await logic.deleteService(serviceId);
-        // Actualizar la lista de servicios después de la eliminación
-        const updateServices = services.filter(
-          (service) => service.id != serviceId
-        );
-        setServices(updateServices);
-      } catch (error) {
-        console.error("error while deleting sercice:", error.message);
-      }
-    }
-  };
-
   return (
     <div>
       {!showEventForm && (
@@ -71,13 +56,7 @@ function Services() {
             {services.map((service) => (
               <li key={service.id}>
                 <div>
-                <input
-                    type="checkbox"
-                    onChange={() => handleDeleteService(service.id)}
-          
-                  />
                   {service.name} - {service.description}
-                  
                   <button
                     className="serviceButton"
                     onClick={() => handleAddEvent(service.id)}

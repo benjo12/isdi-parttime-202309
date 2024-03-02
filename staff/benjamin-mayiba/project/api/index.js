@@ -13,6 +13,8 @@ import {
   createEventHandler,
   retrieveServiceHandler,
   retrieveEventHandler,
+  deleteEventHandler,
+  deleteServiceHandler,
 } from "./handlers/index.js";
 
 mongoose
@@ -47,6 +49,13 @@ mongoose
     // obtener servicios
 
     server.get("/services", retrieveServiceHandler);
+
+    // borrar un evento
+    server.delete("/events/del", jsonBodyParser, deleteEventHandler);
+
+    // borrar un servicio
+
+    server.delete("/services/del", jsonBodyParser, deleteServiceHandler);
 
     server.listen(process.env.PORT, () =>
       console.log(`server running on port ${process.env.PORT}`)

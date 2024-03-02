@@ -5,6 +5,8 @@ import createService from './createService.js'
 import createEvent from './createEvent.js'
 import retrieveService from './retrieveService.js'
 import retrieveEvent from './retrieveEvent.js'
+import deleteService from './deleteService.js'
+import deleteEvent from './deleteEvent.js'
 
 const logic = {
     authenticateUser,
@@ -13,7 +15,9 @@ const logic = {
     createService,
     createEvent,
     retrieveService,
-    retrieveEvent
+    retrieveEvent,
+    deleteService,
+    deleteEvent
 }
 
 export default logic

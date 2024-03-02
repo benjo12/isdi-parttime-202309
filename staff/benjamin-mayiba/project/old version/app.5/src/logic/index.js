@@ -7,8 +7,6 @@ import retrieveServices from './retrieveServices'
 import retrieveEvent from './retrieveEvent'
 import isUserLoggedIn from './isUserLoggedIn'
 import logoutUser from './logoutUser'
-import deleteEvent from './deleteEvent'
-import deleteService from './deleteService'
 
 const logic = {
     registerUser,
@@ -19,9 +17,7 @@ const logic = {
     retrieveServices,
     retrieveEvent,
     isUserLoggedIn,
-    logoutUser,
-    deleteEvent,
-    deleteService
+    logoutUser
     
 }
 

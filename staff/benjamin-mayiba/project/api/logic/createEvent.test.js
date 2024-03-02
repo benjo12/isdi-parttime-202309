@@ -9,7 +9,7 @@ import mongoose from 'mongoose'
 
    try {
        // Supongamos que 'date' y 'time' son strings en un formato específico
-       await createEvent('65cd2bc1b744ba93c2af2011', '65d4f2fda59da005e452d4a4', '2024-11-10', '17:30');
+       await createEvent('65df88309553a9a72adf53a1', '65e1cf30225b4ac43864a665', '2024-11-10', '17:30');
        console.log('Event created successfully');
    } catch (error) {
        console.log(error);

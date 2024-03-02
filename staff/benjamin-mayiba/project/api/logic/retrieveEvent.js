@@ -22,6 +22,7 @@ export default async function retrieveEvent(userId) {
 
                 const eventDetails = fullEvents.map(event => {
                 return {
+                    id: event._id.toString(),
                     name: event.service.name,
                     date: event.date,
                     time: event.time

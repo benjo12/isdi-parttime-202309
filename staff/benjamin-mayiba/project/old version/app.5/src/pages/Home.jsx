@@ -53,7 +53,6 @@ export default function Home(props) {
         setMessage("No pending events");
         setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
       } else {
-        fullEvents.reverse()
         setEvents(fullEvents);
         setShowMessage(false); // Oculta el mensaje si hay eventos disponibles
       }
@@ -92,21 +91,6 @@ export default function Home(props) {
     handleShowEvents();
   }, []);
 
-  const handleDeleteEvent = async (eventId) => {
-  try {
-    await logic.deleteEvent(eventId);
-    // Actualizar la lista de eventos después del borrado
-    const updatedEvents = events.filter(event => String(event.id) !== String(eventId));
-    setEvents(updatedEvents);
-  } catch (error) {
-    console.error('Error deleting event:', error.message);
-    
-  }
-};
-
-
-
-
   return (
     <div className="home-container">
       <header className="header">
@@ -141,7 +125,7 @@ export default function Home(props) {
           <Routes>
             <Route
               path="/events"
-              element={events.length > 0 ? <EventList events={events} onDeleteEvent={handleDeleteEvent} /> : null}
+              element={events.length > 0 ? <EventList events={events} /> : null}
             />
 
             {/* Mostrar el componente Services si showServices es true */}

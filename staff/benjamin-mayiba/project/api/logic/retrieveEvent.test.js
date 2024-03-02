@@ -8,7 +8,7 @@ import retrieveEvent from './retrieveEvent.js'
   await mongoose.connect(process.env.MONGODB_URL)
    
     try{
-       const event = await retrieveEvent('65cd25d856588d95e5a811d2', '65d3a0e8eaee7024897bfbf9')
+       const event = await retrieveEvent('65dfa80449d98300510faaa7')
        console.log('event retrieved:', event)
     }catch(error){
         console.log(error)

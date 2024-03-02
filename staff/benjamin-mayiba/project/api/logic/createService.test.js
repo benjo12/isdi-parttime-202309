@@ -9,7 +9,7 @@ import createService from './createService.js'
   await mongoose.connect(process.env.MONGODB_URL)
    
     try{
-      const serviceId =   await createService('65df870db9cc2e56782c467e', 'Yoga', 'Mente pura, cuerpo sano')
+      const serviceId =   await createService('65df88309553a9a72adf53a1', 'Baile', 'Mover el cuerpo')
        
         console.log('service created', serviceId)
    
