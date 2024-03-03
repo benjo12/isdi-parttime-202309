@@ -8,7 +8,7 @@ import retrieveUser from './retrieveUser.js'
     await mongoose.connect(process.env.MONGODB_URL)
 
     try {
-        const user = await retrieveUser('65cd2bc1b744ba93c2af2011')
+        const user = await retrieveUser('65df870db9cc2e56782c467e')
         console.log('retrieved', user)
     } catch (error) {
         console.error(error)
