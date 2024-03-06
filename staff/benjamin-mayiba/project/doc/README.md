@@ -15,12 +15,10 @@ RemindMe is an application that allows you to organize your appointments and res
 - display your services
 - add new event (associating it to a service)
 - delete event
-- modify event
-- filter event by (by date range)
+- modify event(app.1)
 - add service
 - delete service
-- modify service
-- filter events by service
+- modify service(app.1)
 
 
 

@@ -11,7 +11,7 @@ html, body {
 }
 
 .home-container {
-  background-image: url('logic/images/mx8bzvjg.png');
+  background-color: #b0aec8;
   background-position: center;
   background-size: cover;
   height: 100vh;
@@ -54,7 +54,9 @@ html, body {
 .header button:nth-of-type(1) {
   margin-left: 150px; /* Ajusta el valor según sea necesario */
 }
-
+h2 {
+  text-align: center;
+}
 
 .event-select {
   font-size: 40px; 
@@ -82,4 +84,44 @@ a {
 
 .serviceButton{
   margin-left: 20px;
+}
+
+.trash-icon{
+  color: white;
+}
+/* Ajustes en el CSS */
+.event-article {
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.event-form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  display: flex;
+  justify-content:center;
+  align-items: flex-end;
+}
+
+.footer button {
+  margin-right: 10px; /* Ajusta el margen entre los botones */
+}
+
+.add-event button {
+  margin-left: 10px; /* Ajusta el margen entre los botones */
+}
+.footer div {
+  margin-right: 10px; /* Ajusta el margen entre los contenedores de los botones */
 }

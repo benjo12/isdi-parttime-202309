@@ -1,49 +1,68 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
-import "react-datepicker/dist/react-datepicker.css";
-import "react-time-picker/dist/TimePicker.css";
 
-export default function EventForm({ serviceId, onCreateEvent }) {
-  const [startDate, setStartDate] = useState(new Date());
+
+function EventForm({ services, onCreateEvent }) {
+  const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [selectedServiceId, setSelectedServiceId] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleCreateEvent = (e) => {
+    e.preventDefault();
 
-    try {
-      // Convertir la fecha a string en formato ISO (YYYY-MM-DD)
-      const dateString = startDate.toISOString().slice(0, 10);
-      await onCreateEvent(dateString, time);
-      setStartDate(new Date()); // Reiniciar el valor del DatePicker
-      setTime("");
-    } catch (error) {
-      alert(error.message);
+    // Validation and event creation logic...
+    if (!selectedServiceId) {
+      alert("Please select a service");
+      return;
     }
+
+    onCreateEvent(selectedServiceId, date, time);
+
+    setSubmitted(true); // Set submitted state to true
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>Date </label>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Insert date"
-        />
-         <label>Time </label>
-        <TimePicker
-          onChange={(time) => setTime(time)}
-          value={time}
-          clearIcon={null} // Oculta el icono de limpiar el campo
-          format="HH:mm" // Formato de la hora
-          locale="en-US" // Idioma
-          //clockIcon={null} // Oculta el icono del reloj
-        />
-
-        <button type="submit">Add</button>
+       
+      <h2>Create Event</h2>
+      <form onSubmit={handleCreateEvent}>
+        <>
+          <label>Date: </label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </>
+        <>
+          <label>Time: </label>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+        </>
+        <>
+          <label>Service: </label>
+          <select
+            value={selectedServiceId}
+            onChange={(e) => setSelectedServiceId(e.target.value)}
+          >
+            <option value="">Select a service</option>
+            {services.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.name}
+              </option>
+            ))}
+          </select>
+        </>
+        <>
+          <button type="submit">Add</button>
+        </>
       </form>
+      {submitted && <div>Event created successfully!</div>}
     </div>
   );
 }
+
+export default EventForm;
