@@ -21,7 +21,11 @@ export default async function retrieveEvent(userId) {
   let fullEvents;
   try {
     // Si el usuario existe, proceder con la búsqueda de eventos asociados
-    fullEvents = await Event.find({ user: userId }).populate("service").select("-__v").exec();
+    fullEvents = await Event.find({ user: userId })
+      .sort({ date: 1, time: 1 }) // Ordena los eventos por fecha en orden ascendente
+      .populate("service")
+      .select("-__v")
+      .exec();
          
   } catch (error) {
     throw new SystemError(error.message);

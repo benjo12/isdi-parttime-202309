@@ -4,7 +4,7 @@ import {validate, errors } from 'com'
 
 const {SystemError, NotFoundError } = errors
 
-export default async  function deleteEvent(userId, eventId){
+export default async function deleteEvent(userId, eventId){
            validate.id(userId, 'user id')
            validate.id(eventId, 'event id')
    

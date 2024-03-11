@@ -15,6 +15,8 @@ import {
   retrieveEventHandler,
   deleteEventHandler,
   deleteServiceHandler,
+  changeUserEmailHandler,
+  changeUserPasswordHandler,
 } from "./handlers/index.js";
 
 mongoose
@@ -56,6 +58,12 @@ mongoose
     // borrar un servicio
 
     server.delete("/services/del", jsonBodyParser, deleteServiceHandler);
+
+     // cambiar email
+    server.patch('/users/change-email', jsonBodyParser,changeUserEmailHandler)
+
+    // cambiar contraseña
+    server.patch('/users/change-password', jsonBodyParser, changeUserPasswordHandler)
 
     server.listen(process.env.PORT, () =>
       console.log(`server running on port ${process.env.PORT}`)

@@ -21,10 +21,10 @@ export default async function createService(userId, name, description) {
   if (!user) {
     throw new NotFoundError("user not found");
   }
-    let serviceId
+    let service
   try {
     // Crear el servicio asociado al usuario encontrado
-     serviceId = await Service.create({
+     service = await Service.create({
       author: userId,
       name,
       description,
@@ -32,5 +32,5 @@ export default async function createService(userId, name, description) {
   } catch (error) {
     throw new SystemError(error.message);
   }
-  return serviceId;
+  return service;
 }

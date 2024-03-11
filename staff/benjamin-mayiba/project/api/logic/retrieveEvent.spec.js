@@ -26,10 +26,10 @@ describe('retrieveEvent', () =>{
         const password = random.password()
 
         const date1 = random.date()
-        const time1 = random.time()
+        const time1 = '04:16'
 
         const date2 = random.date()  
-        const time2 = random.time()
+        const time2 = '05:16'
 
         const nameService = random.name()
         const description = random.description()

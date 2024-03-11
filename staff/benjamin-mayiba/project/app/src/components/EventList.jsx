@@ -30,8 +30,8 @@ function EventList({ events, onDeleteEvent }) {
       ))}
       {selectedEventId !== null && (
         <div>
-          <button onClick={handleDeleteClick}>Delete Event</button>
-          <button onClick={handleCancelClick}>Cancel</button>
+          <button className="btn-delete" onClick={handleDeleteClick}>Delete Event</button>
+          <button className='btn-cancel' onClick={handleCancelClick}>Cancel</button>
         </div>
       )}
     </div>

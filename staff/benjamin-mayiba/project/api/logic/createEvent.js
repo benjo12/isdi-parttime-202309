@@ -6,8 +6,8 @@ const { SystemError, NotFoundError } = errors;
 export default async function createEvent(userId, serviceId, date, time) {
   validate.id(userId, "user id");
   validate.id(serviceId, "service id");
-  validate.text(date, "date");
-  validate.text(time, "time");
+  validate.date(date, "date");
+  validate.time(time, "time");
 
   let user;
   try {

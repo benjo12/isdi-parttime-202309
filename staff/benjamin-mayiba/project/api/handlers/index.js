@@ -7,6 +7,8 @@ import retrieveServiceHandler from './retrieveServiceHandler.js'
 import retrieveEventHandler from './retrieveEventHandler.js'
 import deleteServiceHandler from './deleteServiceHandler.js'
 import deleteEventHandler from './deleteEventHandler.js'
+import changeUserEmailHandler from './changeUserEmailHandler.js'
+import changeUserPasswordHandler from './changeUserPasswordHandler.js'
 
 export {
     registerUserHandler,
@@ -17,5 +19,7 @@ export {
     retrieveServiceHandler,
     retrieveEventHandler,
     deleteServiceHandler,
-    deleteEventHandler
+    deleteEventHandler,
+    changeUserEmailHandler,
+    changeUserPasswordHandler
 }

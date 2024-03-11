@@ -3,6 +3,9 @@ import { ContentError } from './errors.js'
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const ID_REGEX = /^[0-9A-Fa-f]{24}$/
 
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_REGEX = /^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/;
+
 function text(text, explain) {
     if (typeof text !== 'string') throw new TypeError(explain + ' is not string')
     if (!text.trim().length) throw new ContentError(explain + ' is empty')
@@ -34,13 +37,29 @@ function id(id, explain) {
     if (!ID_REGEX.test(id)) throw new ContentError(`${explain} is not a valid id`)
 }
 
+function date(date, explain) {
+    if (typeof date !== 'string') throw new TypeError(`${explain} is not a string`);
+    if (!DATE_REGEX.test(date)) throw new ContentError(`${explain} is not a valid date format (YYYY-MM-DD)`);
+    const parsedDate = new Date(date);
+    const currentDate = new Date();
+    if (parsedDate < currentDate) throw new ContentError(`${explain} cannot be a past date`);
+}
+
+function time(time, explain) {
+    text(time, explain);
+
+    if (!TIME_REGEX.test(time)) throw new ContentError(`${explain} is not a valid time format (HH:MM)`);
+}
+
 const validate = {
     text,
     email,
     password,
     number,
     function: funktion,
-    id
+    id,
+    date,
+    time
 }
 
 export default validate

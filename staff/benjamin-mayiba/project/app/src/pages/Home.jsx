@@ -5,6 +5,7 @@ import Services from "../components/Services";
 import ServiceForm from "../components/ServiceForm";
 import EventForm from "../components/EventForm";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import Profile from "../components/Profile";
 
 export default function Home(props) {
   const [name, setName] = useState(null);
@@ -14,6 +15,8 @@ export default function Home(props) {
   const [showMessage, setShowMessage] = useState(true); // Controla la visibilidad del mensaje
   const [showEventForm, setShowEventForm] = useState(false);
   const [services, setServices] = useState([]); // Estado para almacenar la lista de servicios
+   const [submitted, setSubmitted] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export default function Home(props) {
 
   // Función para manejar el clic en el botón "Add Event" del footer
   const handleAddEventClick = () => {
+    setSubmitted(false);
     setShowEventForm(true); // Muestra el formulario de creación de evento
     navigate("/addEvent"); // Navega a la ruta "/addEvent"
   };
@@ -50,6 +54,7 @@ export default function Home(props) {
       // Crear el evento asociado al servicio
       await logic.createEvent(serviceId, date, time);
       console.log("Event successfully created for service with ID:", serviceId);
+      setSubmitted(true); // Set submitted state to true
       // Ocultar el formulario de creación de evento
       setShowEventForm(false);
     } catch (error) {
@@ -57,25 +62,34 @@ export default function Home(props) {
     }
   };
 
-  const handleLogoutClick = (event) => {
-    event.preventDefault();
+  const handleLogout = () => {
+    
     props.onLogout();
+     
   };
 
   const handleShowServices = () => {
     navigate("/services");
     setShowMessage(false); // Oculta el mensaje al cambiar de página
+    setSubmitted(false);
   };
+
+  const handleProfileClick = () =>{
+    navigate("/profile");
+    setShowMessage(false); 
+    setSubmitted(false);
+  }
 
   const handleShowEvents = async () => {
     navigate("/events");
+    setSubmitted(false);
     try {
       const fullEvents = await logic.retrieveEvent();
       if (Array.isArray(fullEvents) && fullEvents.length === 0) {
         setMessage("No pending events");
         setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
       } else {
-        fullEvents.reverse()
+        //fullEvents.reverse()
         setEvents(fullEvents);
         setShowMessage(false); // Oculta el mensaje si hay eventos disponibles
       }
@@ -92,7 +106,7 @@ export default function Home(props) {
 
         const fullEvents = await logic.retrieveEvent();
         if (Array.isArray(fullEvents) && fullEvents.length > 0) {
-          fullEvents.reverse();
+          //fullEvents.reverse();
           setEvents(fullEvents);
           setShowMessage(false); // Ocultar el mensaje si hay eventos disponibles
         } else {
@@ -127,9 +141,6 @@ export default function Home(props) {
     }
   };
 
-  const handleCancelEvent = () => {
-    setShowEventForm(false); // Oculta el formulario de creación de eventos
-  };
 
   return (
     <div className="home-container">
@@ -144,11 +155,7 @@ export default function Home(props) {
             Connected: <a href="">{name}</a>
           </h1>
         </div>
-        <a href="">
-          <button className="btn" onClick={handleLogoutClick}>
-            ✖️
-          </button>
-        </a>
+        
       </header>
 
       {/* Renderizar EventList con los eventos solo si hay eventos presentes */}
@@ -156,6 +163,8 @@ export default function Home(props) {
         <div className="event-container">
           {/* Mensaje de eventos */}
           {showMessage && <p>{message}</p>}
+           {/* Mensaje de evento creado con exito */}
+          {submitted && <div>Event created successfully!</div>}
 
           <Routes>
             <Route
@@ -164,7 +173,9 @@ export default function Home(props) {
             />
 
             {/* Mostrar el componente Services si showServices es true */}
-            <Route path="/services" element={<div><Services /></div>} />
+            <Route path="/services" element={<div><Services onServiceLogout={handleLogout} /></div>} />
+
+            <Route path="/profile" element={<Profile/>}/>
 
             {/* Mostrar ServiceForm si showAddServices es true */}
             <Route path="/addService" element={<div><ServiceForm /></div>} />
@@ -177,7 +188,7 @@ export default function Home(props) {
 
       {/* Botones Add Event y Add Service al final de la página */}
       <div className="footer">
-        <div><button>👤</button> </div>
+        <div><button onClick={handleProfileClick}>👤</button> </div>
         <button className="btn" onClick={handleShowEvents}>📅</button>
         <div className="add-event"> <button  onClick={handleAddEventClick}>➕</button></div>
         <div> <button  onClick={handleShowServices}>💼</button> </div>

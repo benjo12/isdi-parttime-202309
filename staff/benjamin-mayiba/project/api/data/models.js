@@ -53,7 +53,14 @@ const event = new Schema({
         default: () => new Date().toISOString().slice(0, 10) // Fecha en formato ISO (YYYY-MM-DD)
     },
     time: {
-        type: String  // hora del evento en formato HH:MM
+        type: String,  // hora del evento en formato HH:MM
+
+        default: () => {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
     }
 })
 

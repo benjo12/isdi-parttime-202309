@@ -5,8 +5,7 @@ function EventForm({ services, onCreateEvent }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [selectedServiceId, setSelectedServiceId] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
+ 
   const handleCreateEvent = (e) => {
     e.preventDefault();
 
@@ -18,7 +17,6 @@ function EventForm({ services, onCreateEvent }) {
 
     onCreateEvent(selectedServiceId, date, time);
 
-    setSubmitted(true); // Set submitted state to true
   };
 
   return (
@@ -60,7 +58,6 @@ function EventForm({ services, onCreateEvent }) {
           <button type="submit">Add</button>
         </>
       </form>
-      {submitted && <div>Event created successfully!</div>}
     </div>
   );
 }

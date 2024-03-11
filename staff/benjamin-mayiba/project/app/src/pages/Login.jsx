@@ -29,7 +29,7 @@ export default function Login(props) {
         props.onRegisterClick()
     }
 
-    return <div className="view">
+    return <div className="view login-container">
         <h1>Login</h1>
 
         <form className="form" onSubmit={handleSubmit}>

@@ -5,12 +5,12 @@ import EventForm from "./EventForm";
 import ServiceForm from "./ServiceForm"; // Importa el componente ServiceForm
 import { FaTrash } from 'react-icons/fa'; // Importa el ícono de eliminación de react-icons
 
-function Services() {
+
+function Services(props) {
   const [services, setServices] = useState([]);
-  const [showEventForm, setShowEventForm] = useState(false); // Estado para controlar la visualización del formulario
   const [selectedServiceId, setSelectedServiceId] = useState(null); // Estado para almacenar el serviceId seleccionado
   const [showServiceForm, setShowServiceForm] = useState(false); // Estado para controlar la visibilidad del formulario de servicio
-
+  const [error, setError] = useState(null); // Estado para almacenar el mensaje de error
   const userId = context.token; // Obtén el userId de tu lógica de autenticación
 
   useEffect(() => {
@@ -20,14 +20,18 @@ function Services() {
         console.log(fetchedServices);
         setServices(fetchedServices);
       } catch (error) {
-        console.error("Error fetching services:", error.message);
+        setError("Error fetching services: " + error.message);
       }
     })();
   }, [userId]);
 
-  
+  const handleLogoutClick = (event) => {
+    event.preventDefault();
+    props.onServiceLogout();
+};
+
   const handleDeleteService = async (serviceId) => {
-    if (window.confirm("Do you really want to remove this service?")) {
+    
       try {
         await logic.deleteService(serviceId);
         // Actualizar la lista de servicios después de la eliminación
@@ -36,9 +40,9 @@ function Services() {
         );
         setServices(updateServices);
       } catch (error) {
-        console.error("error while deleting sercice:", error.message);
+       setError("Error fetching services: " + error.message);
       }
-    }
+    
   };
 
   // Función para manejar el clic en el botón "Add Service"
@@ -48,13 +52,19 @@ function Services() {
 
   return (
     <div>
+
+    {/* Mostrar el mensaje de error si existe */}
+      {error && <p>{error}</p>}
+      
       {/* Botón "Add Service" */}
-     {!showServiceForm && <button onClick={handleAddServiceClick}>➕</button>} 
+     {!showServiceForm && <div className="btn-services"><button onClick={handleAddServiceClick}>➕</button><button className="btn-logout" onClick={handleLogoutClick}>✖️ </button></div>} 
+ 
 
       {showServiceForm && <ServiceForm />}
 
       {!showServiceForm && (
         <div>
+
           <h2>Service list</h2>
           <ul>
             {services.map((service) => (

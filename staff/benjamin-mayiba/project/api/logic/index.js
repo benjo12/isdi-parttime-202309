@@ -7,6 +7,8 @@ import retrieveService from './retrieveService.js'
 import retrieveEvent from './retrieveEvent.js'
 import deleteService from './deleteService.js'
 import deleteEvent from './deleteEvent.js'
+import changeUserEmail from './changeUserEmail.js'
+import changeUserPassword from './changeUserPassword.js'
 
 const logic = {
     authenticateUser,
@@ -17,7 +19,9 @@ const logic = {
     retrieveService,
     retrieveEvent,
     deleteService,
-    deleteEvent
+    deleteEvent,
+    changeUserEmail,
+    changeUserPassword
 }
 
 export default logic
