@@ -9,6 +9,8 @@ import isUserLoggedIn from './isUserLoggedIn'
 import logoutUser from './logoutUser'
 import deleteEvent from './deleteEvent'
 import deleteService from './deleteService'
+import changeUserPassword from './changeUserPassword'
+import changeUserEmail from './changeUserEmail'
 
 const logic = {
     registerUser,
@@ -21,7 +23,9 @@ const logic = {
     isUserLoggedIn,
     logoutUser,
     deleteEvent,
-    deleteService
+    deleteService,
+    changeUserPassword,
+    changeUserEmail
     
 }
 

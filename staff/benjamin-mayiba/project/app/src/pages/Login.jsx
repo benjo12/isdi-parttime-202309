@@ -1,38 +1,46 @@
-import logic from '../logic'
+import logic from "../logic";
+
+import { useState } from "react";
 
 export default function Login(props) {
-    console.log('Login')
+  console.log("Login");
 
-    const handleSubmit = async event => {
-        event.preventDefault()
+  const [error, setError] = useState(null);
 
-        const emailInput = event.target.querySelector('#email-input')
-        const passwordInput = event.target.querySelector('#password-input')
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        const email = emailInput.value
-        const password = passwordInput.value
+    const emailInput = event.target.querySelector("#email-input");
+    const passwordInput = event.target.querySelector("#password-input");
 
-        // console.log(email, password)
-        try {
-            await logic.loginUser(email, password)
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
-            props.onSuccess()
-        } catch (error) {
-            alert(error.message)
-        }
+    // console.log(email, password)
+    try {
+      await logic.loginUser(email, password);
+
+      props.onSuccess();
+    } catch (error) {
+      setError("Error : " + error.message);
     }
+  };
 
-    function handleRegisterClick(event) {
-        event.preventDefault()
+  function handleRegisterClick(event) {
+    event.preventDefault();
 
-        // console.log('register click')
-        props.onRegisterClick()
-    }
+    // console.log('register click')
+    props.onRegisterClick();
+  }
 
-    return <div className="view login-container">
-        <h1>Login</h1>
+  return (
+    <div className="view login-container">
+      {error && <p>{error}</p>}
+      {!error && (
+        <div>
+          <h1>Login</h1>
 
-        <form className="form" onSubmit={handleSubmit}>
+          <form className="form" onSubmit={handleSubmit}>
             <label htmlFor="email-input">E-mail</label>
             <input id="email-input" type="email" />
 
@@ -40,8 +48,13 @@ export default function Login(props) {
             <input type="password" id="password-input" />
 
             <button type="submit">Login</button>
-        </form>
+          </form>
 
-        <a href="" onClick={handleRegisterClick}>Register</a>
+          <a href="" onClick={handleRegisterClick}>
+            Register
+          </a>
+        </div>
+      )}
     </div>
+  );
 }

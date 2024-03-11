@@ -15,7 +15,8 @@ export default function Home(props) {
   const [showMessage, setShowMessage] = useState(true); // Controla la visibilidad del mensaje
   const [showEventForm, setShowEventForm] = useState(false);
   const [services, setServices] = useState([]); // Estado para almacenar la lista de servicios
-   const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -43,6 +44,7 @@ export default function Home(props) {
 
   // Función para manejar el clic en el botón "Add Event" del footer
   const handleAddEventClick = () => {
+    setShowMessage(false)
     setSubmitted(false);
     setShowEventForm(true); // Muestra el formulario de creación de evento
     navigate("/addEvent"); // Navega a la ruta "/addEvent"
@@ -117,7 +119,7 @@ export default function Home(props) {
         const fetchedServices = await logic.retrieveServices(); // No necesitas pasar el userId aquí
         setServices(fetchedServices); // Actualiza la lista de servicios
       } catch (error) {
-        alert(error.message);
+        console.error(error.message);
       }
     })();
 
@@ -141,6 +143,13 @@ export default function Home(props) {
     }
   };
 
+  const handleChangeEmail = () =>{
+    navigate("/");
+  }
+  
+  const handleChangePassword = () =>{
+       navigate("/");
+  }
 
   return (
     <div className="home-container">
@@ -175,7 +184,7 @@ export default function Home(props) {
             {/* Mostrar el componente Services si showServices es true */}
             <Route path="/services" element={<div><Services onServiceLogout={handleLogout} /></div>} />
 
-            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/profile" element={<Profile onChangeEmail={handleChangeEmail} onChangePassword={handleChangePassword}/>}/>
 
             {/* Mostrar ServiceForm si showAddServices es true */}
             <Route path="/addService" element={<div><ServiceForm /></div>} />

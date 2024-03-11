@@ -40,7 +40,7 @@ function Services(props) {
         );
         setServices(updateServices);
       } catch (error) {
-       setError("Error fetching services: " + error.message);
+       setError(error.message);
       }
     
   };
@@ -48,6 +48,7 @@ function Services(props) {
   // Función para manejar el clic en el botón "Add Service"
   const handleAddServiceClick = () => {
     setShowServiceForm(true); // Mostrar el formulario de servicio al hacer clic en "Add Service"
+    setError(null)
   };
 
   return (
@@ -57,12 +58,12 @@ function Services(props) {
       {error && <p>{error}</p>}
       
       {/* Botón "Add Service" */}
-     {!showServiceForm && <div className="btn-services"><button onClick={handleAddServiceClick}>➕</button><button className="btn-logout" onClick={handleLogoutClick}>✖️ </button></div>} 
+     {!showServiceForm  && <div className="btn-services"><button onClick={handleAddServiceClick}>➕</button><button className="btn-logout" onClick={handleLogoutClick}>✖️ </button></div>} 
  
 
-      {showServiceForm && <ServiceForm />}
+      {!error && showServiceForm && <ServiceForm />}
 
-      {!showServiceForm && (
+      {!error && !showServiceForm && (
         <div>
 
           <h2>Service list</h2>
