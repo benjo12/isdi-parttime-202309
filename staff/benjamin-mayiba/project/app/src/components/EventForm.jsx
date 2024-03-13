@@ -25,7 +25,7 @@ function EventForm({ services, onCreateEvent }) {
       <h2>Create Event</h2>
       <form onSubmit={handleCreateEvent}>
         <>
-          <label>Date: </label>
+          <label className="event-date">Date: </label>
           <input
             type="date"
             value={date}
@@ -33,7 +33,7 @@ function EventForm({ services, onCreateEvent }) {
           />
         </>
         <>
-          <label>Time: </label>
+          <label className="event-time">Time: </label>
           <input
             type="time"
             value={time}
@@ -41,7 +41,7 @@ function EventForm({ services, onCreateEvent }) {
           />
         </>
         <>
-          <label>Service: </label>
+          <label className="event-service">Service: </label>
           <select
             value={selectedServiceId}
             onChange={(e) => setSelectedServiceId(e.target.value)}
@@ -55,7 +55,7 @@ function EventForm({ services, onCreateEvent }) {
           </select>
         </>
         <>
-          <button type="submit">Add</button>
+          <button className="event-add" type="submit">Add</button>
         </>
       </form>
     </div>

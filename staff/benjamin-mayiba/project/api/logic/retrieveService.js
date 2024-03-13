@@ -27,10 +27,10 @@ export default async function retrieveService(userId) {
   }
 
   if (!services || services.length === 0) {
-    throw new NotFoundError("service not found");
-  }
-
-  // Crear un nuevo arreglo de objetos con id y nombre de servicio
+    //throw new NotFoundError("service not found");
+  return []
+  }else{
+   // Crear un nuevo arreglo de objetos con id y nombre de servicio
   const formattedServices = services.map((service) => ({
     id: service._id.toString(), // Convertir ObjectId a string
     name: service.name, // Incluir nombre del servicio
@@ -38,4 +38,7 @@ export default async function retrieveService(userId) {
   }));
 
   return formattedServices;
+
+  }
+
 }

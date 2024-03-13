@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MyCalendar from "./MyCalendar";
+import { FaTrash, FaSignOutAlt } from 'react-icons/fa';
 
 function EventList({ events, onDeleteEvent }) {
   const [selectedEventId, setSelectedEventId] = useState(null);
@@ -30,7 +31,7 @@ function EventList({ events, onDeleteEvent }) {
       ))}
       {selectedEventId !== null && (
         <div>
-          <button className="btn-delete" onClick={handleDeleteClick}>Delete Event</button>
+          <button className="btn-delete" onClick={handleDeleteClick}><span><FaTrash/></span></button>
           <button className='btn-cancel' onClick={handleCancelClick}>Cancel</button>
         </div>
       )}

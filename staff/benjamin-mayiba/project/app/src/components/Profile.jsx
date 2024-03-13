@@ -61,9 +61,9 @@ export default function Profile({onChangeEmail, onChangePassword}){
                 <div>
                     <br/>
                     <form className="form" onSubmit={handleChangeEmailSubmit}>
-                        <label htmlFor="new-email-input">New e-mail</label>
+                        <label htmlFor="new-email-input">New E-mail</label>
                         <input className="input" id="new-email-input" type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} />
-                        <label htmlFor="new-email-confirm-input">Confirm new e-mail</label>
+                        <label htmlFor="new-email-confirm-input">Confirm  E-mail</label>
                         <input className="input" id="new-email-confirm-input" type="email" value={confirmEmail} onChange={e => setConfirmEmail(e.target.value)} />
                         <label htmlFor="password-input">Password</label>
                         <input className="input" type="password" id="password-input" value={passwordEmail} onChange={e => setPasswordEmail(e.target.value)} />
@@ -71,11 +71,12 @@ export default function Profile({onChangeEmail, onChangePassword}){
                     </form>
                     <br/>
                     <form className="form" onSubmit={handleChangePasswordSubmit}>
+                     <br/>
                         <label htmlFor="password-input">Current password</label>
                         <input className="input" type="password" id="password-input" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                         <label htmlFor="new-password-input">New password</label>
                         <input className="input" id="new-password-input" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-                        <label htmlFor="new-password-confirm-input">Confirm new password</label>
+                        <label htmlFor="new-password-confirm-input">Confirm password</label>
                         <input className="input" id="new-password-confirm-input" type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} />
                         <button type="submit">Update password</button>
                     </form>

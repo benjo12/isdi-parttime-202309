@@ -69,14 +69,10 @@ describe('retrieveService', () =>{
 
         const user = await User.create({name, email, password})
 
-
-        try {
-            await retrieveService(user._id.toString())
-
-            throw new Error('should not reach this point')
-        } catch (error) {
-            expect(error).to.be.instanceOf(NotFoundError)
-            expect(error.message).to.equal('service not found')
-        }
+          const service =  await retrieveService(user._id.toString())
+          expect(service.length).to.equal(0)
+          expect(service).to.be.instanceOf(Array)
+           
+        
     })
 })
