@@ -7,7 +7,9 @@ import EventForm from "../components/EventForm";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Profile from "../components/Profile";
 
+// Definición del componente Home
 export default function Home(props) {
+  // Estados locales del componente
   const [name, setName] = useState(null);
   const [events, setEvents] = useState([]);
   const [message, setMessage] = useState("");
@@ -18,9 +20,10 @@ export default function Home(props) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false)
 
-
+  // Hook de navegación para cambiar entre rutas
   const navigate = useNavigate();
 
+  // Efecto para actualizar la hora cada segundo
   useEffect(() => {
     const intervalID = setInterval(() => {
       setCurrentDateTime(new Date());
@@ -44,12 +47,23 @@ export default function Home(props) {
   };
 
   // Función para manejar el clic en el botón "Add Event" del footer
-  const handleAddEventClick = () => {
-    setShowMessage(false)
+  const handleAddEventClick = async () => {
+    setShowMessage(false);
     setSubmitted(false);
-    setError(false)
-    setShowEventForm(true); // Muestra el formulario de creación de evento
-    navigate("/addEvent"); // Navega a la ruta "/addEvent"
+    setError(false);
+
+    try {
+      // Obtener la lista de servicios antes de abrir el formulario
+      const fetchedServices = await logic.retrieveServices();
+      setServices(fetchedServices);
+    } catch (error) {
+      setError("Failed to fetch services:", error.message);
+      return; // Impedir la navegación si los servicios no se recuperan
+    }
+
+    // Mostrar el formulario de creación de evento y navegar a la ruta correspondiente
+    setShowEventForm(true);
+    navigate("/addEvent");
   };
 
   // Función para manejar la creación de un evento
@@ -62,60 +76,64 @@ export default function Home(props) {
       // Ocultar el formulario de creación de evento
       setShowEventForm(false);
     } catch (error) {
-       setShowEventForm(false);
-       setError(error.message);
-
+      setShowEventForm(false);
+      setError(error.message);
     }
   };
 
+  // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    
     props.onLogout();
-     
   };
 
+  // Función para mostrar la lista de servicios
   const handleShowServices = () => {
     navigate("/services");
     setShowMessage(false); // Oculta el mensaje al cambiar de página
     setSubmitted(false);
-    setError(false)
+    setError(false);
   };
 
-  const handleProfileClick = () =>{
+  // Función para mostrar el perfil del usuario
+  const handleProfileClick = () => {
     navigate("/profile");
-    setShowMessage(false); 
+    setShowMessage(false);
     setSubmitted(false);
-    setError(false)
-  }
+    setError(false);
+  };
 
+  // Función para mostrar la lista de eventos
   const handleShowEvents = async () => {
     navigate("/events");
     setSubmitted(false);
-    setError(false)
+    setError(false);
+
     try {
+      // Obtener la lista completa de eventos
       const fullEvents = await logic.retrieveEvent();
       if (Array.isArray(fullEvents) && fullEvents.length === 0) {
         setMessage("No pending events");
         setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
       } else {
-        //fullEvents.reverse()
+        // Mostrar los eventos si hay eventos disponibles
         setEvents(fullEvents);
-        setShowMessage(false); // Oculta el mensaje si hay eventos disponibles
+        setShowMessage(false);
       }
     } catch (error) {
       setError(error.message);
     }
   };
 
+  // Efecto para cargar los datos iniciales al montar el componente
   useEffect(() => {
     (async () => {
       try {
+        // Obtener el nombre del usuario y la lista de eventos al cargar la página
         const user = await logic.retrieveUser();
         setName(user.name);
 
         const fullEvents = await logic.retrieveEvent();
         if (Array.isArray(fullEvents) && fullEvents.length > 0) {
-          //fullEvents.reverse();
           setEvents(fullEvents);
           setShowMessage(false); // Ocultar el mensaje si hay eventos disponibles
         } else {
@@ -123,8 +141,9 @@ export default function Home(props) {
           setShowMessage(true); // Muestra el mensaje al inicio si no hay eventos disponibles
         }
 
-        const fetchedServices = await logic.retrieveServices(); // No necesitas pasar el userId aquí
-        setServices(fetchedServices); // Actualiza la lista de servicios
+        // Obtener la lista de servicios
+        const fetchedServices = await logic.retrieveServices();
+        setServices(fetchedServices);
       } catch (error) {
         setError(error.message);
       }
@@ -134,6 +153,7 @@ export default function Home(props) {
     handleShowEvents();
   }, []);
 
+  // Función para eliminar un evento
   const handleDeleteEvent = async (eventId) => {
     try {
       await logic.deleteEvent(eventId);
@@ -150,41 +170,50 @@ export default function Home(props) {
     }
   };
 
-  const handleChangeEmail = () =>{
+  // Nos quedamos en la home despues del cambio de correo o contraseña
+  const handleChangeEmail = () => {
     navigate("/");
-  }
+  };
   
-  const handleChangePassword = () =>{
-       navigate("/");
-  }
+  const handleChangePassword = () => {
+    navigate("/");
+  };
 
+  // Renderizado del componente
   return (
     <div className="home-container">
+      {/* Cabecera */}
       <header className="header">
         <div>
+          {/* Hora actual */}
           <p className="time">{`${formatDate(currentDateTime)} ${formatTimeUnit(
             currentDateTime.getHours()
           )}:${formatTimeUnit(currentDateTime.getMinutes())}:${formatTimeUnit(
             currentDateTime.getSeconds()
           )}`}</p>
+
+          {/* nombre de usuario */}
           <h1>
             Connected: <a href="">{name}</a>
           </h1>
         </div>
-        
       </header>
 
-      {/* Renderizar EventList con los eventos solo si hay eventos presentes */}
       <div className="event">
-        
         <div className="event-container">
-          {/* Mensaje de eventos */}
+
+          {/* Mostrar mensaje si no hay eventos, errores y éxito */}
           {showMessage && <p>{message}</p>}
-           {/* Mensaje de evento creado con exito */}
+
+          {/* Mensaje de éxito al crear un evento */}
           {submitted && <div>Event created successfully!</div>}
+
+          {/* Mostrar  errores si occuren */}
           {error && <div>{error}</div>}
 
+          {/* Enrutamiento de las diferentes secciones */}
           <Routes>
+            {/* Mostrar la lista de eventos si hay eventos presentes */}
             <Route
               path="/events"
               element={events.length > 0 ? <div className="event-items"><EventList events={events} onDeleteEvent={handleDeleteEvent} /></div> : null}
@@ -193,25 +222,25 @@ export default function Home(props) {
             {/* Mostrar el componente Services si showServices es true */}
             <Route path="/services" element={error ? null : <div><Services onServiceLogout={handleLogout} /></div>} />
 
+            {/* Mostrar el perfil del usuario */}
             <Route path="/profile" element={error ? null : <div><Profile className="profile-container" onChangeEmail={handleChangeEmail} onChangePassword={handleChangePassword}/></div>}/>
 
-            {/* Mostrar ServiceForm si showAddServices es true */}
+            {/* Mostrar formulario para agregar servicio */}
             <Route path="/addService" element={error ? null : <div><ServiceForm /></div>} />
 
-            {/* Mostrar EventForm si showEventForm es true */}
+            {/* Mostrar formulario para agregar evento si showEventForm es true */}
             {showEventForm && <Route path="/addEvent" element={error ? null : <div><EventForm services={services} onCreateEvent={handleCreateEvent} /></div>} />}
           </Routes>
         </div>
       </div>
 
-      {/* Botones Add Event y Add Service al final de la página */}
+      {/* Botones de navegación */}
       <div className="footer">
         <div><button title="profile" onClick={handleProfileClick}>👤</button> </div>
         <button className="btn" title="events" onClick={handleShowEvents}>📅</button>
         <div className="add-event" title=" add events"> <button  onClick={handleAddEventClick}>➕</button></div>
         <div> <button title="services"  onClick={handleShowServices}>💼</button> </div>
       </div>
-
     </div>  
   );
 }

@@ -3,6 +3,7 @@ import logic from '../logic'
 
 export default function ServiceForm(){
 
+  // Estados locales para el nombre, descripción y error del servicio
     const [name, setName] = useState('') 
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null);
@@ -12,8 +13,9 @@ export default function ServiceForm(){
 
         try {
             await logic.createService(name, description)
-            setName('')
+            setName('') 
             setDescription('')
+            //props.onCreateService()
         } catch (error) {
             setError("Error : " + error.message);
         }
