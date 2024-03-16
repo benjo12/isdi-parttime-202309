@@ -16,6 +16,7 @@ export default function Home(props) {
   const [showEventForm, setShowEventForm] = useState(false);
   const [services, setServices] = useState([]); // Estado para almacenar la lista de servicios
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false)
 
 
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export default function Home(props) {
   const handleAddEventClick = () => {
     setShowMessage(false)
     setSubmitted(false);
+    setError(false)
     setShowEventForm(true); // Muestra el formulario de creación de evento
     navigate("/addEvent"); // Navega a la ruta "/addEvent"
   };
@@ -60,7 +62,9 @@ export default function Home(props) {
       // Ocultar el formulario de creación de evento
       setShowEventForm(false);
     } catch (error) {
-      alert(error.message);
+       setShowEventForm(false);
+       setError(error.message);
+
     }
   };
 
@@ -74,17 +78,20 @@ export default function Home(props) {
     navigate("/services");
     setShowMessage(false); // Oculta el mensaje al cambiar de página
     setSubmitted(false);
+    setError(false)
   };
 
   const handleProfileClick = () =>{
     navigate("/profile");
     setShowMessage(false); 
     setSubmitted(false);
+    setError(false)
   }
 
   const handleShowEvents = async () => {
     navigate("/events");
     setSubmitted(false);
+    setError(false)
     try {
       const fullEvents = await logic.retrieveEvent();
       if (Array.isArray(fullEvents) && fullEvents.length === 0) {
@@ -96,7 +103,7 @@ export default function Home(props) {
         setShowMessage(false); // Oculta el mensaje si hay eventos disponibles
       }
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
 
@@ -119,7 +126,7 @@ export default function Home(props) {
         const fetchedServices = await logic.retrieveServices(); // No necesitas pasar el userId aquí
         setServices(fetchedServices); // Actualiza la lista de servicios
       } catch (error) {
-        console.error(error.message);
+        setError(error.message);
       }
     })();
 
@@ -139,7 +146,7 @@ export default function Home(props) {
         setEvents(updatedEvents);
       }
     } catch (error) {
-      console.error('Error deleting event:', error.message);
+      setError('Error deleting event:', error.message);
     }
   };
 
@@ -169,40 +176,42 @@ export default function Home(props) {
 
       {/* Renderizar EventList con los eventos solo si hay eventos presentes */}
       <div className="event">
+        
         <div className="event-container">
           {/* Mensaje de eventos */}
           {showMessage && <p>{message}</p>}
            {/* Mensaje de evento creado con exito */}
           {submitted && <div>Event created successfully!</div>}
+          {error && <div>{error}</div>}
 
           <Routes>
             <Route
               path="/events"
-              element={events.length > 0 ? <div><EventList events={events} onDeleteEvent={handleDeleteEvent} /></div> : null}
+              element={events.length > 0 ? <div className="event-items"><EventList events={events} onDeleteEvent={handleDeleteEvent} /></div> : null}
             />
 
             {/* Mostrar el componente Services si showServices es true */}
-            <Route path="/services" element={<div><Services onServiceLogout={handleLogout} /></div>} />
+            <Route path="/services" element={error ? null : <div><Services onServiceLogout={handleLogout} /></div>} />
 
-            <Route path="/profile" element={<Profile onChangeEmail={handleChangeEmail} onChangePassword={handleChangePassword}/>}/>
+            <Route path="/profile" element={error ? null : <div><Profile className="profile-container" onChangeEmail={handleChangeEmail} onChangePassword={handleChangePassword}/></div>}/>
 
             {/* Mostrar ServiceForm si showAddServices es true */}
-            <Route path="/addService" element={<div><ServiceForm /></div>} />
+            <Route path="/addService" element={error ? null : <div><ServiceForm /></div>} />
 
             {/* Mostrar EventForm si showEventForm es true */}
-            {showEventForm && <Route path="/addEvent" element={<EventForm services={services} onCreateEvent={handleCreateEvent} />} />}
+            {showEventForm && <Route path="/addEvent" element={error ? null : <div><EventForm services={services} onCreateEvent={handleCreateEvent} /></div>} />}
           </Routes>
         </div>
       </div>
 
       {/* Botones Add Event y Add Service al final de la página */}
       <div className="footer">
-        <div><button onClick={handleProfileClick}>👤</button> </div>
-        <button className="btn" onClick={handleShowEvents}>📅</button>
-        <div className="add-event"> <button  onClick={handleAddEventClick}>➕</button></div>
-        <div> <button  onClick={handleShowServices}>💼</button> </div>
+        <div><button title="profile" onClick={handleProfileClick}>👤</button> </div>
+        <button className="btn" title="events" onClick={handleShowEvents}>📅</button>
+        <div className="add-event" title=" add events"> <button  onClick={handleAddEventClick}>➕</button></div>
+        <div> <button title="services"  onClick={handleShowServices}>💼</button> </div>
       </div>
 
-    </div>
+    </div>  
   );
 }

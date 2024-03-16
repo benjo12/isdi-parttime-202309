@@ -5,13 +5,14 @@ function EventForm({ services, onCreateEvent }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [selectedServiceId, setSelectedServiceId] = useState("");
- 
+ const [error, setError] = useState(null);
+
   const handleCreateEvent = (e) => {
     e.preventDefault();
 
     // Validation and event creation logic...
     if (!selectedServiceId) {
-      alert("Please select a service");
+      setError("Please select a service");
       return;
     }
 
@@ -21,7 +22,8 @@ function EventForm({ services, onCreateEvent }) {
 
   return (
     <div>
-       
+        {error && <p>{error}</p>}
+      {!error && <div>
       <h2>Create Event</h2>
       <form onSubmit={handleCreateEvent}>
         <>
@@ -58,6 +60,7 @@ function EventForm({ services, onCreateEvent }) {
           <button className="event-add" type="submit">Add</button>
         </>
       </form>
+      </div>}
     </div>
   );
 }

@@ -53,7 +53,7 @@ export default function Profile({onChangeEmail, onChangePassword}){
     }, [successMessage])
 
     return (
-        <div className="container">
+        <div>
 
             {error && <p>{error}</p>}
             {!error && successMessage && <p>{successMessage}</p>} 
@@ -61,22 +61,22 @@ export default function Profile({onChangeEmail, onChangePassword}){
                 <div>
                     <br/>
                     <form className="form" onSubmit={handleChangeEmailSubmit}>
-                        <label htmlFor="new-email-input">New E-mail</label>
+                        <label className="label" htmlFor="new-email-input">New E-mail</label>
                         <input className="input" id="new-email-input" type="email" value={newEmail} onChange={e => setNewEmail(e.target.value)} />
-                        <label htmlFor="new-email-confirm-input">Confirm  E-mail</label>
+                        <label className="label" htmlFor="new-email-confirm-input">Confirm  E-mail</label>
                         <input className="input" id="new-email-confirm-input" type="email" value={confirmEmail} onChange={e => setConfirmEmail(e.target.value)} />
-                        <label htmlFor="password-input">Password</label>
+                        <label className="label" htmlFor="password-input">Password</label>
                         <input className="input" type="password" id="password-input" value={passwordEmail} onChange={e => setPasswordEmail(e.target.value)} />
                         <button type="submit">Update e-mail</button>
                     </form>
                     <br/>
                     <form className="form" onSubmit={handleChangePasswordSubmit}>
                      <br/>
-                        <label htmlFor="password-input">Current password</label>
+                        <label className="label" htmlFor="password-input">Current password</label>
                         <input className="input" type="password" id="password-input" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
-                        <label htmlFor="new-password-input">New password</label>
+                        <label className="label" htmlFor="new-password-input">New password</label>
                         <input className="input" id="new-password-input" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-                        <label htmlFor="new-password-confirm-input">Confirm password</label>
+                        <label className="label" htmlFor="new-password-confirm-input">Confirm password</label>
                         <input className="input" id="new-password-confirm-input" type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} />
                         <button type="submit">Update password</button>
                     </form>

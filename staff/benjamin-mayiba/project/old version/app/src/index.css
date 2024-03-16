@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+* {
+    font-family: Inter;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.home-container {
+  background-color: #b0aec8;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  
+}
+
+.view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 240px;
+    gap: 5px;
+    margin-top: -20px;
+}
+.form-login, .form-register{
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  border: 3px solid black; 
+  margin-left: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  color:rgb(236, 12, 49);
+}
+
+.header button {
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: #b0aec8;
+}
+
+.header button:nth-of-type(1) {
+  margin-left: 150px; /* Ajusta el valor según sea necesario */
+}
+h2 {
+  text-align: center;
+}
+
+.event-select {
+  font-size: 40px; 
+  font-weight: bold;
+}
+
+.event {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.event-container {
+  border: 2px solid #ccc; 
+  padding: 20px;
+  margin: 20px 0; 
+  background-color: darkslategrey;
+}
+
+a { 
+  color:black;
+  text-decoration: none;
+}
+
+.serviceButton{
+  margin-left: 20px;
+}
+
+.trash-icon{
+  color: white;
+}
+/* Ajustes en el CSS */
+.event-article {
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.event-form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 3rem;
+}
+
+.footer button {
+  margin-right: 10px; /* Ajusta el margen entre los botones */
+}
+
+.add-event button {
+  margin-left: 10px; /* Ajusta el margen entre los botones */
+}
+.footer div {
+  margin-right: 10px; /* Ajusta el margen entre los contenedores de los botones */
+}
+.btn-services,.btn-logout{
+  display: flex;
+  justify-content: space-between;
+}
+ .btn-cancel{
+  margin-left: 175px;
+}
+
+.trash-icon {
+  margin-right: 8px; /* Ajusta el valor según sea necesario */
+}
+
+.event-add, .event-service, .event-time{
+  margin-left: 5px;
+}
+
+.link::before {
+  content: "[ ";
+}
+.link::after {
+  content: " ]";
+}
+
+
+.btn-events:hover {
+  content: "Events";
+}
