@@ -49,6 +49,8 @@ function Services(props) {
           (service) => service.id != serviceId
         );
         setServices(updateServices);
+        // Emitir una señal al componente padre (Home) de que se ha eliminado un servicio
+      props.onServiceDeleted();
       } catch (error) {
        setError(error.message);
       }

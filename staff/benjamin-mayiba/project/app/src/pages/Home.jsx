@@ -46,6 +46,17 @@ export default function Home(props) {
     return `${day}/${month}/${year}`;
   };
 
+
+  // Nos quedamos en la home despues del cambio de correo o contraseña
+  const handleChangeEmail = () => {
+    navigate("/");
+  };
+  
+  const handleChangePassword = () => {
+    navigate("/");
+  };
+
+
   // Función para manejar el clic en el botón "Add Event" del footer
   const handleAddEventClick = async () => {
     setShowMessage(false);
@@ -102,29 +113,9 @@ export default function Home(props) {
     setError(false);
   };
 
-  // Función para mostrar la lista de eventos
-  const handleShowEvents = async () => {
-    navigate("/events");
-    setSubmitted(false);
-    setError(false);
 
-    try {
-      // Obtener la lista completa de eventos
-      const fullEvents = await logic.retrieveEvent();
-      if (Array.isArray(fullEvents) && fullEvents.length === 0) {
-        setMessage("No pending events");
-        setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
-      } else {
-        // Mostrar los eventos si hay eventos disponibles
-        setEvents(fullEvents);
-        setShowMessage(false);
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
 
-  // Efecto para cargar los datos iniciales al montar el componente
+   // Efecto para cargar los datos iniciales al montar el componente
   useEffect(() => {
     (async () => {
       try {
@@ -153,6 +144,48 @@ export default function Home(props) {
     handleShowEvents();
   }, []);
 
+
+  // Función para mostrar la lista de eventos
+  const handleShowEvents = async () => {
+    navigate("/events");
+    setSubmitted(false);
+    setError(false);
+
+    try {
+      // Obtener la lista completa de eventos
+      const fullEvents = await logic.retrieveEvent();
+      if (Array.isArray(fullEvents) && fullEvents.length === 0) {
+        setMessage("No pending events");
+        setShowMessage(true); // Muestra el mensaje si no hay eventos disponibles
+      } else {
+        // Mostrar los eventos si hay eventos disponibles
+        setEvents(fullEvents);
+        setShowMessage(false);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  
+ // Llamar a handleShowEvents cuando ya no quedan servicios
+  const handleServiceEvent = async () => {
+  try {
+    const fullEvents = await logic.retrieveEvent();
+    
+    setEvents(fullEvents);
+  } catch (error) {
+    setError(error.message);
+  }
+};
+useEffect(() => {
+  // solo carga eventos cuando ya no quedan servicios
+  if (services.length === 0) {
+    handleShowEvents();
+  }
+}, [services]);
+
+
   // Función para eliminar un evento
   const handleDeleteEvent = async (eventId) => {
     try {
@@ -170,14 +203,7 @@ export default function Home(props) {
     }
   };
 
-  // Nos quedamos en la home despues del cambio de correo o contraseña
-  const handleChangeEmail = () => {
-    navigate("/");
-  };
-  
-  const handleChangePassword = () => {
-    navigate("/");
-  };
+
 
   // Renderizado del componente
   return (
@@ -220,7 +246,7 @@ export default function Home(props) {
             />
 
             {/* Mostrar el componente Services si showServices es true */}
-            <Route path="/services" element={error ? null : <div><Services onServiceLogout={handleLogout} /></div>} />
+            <Route path="/services" element={error ? null : <div><Services onServiceLogout={handleLogout} onServiceDeleted={handleServiceEvent} /></div>} />
 
             {/* Mostrar el perfil del usuario */}
             <Route path="/profile" element={error ? null : <div><Profile className="profile-container" onChangeEmail={handleChangeEmail} onChangePassword={handleChangePassword}/></div>}/>
