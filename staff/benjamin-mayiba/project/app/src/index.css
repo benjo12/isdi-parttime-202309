@@ -1,165 +1,116 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 * {
-    font-family: Inter;
+  font-family: Inter;
 }
 
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  @apply h-full m-0 p-0;
 }
 
 .home-container {
+  @apply bg-center bg-cover h-screen;
   background-color: #b0aec8;
-  background-position: center;
-  background-size: cover;
-  height: 100vh;
-  
 }
 
-.view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    max-width: 240px;
-    gap: 5px;
-    margin-top: -20px;
-}
-.form-login, .form-register{
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @apply flex justify-between items-center;
 }
 
 .header h1 {
-  border: 3px solid black; 
-  margin-left: 10px;
-  padding: 20px;
-  margin: 20px 0;
-  color:rgb(236, 12, 49);
+  @apply my-5 mr-0  py-5 px-5 text-red-600 border-solid border-4 border-black;
+  
+}
+.time-header{
+  @apply size-2.5;
 }
 
 .header button {
-  margin-right: 10px;
-  margin-left: 10px;
+  @apply mx-2.5;
   background-color: #b0aec8;
 }
 
 .header button:nth-of-type(1) {
-  margin-left: 150px; /* Ajusta el valor según sea necesario */
+  @apply ml-[150px] ; 
 }
+
 h2 {
-  text-align: center;
+ @apply text-center;
+}
+
+a { 
+  @apply text-black no-underline;
+}
+
+.view {
+  @apply flex flex-col items-center gap-2.5;
+}
+
+.form {
+  @apply flex flex-col max-w-60 mt-[-20px];
+  gap: 5px;
+}
+
+.form-login, .form-register{
+  @apply mb-2.5 mt-2.5;
 }
 
 .event-select {
+  @apply font-bold;
   font-size: 40px; 
-  font-weight: bold;
 }
 
 .event {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
+  @apply flex justify-center font-bold;
   font-size: medium;
 }
 
 .event-container {
-  border: 2px solid #ccc; 
-  padding: 20px;
-  margin: 20px 0; 
+  @apply border-2 border-solid border-gray-300 p-5  ml-0 mt-5; 
   background-color: rgb(68, 107, 107);
-  margin-top: -30px;
 }
 .event-items{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  height: 370px;
-  max-height: 500px;
-  overflow: auto;
-
+  @apply flex flex-wrap items-center justify-between h-[370px] max-h-[500px] overflow-auto;
 }
 
-a { 
-  color:black;
-  text-decoration: none;
-}
-
-.serviceButton{
-  margin-left: 20px;
-}
-
-.trash-icon{
-  color: white;
-}
-/* Ajustes en el CSS */
 .event-article {
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px 0;
+  @apply bg-white bg-opacity-80 rounded-lg p-2.5 my-2.5;
 }
 
 .event-form-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 border border-gray-300 rounded shadow-md;
+}
+
+.serviceButton{
+  @apply ml-5;
+}
+
+.trash-icon{
+  @apply text-white mr-2;
 }
 
 .footer {
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 3rem;
+  @apply bg-white flex justify-center items-center fixed bottom-0 w-full h-12;
 }
 
-.footer button {
-  margin-right: 10px; /* Ajusta el margen entre los botones */
+.footer div, .footer button {
+  @apply mr-2.5;
 }
+
 
 .add-event button {
-  margin-left: 10px; /* Ajusta el margen entre los botones */
-}
-.footer div {
-  margin-right: 10px; /* Ajusta el margen entre los contenedores de los botones */
-}
-.btn-services,.btn-logout{
-  display: flex;
-  justify-content: space-between;
-}
- .btn-cancel{
-  margin-left: 175px;
+ @apply ml-2.5;    
 }
 
-.trash-icon {
-  margin-right: 8px; /* Ajusta el valor según sea necesario */
+.btn-services,.btn-logout{
+  @apply flex justify-between;
+}
+ .btn-cancel{
+  @apply ml-[175px];
 }
 
 .event-add, .event-service, .event-time{
-  margin-left: 5px;
+  @apply ml-[5px];
 }
 
 .link::before {
@@ -169,10 +120,6 @@ a {
   content: " ]";
 }
 
-
-.btn-events:hover {
-  content: "Events";
-}
 
 @media (min-width: 768px) {
   .event-container {

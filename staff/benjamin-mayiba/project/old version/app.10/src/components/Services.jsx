@@ -23,7 +23,7 @@ function Services(props) {
         const fetchedServices = await logic.retrieveServices(userId);
         if(fetchedServices.length === 0){
 
-          setMessage('No services added yet')
+          setMessage('No service added')
         }else{
           //console.log(fetchedServices);
           setServices(fetchedServices);
@@ -69,7 +69,7 @@ function Services(props) {
     <div>
       
       {/* Botón "Add Service" */}
-     {!showServiceForm  && <div className="btn-services"><button title="Add service" onClick={handleAddServiceClick}>➕</button><button className="btn-logout" title="Logout" onClick={handleLogoutClick}> <FaSignOutAlt /> </button></div>} 
+     {!showServiceForm  && <div className="btn-services"><button onClick={handleAddServiceClick}>➕</button><button className="btn-logout" onClick={handleLogoutClick}> <FaSignOutAlt /> </button></div>} 
 
      {/* Mostrar el mensaje de error si existe */}
       {error && <p>{error}</p>}
@@ -80,10 +80,10 @@ function Services(props) {
 
       {!message && !error && showServiceForm && <ServiceForm />}
 
-      {!error && !message && !showServiceForm && services.length > 0 && (
+      {!error && !message && !showServiceForm && (
         <div>
 
-           <h2>Service list</h2>
+          <h2>Service list</h2>
           <ul>
             {services.map((service) => (
               <li key={service.id}>
@@ -91,7 +91,6 @@ function Services(props) {
                   <span>
                     <FaTrash
                       className="trash-icon"
-                      title="Delete service"
                       onClick={() => handleDeleteService(service.id)}
                     />
                   </span>

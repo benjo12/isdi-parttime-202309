@@ -26,12 +26,12 @@ function EventList({ events, onDeleteEvent }) {
         <article className="event-article" key={event.id}>
           <h3>{event.name}</h3>
           <p>Date: {event.date} - Time: {event.time}</p>
-          <button title="Select event" onClick={() => setSelectedEventId(event.id)}>Select</button>
+          <button onClick={() => setSelectedEventId(event.id)}>Select</button>
         </article>
       ))}
       {selectedEventId !== null && (
         <div>
-          <button className="btn-delete" onClick={handleDeleteClick}><span><FaTrash title="Delete"/></span></button>
+          <button className="btn-delete" onClick={handleDeleteClick}><span><FaTrash/></span></button>
           <button className='btn-cancel' onClick={handleCancelClick}>Cancel</button>
         </div>
       )}
