@@ -80,7 +80,6 @@ export default function Home(props) {
     try {
       // Crear el evento asociado al servicio
       await logic.createEvent(serviceId, date, time);
-      console.log("Event successfully created for service with ID:", serviceId);
       setSubmitted(true);
       // Ocultar el formulario de creación de evento
       setShowEventForm(false);
@@ -91,23 +90,27 @@ export default function Home(props) {
   };
 
   // Función para eliminar un evento
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      await logic.deleteEvent(eventId);
-      // Actualizar la lista de eventos después del borrado
-      const updatedEvents = events.filter(
-        (event) => String(event.id) !== String(eventId)
-      );
-      if (updatedEvents.length === 0) {
-        setMessage("No pending events");
-        setShowMessage(true); // Mostrar el mensaje si no hay eventos disponibles
-      } else {
-        setEvents(updatedEvents);
-      }
-    } catch (error) {
-      setError("Error deleting event:", error.message);
+const handleDeleteEvent = async (eventId) => {
+  try {
+    await logic.deleteEvent(eventId);
+    // Actualizar la lista de eventos después del borrado
+    const updatedEvents = events.filter(
+      (event) => String(event.id) !== String(eventId)
+    );
+    
+    // Verificar si no quedan eventos después de eliminar
+    if (updatedEvents.length === 0) {
+      setMessage("No pending events");
+      setShowMessage(true); // Mostrar el mensaje si no hay eventos disponibles
+      setEvents([]); // Establecer la lista de eventos como vacía
+    } else {
+      setEvents(updatedEvents);
     }
-  };
+  } catch (error) {
+    setError(error.message);
+  }
+};
+
 
   // Función para manejar el clic en el botón "Add Event" del footer
   const handleAddEventClick = async () => {
