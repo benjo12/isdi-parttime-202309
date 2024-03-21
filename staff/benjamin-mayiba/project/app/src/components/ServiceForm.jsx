@@ -15,7 +15,7 @@ export default function ServiceForm(){
             await logic.createService(name, description)
             setName('') 
             setDescription('')
-            //props.onCreateService()
+           
         } catch (error) {
             setError("Error : " + error.message);
         }

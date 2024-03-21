@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logic from "../logic";
 import context from "../logic/context";
-import EventForm from "./EventForm";
 import ServiceForm from "./ServiceForm"; // Importa el componente ServiceForm
 import { FaTrash, FaSignOutAlt } from 'react-icons/fa'; // Importa el ícono de eliminación de react-icons
 import { useNavigate } from "react-router-dom";
@@ -13,7 +12,7 @@ function Services(props) {
   const [showServiceForm, setShowServiceForm] = useState(false); // Estado para controlar la visibilidad del formulario de servicio
   const [error, setError] = useState(null); // Estado para almacenar el mensaje de error
   const[message, setMessage] = useState(null)
-  const userId = context.token; // Obtén el userId de tu lógica de autenticación
+  const userId = context.token; // Obtén el userId de la lógica de autenticación
 
   const navigate = useNavigate();
 
@@ -59,9 +58,7 @@ function Services(props) {
 
   // Función para manejar el clic en el botón "Add Service"
   const handleAddServiceClick = () => {
-    // setShowServiceForm(true); // Mostrar el formulario de servicio al hacer clic en "Add Service"
-    // setError(null)
-    // setMessage(null)
+    
     navigate("/addService")
   };
 

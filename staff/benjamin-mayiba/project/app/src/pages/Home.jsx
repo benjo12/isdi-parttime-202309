@@ -13,81 +13,16 @@ export default function Home(props) {
   // Estados locales del componente
   const [name, setName] = useState(null);
   const [events, setEvents] = useState([]);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); // Estado para almacenar el mensaje cuando no hay eventos
 
   const [showMessage, setShowMessage] = useState(true); // Controla la visibilidad del mensaje
   const [showEventForm, setShowEventForm] = useState(false);
   const [services, setServices] = useState([]); // Estado para almacenar la lista de servicios
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // Estado para controlar la creacion de eventos
+  const [error, setError] = useState(false); // Estado para almacenar los mensajes de error
 
   // Hook de navegación para cambiar entre rutas
   const navigate = useNavigate();
-
-  // Nos quedamos en la home despues del cambio de correo o contraseña
-  const handleChangeEmail = () => {
-    navigate("/");
-  };
-
-  const handleChangePassword = () => {
-    navigate("/");
-  };
-
-  // Función para manejar el clic en el botón "Add Event" del footer
-  const handleAddEventClick = async () => {
-    setShowMessage(false);
-    setSubmitted(false);
-    setError(false);
-
-    try {
-      // Obtener la lista de servicios antes de abrir el formulario
-      const fetchedServices = await logic.retrieveServices();
-      setServices(fetchedServices);
-    } catch (error) {
-      setError("Failed to fetch services:", error.message);
-      return; // Impedir la navegación si los servicios no se recuperan
-    }
-
-    // Mostrar el formulario de creación de evento y navegar a la ruta correspondiente
-    setShowEventForm(true);
-    navigate("/addEvent");
-  };
-
-  // Función para manejar la creación de un evento
-  const handleCreateEvent = async (serviceId, date, time) => {
-    try {
-      // Crear el evento asociado al servicio
-      await logic.createEvent(serviceId, date, time);
-      console.log("Event successfully created for service with ID:", serviceId);
-      setSubmitted(true); // Set submitted state to true
-      // Ocultar el formulario de creación de evento
-      setShowEventForm(false);
-    } catch (error) {
-      setShowEventForm(false);
-      setError(error.message);
-    }
-  };
-
-  // Función para manejar el cierre de sesión
-  const handleLogout = () => {
-    props.onLogout();
-  };
-
-  // Función para mostrar la lista de servicios
-  const handleShowServices = () => {
-    navigate("/services");
-    setShowMessage(false); // Oculta el mensaje al cambiar de página
-    setSubmitted(false);
-    setError(false);
-  };
-
-  // Función para mostrar el perfil del usuario
-  const handleProfileClick = () => {
-    navigate("/profile");
-    setShowMessage(false);
-    setSubmitted(false);
-    setError(false);
-  };
 
   // Efecto para cargar los datos iniciales al montar el componente
   useEffect(() => {
@@ -118,7 +53,7 @@ export default function Home(props) {
     handleShowEvents();
   }, []);
 
-  // Función para mostrar la lista de eventos
+  // Función para mostrar eventos
   const handleShowEvents = async () => {
     navigate("/events");
     setSubmitted(false);
@@ -140,22 +75,20 @@ export default function Home(props) {
     }
   };
 
-  // Llamar a handleShowEvents cuando ya no quedan servicios
-  const handleServiceEvent = async () => {
+  // Función para manejar la creación de un evento
+  const handleCreateEvent = async (serviceId, date, time) => {
     try {
-      const fullEvents = await logic.retrieveEvent();
-
-      setEvents(fullEvents);
+      // Crear el evento asociado al servicio
+      await logic.createEvent(serviceId, date, time);
+      console.log("Event successfully created for service with ID:", serviceId);
+      setSubmitted(true);
+      // Ocultar el formulario de creación de evento
+      setShowEventForm(false);
     } catch (error) {
+      setShowEventForm(false);
       setError(error.message);
     }
   };
-  useEffect(() => {
-    // solo carga eventos cuando ya no quedan servicios
-    if (services.length === 0) {
-      handleShowEvents();
-    }
-  }, [services]);
 
   // Función para eliminar un evento
   const handleDeleteEvent = async (eventId) => {
@@ -174,6 +107,71 @@ export default function Home(props) {
     } catch (error) {
       setError("Error deleting event:", error.message);
     }
+  };
+
+  // Función para manejar el clic en el botón "Add Event" del footer
+  const handleAddEventClick = async () => {
+    setShowMessage(false);
+    setSubmitted(false);
+    setError(false);
+
+    try {
+      // Obtener la lista de servicios antes de abrir el formulario
+      const fetchedServices = await logic.retrieveServices();
+      setServices(fetchedServices);
+    } catch (error) {
+      setError(error.message);
+    }
+    // Mostrar el formulario de creación de evento y navegar a la ruta correspondiente
+    setShowEventForm(true);
+    navigate("/addEvent");
+  };
+
+  // Función para mostrar la lista de servicios
+  const handleShowServices = () => {
+    navigate("/services");
+    setShowMessage(false); // Oculta el mensaje al cambiar de página
+    setSubmitted(false);
+    setError(false);
+  };
+
+  // Llamar a handleShowEvents cuando ya no quedan servicios
+  const handleLastEvent = async () => {
+    try {
+      const fullEvents = await logic.retrieveEvent();
+
+      setEvents(fullEvents);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+  useEffect(() => {
+    // solo carga eventos cuando ya no quedan servicios
+    if (services.length === 0) {
+      handleShowEvents();
+    }
+  }, [services]);
+
+  // Función para manejar el cierre de sesión
+  const handleLogout = () => {
+    props.onLogout();
+  };
+
+  // Función para mostrar el perfil del usuario
+  const handleProfileClick = () => {
+    navigate("/profile");
+    setShowMessage(false);
+    setSubmitted(false);
+    setError(false);
+  };
+
+  // Nos quedamos en la home despues del cambio de correo o contraseña
+  const handleChangeEmail = () => {
+    navigate("/");
+  };
+
+  const handleChangePassword = () => {
+    navigate("/");
   };
 
   // Renderizado del componente
@@ -227,7 +225,7 @@ export default function Home(props) {
                   <div>
                     <Services
                       onServiceLogout={handleLogout}
-                      onServiceDeleted={handleServiceEvent}
+                      onServiceDeleted={handleLastEvent}
                     />
                   </div>
                 )
@@ -287,20 +285,20 @@ export default function Home(props) {
         <div>
           <button title="profile" onClick={handleProfileClick}>
             👤
-          </button>{" "}
+          </button>
         </div>
         <button className="btn" title="events" onClick={handleShowEvents}>
           📅
         </button>
         <div className="add-event" title=" add events">
-          {" "}
+          
           <button onClick={handleAddEventClick}>➕</button>
         </div>
         <div>
-          {" "}
+          
           <button title="services" onClick={handleShowServices}>
             💼
-          </button>{" "}
+          </button>
         </div>
       </div>
     </div>

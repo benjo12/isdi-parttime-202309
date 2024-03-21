@@ -102,8 +102,12 @@ a {
  @apply ml-2.5;    
 }
 
-.btn-services,.btn-logout{
+.btn-services{
   @apply flex justify-between;
+}
+
+.btn-services button:first-child {
+  @apply mr-[40px]; 
 }
  .btn-cancel{
   @apply ml-[175px];
