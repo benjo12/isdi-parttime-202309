@@ -88,13 +88,6 @@ export default function Home(props) {
       setError(error.message);
     }
   };
-// 
-  useEffect(() => {
-    // carga los eventos cuando se crea un eventos
-    if (submitted === true) {
-      handleShowEvents();
-    }
-  }, [submitted]);
 
   // Función para eliminar un evento
 const handleDeleteEvent = async (eventId) => {

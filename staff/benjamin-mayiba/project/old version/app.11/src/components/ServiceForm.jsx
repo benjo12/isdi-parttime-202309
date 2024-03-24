@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import logic from '../logic'
-import { useNavigate } from "react-router-dom";
 
 export default function ServiceForm(){
 
@@ -9,8 +8,6 @@ export default function ServiceForm(){
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null);
 
-    const navigate = useNavigate();
-
     const handleSubmit = async event =>{
         event.preventDefault()
 
@@ -18,7 +15,7 @@ export default function ServiceForm(){
             await logic.createService(name, description)
             setName('') 
             setDescription('')
-           navigate("/services")
+           
         } catch (error) {
             setError("Error : " + error.message);
         }
