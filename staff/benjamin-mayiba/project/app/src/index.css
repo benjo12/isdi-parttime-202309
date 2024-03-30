@@ -54,7 +54,9 @@ a {
 .form-login, .form-register{
   @apply mb-2.5 mt-2.5;
 }
-
+.service-form, .event-form{
+  @apply mt-1;
+}
 .event-select {
   @apply font-bold;
   font-size: 40px; 
@@ -112,7 +114,9 @@ a {
  .btn-cancel{
   @apply ml-[175px];
 }
-
+.btn-logout{
+  @apply mr-2.5 mt-[-10px];
+}
 .event-add, .event-service, .event-time{
   @apply ml-[5px];
 }

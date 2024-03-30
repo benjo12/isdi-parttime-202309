@@ -26,13 +26,14 @@ export default function ServiceForm(){
 
     return (
         <div>
+        
            {error && <p>{error}</p>}
-           {!error && <form onSubmit={handleSubmit}>
-               <label htmlFor="name-input">Name </label>
-               <input id="name-input" type='text' placeholder='service name' value={name} onChange={e => setName(e.target.value)}/>
+           {!error && <form className="form service-form" onSubmit={handleSubmit}>
+               <label className="label" htmlFor="name-input">Name </label>
+               <input className="input" id="name-input" type='text' placeholder='service name' value={name} onChange={e => setName(e.target.value)}/>
 
-                <label htmlFor="description-input"> Description </label>
-               <input id="description-input" type='text' placeholder='service description' value={description} onChange={e => setDescription(e.target.value)}/>
+                <label className="label" htmlFor="description-input"> Description </label>
+               <input className="input" id="description-input" type='text' placeholder='service description' value={description} onChange={e => setDescription(e.target.value)}/>
 
                <button type="submit">Add</button>
            </form>}

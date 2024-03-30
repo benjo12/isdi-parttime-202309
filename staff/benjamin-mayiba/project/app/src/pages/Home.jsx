@@ -7,6 +7,7 @@ import EventForm from "../components/EventForm";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Profile from "../components/Profile";
 import Time from "../components/Time";
+import { FaSignOutAlt } from 'react-icons/fa';
 
 // Definición del componente Home
 export default function Home(props) {
@@ -163,7 +164,8 @@ const handleDeleteEvent = async (eventId) => {
   }, [services]);
 
   // Función para manejar el cierre de sesión
-  const handleLogout = () => {
+  const handleLogoutClick = (event) => {
+    event.preventDefault();
     props.onLogout();
   };
 
@@ -196,7 +198,10 @@ const handleDeleteEvent = async (eventId) => {
           <h1>
             Connected: <a href="">{name}</a>
           </h1>
+          
+          {/* <button className="btn-logout" title="Logout" > Logout </button> */}
         </div>
+        <div><button className="btn-logout" title="Logout" onClick={handleLogoutClick}> <FaSignOutAlt /> </button></div>
       </header>
 
       <div className="event">
@@ -234,7 +239,6 @@ const handleDeleteEvent = async (eventId) => {
                 error ? null : (
                   <div>
                     <Services
-                      onServiceLogout={handleLogout}
                       onServiceDeleted={handleLastEvent}
                     />
                   </div>

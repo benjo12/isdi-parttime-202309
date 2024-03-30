@@ -24,8 +24,7 @@ function EventForm({ services, onCreateEvent }) {
     <div>
         {error && <p>{error}</p>}
       {!error && <div>
-      <h2>Create Event</h2>
-      <form onSubmit={handleCreateEvent}>
+      <form className="form event-form" onSubmit={handleCreateEvent}>
         <>
           <label className="event-date">Date: </label>
           <input

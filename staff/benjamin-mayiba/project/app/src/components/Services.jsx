@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logic from "../logic";
 import context from "../logic/context";
 import ServiceForm from "./ServiceForm"; // Importa el componente ServiceForm
-import { FaTrash, FaSignOutAlt } from 'react-icons/fa'; // Importa el ícono de eliminación de react-icons
+import { FaTrash } from 'react-icons/fa'; // Importa el ícono de eliminación de react-icons
 import { useNavigate } from "react-router-dom";
 
 
@@ -34,10 +34,6 @@ function Services(props) {
     })();
   }, [userId]);
 
-  const handleLogoutClick = (event) => {
-    event.preventDefault();
-    props.onServiceLogout();
-};
 
   const handleDeleteService = async (serviceId) => {
     
@@ -66,7 +62,7 @@ function Services(props) {
     <div>
       
       {/* Botón "Add Service" */}
-     {!showServiceForm  && <div className="btn-services"><button title="Add service" onClick={handleAddServiceClick}>➕</button><button className="btn-logout" title="Logout" onClick={handleLogoutClick}> <FaSignOutAlt /> </button></div>} 
+     {!showServiceForm  && <div className="btn-services"><button title="Add service" onClick={handleAddServiceClick}>➕</button></div>} 
 
      {/* Mostrar el mensaje de error si existe */}
       {error && <p>{error}</p>}
